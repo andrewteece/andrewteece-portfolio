@@ -12,6 +12,8 @@ export default function App() {
       <Hero />
       <About />
       <Projects />
+      <div className='text-green-600 text-3xl font-bold p-4'>Tailwind Test</div>
+      <div className='test-style'>Tailwind Works!</div>
       <Footer />
     </div>
   );
