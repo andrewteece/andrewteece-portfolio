@@ -11,16 +11,28 @@ export default {
     extend: {
       colors: {
         brand: {
-          DEFAULT: '#4b4efc', // light mode brand
-          dark: '#1a1a40', // dark mode brand
+          DEFAULT: '#6366F1', // indigo-500
+          dark: '#818CF8', // indigo-400
         },
         accent: {
-          light: '#ff6b6b',
-          dark: '#fbbf24',
+          light: '#10B981', // emerald-500
+          dark: '#34D399', // emerald-400
+        },
+        bg: {
+          light: '#F9FAFB', // gray-50
+          dark: '#0F172A', // slate-900
+        },
+        text: {
+          light: '#1E293B', // slate-800
+          dark: '#E2E8F0', // slate-200
+        },
+        border: {
+          light: '#CBD5E1', // slate-300
+          dark: '#334155', // slate-700
         },
       },
       fontFamily: {
-        sans: ['Outfit', 'ui-sans-serif', 'system-ui'],
+        sans: ['Figtree', 'ui-sans-serif', 'system-ui'],
       },
     },
   },

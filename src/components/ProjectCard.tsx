@@ -1,3 +1,4 @@
+// src/components/ProjectCard.tsx
 type ProjectCardProps = {
   title: string;
   tech: string;
@@ -13,37 +14,37 @@ export default function ProjectCard({
   description,
   github,
   demo,
-  image,
-}: ProjectCardProps): JSX.Element {
+}: ProjectCardProps) {
   return (
-    <div className='border rounded-xl p-4 hover:shadow-lg transition'>
-      {image && (
-        <img
-          src={image}
-          alt={`${title} screenshot`}
-          className='w-full h-48 object-cover rounded-lg mb-4'
-        />
-      )}
-      <h4 className='text-xl font-bold mb-1'>{title}</h4>
-      <p className='text-sm text-gray-500 mb-2'>{tech}</p>
-      <p className='text-gray-700 text-sm mb-4'>{description}</p>
+    <div
+      className='p-6 border rounded-xl bg-[var(--color-bg)] text-[var(--color-text)]
+        transition hover:shadow-lg'
+    >
+      <h4 className='text-xl font-bold mb-1 text-[var(--color-brand)]'>
+        {title}
+      </h4>
+      <p className='text-sm text-gray-500 dark:text-gray-400 mb-2'>{tech}</p>
+      <p className='text-sm mb-4'>{description}</p>
+
       <div className='flex gap-4 text-sm'>
-        {demo && (
-          <a
-            href={demo}
-            target='_blank'
-            className='text-blue-600 hover:underline'
-          >
-            Live Demo
-          </a>
-        )}
         {github && (
           <a
             href={github}
             target='_blank'
-            className='text-gray-700 hover:underline'
+            rel='noopener noreferrer'
+            className='underline text-[var(--color-accent)] hover:opacity-80'
           >
             GitHub
+          </a>
+        )}
+        {demo && (
+          <a
+            href={demo}
+            target='_blank'
+            rel='noopener noreferrer'
+            className='underline text-[var(--color-accent)] hover:opacity-80'
+          >
+            Demo
           </a>
         )}
       </div>

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap');
+
 @import 'tailwindcss';
 
 /* @layer base {
@@ -12,22 +14,86 @@
 
 @layer base {
   :root {
-    --color-bg: #f8fafc;
+    --color-bg: #f9fafb;
     --color-text: #1e293b;
-    --color-accent: #ff6b6b;
-    --color-brand: #4b4efc;
+    --color-accent: #10b981;
+    --color-brand: #6366f1;
+    --color-border: #cbd5e1;
+    --bg-gradient: radial-gradient(
+      circle at top left,
+      #e0f2fe 0%,
+      #f9fafb 100%
+    );
   }
 
   .dark {
     --color-bg: #0f172a;
     --color-text: #e2e8f0;
-    --color-accent: #fbbf24;
-    --color-brand: #1a1a40;
+    --color-accent: #34d399;
+    --color-brand: #818cf8;
+    --color-border: #334155;
+    --bg-gradient: radial-gradient(
+      circle at bottom right,
+      #1e293b 0%,
+      #0f172a 100%
+    );
   }
 
   body {
     background-color: var(--color-bg);
     color: var(--color-text);
+    font-family: theme('fontFamily.sans');
+    font-size: theme('fontSize.base');
     transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  header,
+  section,
+  footer {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  h1 {
+    font-size: theme('fontSize.4xl');
+    color: var(--color-brand);
+  }
+
+  h2 {
+    font-size: theme('fontSize.3xl');
+    color: var(--color-brand);
+  }
+
+  h3 {
+    font-size: theme('fontSize.2xl');
+    color: var(--color-brand);
+  }
+
+  a {
+    color: var(--color-accent);
+  }
+
+  a:hover {
+    opacity: 0.85;
+  }
+
+  .border {
+    border-color: var(--color-border);
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-bg);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--color-border);
+    border-radius: 6px;
+    border: 3px solid var(--color-bg);
   }
 }
