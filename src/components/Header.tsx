@@ -3,32 +3,25 @@ import { Sun, Moon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Header() {
-  const [isDark, setIsDark] = useState(() => {
-    // Load system preference or default to false
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
-  });
+  const [isDark, setIsDark] = useState(
+    () => window.matchMedia('(prefers-color-scheme: dark)').matches
+  );
 
-  // Apply dark mode class to <html>
   useLayoutEffect(() => {
-    if (isDark) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-    console.log('html class:', document.documentElement.className);
+    document.documentElement.classList.toggle('dark', isDark);
   }, [isDark]);
-  // useEffect(() => {
-  //   console.log('Theme:', isDark ? 'dark' : 'light');
-  //   console.log('HTML class:', document.documentElement.className);
-  // }, [isDark]);
 
   return (
-    <header className='sticky top-0 z-50 bg-white dark:bg-gray-900 border-b shadow-sm transition'>
+    <header
+      className='sticky top-0 z-50 border-b shadow-sm transition-colors
+        bg-[var(--color-bg)] text-[var(--color-text)]'
+    >
       <div className='max-w-7xl mx-auto px-4 py-4 flex justify-between items-center'>
-        <h1 className='text-xl font-bold text-brand dark:text-white'>
+        <h1 className='text-xl font-bold text-[var(--color-brand)]'>
           Andrew Teece
         </h1>
-        <nav className='flex items-center gap-6 text-sm text-brand dark:text-white'>
+
+        <nav className='flex items-center gap-6 text-sm'>
           <a href='#about' className='hover:underline'>
             About
           </a>
@@ -38,10 +31,11 @@ export default function Header() {
           <a href='#contact' className='hover:underline'>
             Contact
           </a>
+
           <button
             onClick={() => setIsDark((prev) => !prev)}
             aria-label='Toggle dark mode'
-            className='p-1 rounded transition'
+            className='p-1 rounded transition-colors'
           >
             <AnimatePresence mode='wait'>
               {isDark ? (

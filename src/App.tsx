@@ -7,16 +7,19 @@ import './styles/index.css';
 
 export default function App() {
   return (
-    // <div className='min-h-screen transition-colors duration-500 bg-gradient-to-tr from-sky-100 to-white dark:from-brand dark:to-gray-400'>
     <div
-      className='min-h-screen transition-colors duration-500 
-  bg-white text-gray-900
-  dark:bg-gray-900 dark:text-white'
+      className='min-h-screen
+        bg-gradient-to-tr from-sky-100 to-white
+        dark:from-brand dark:to-gray-400
+        text-brand dark:text-white
+        transition-colors duration-500'
     >
       <Header />
-      <Hero />
-      <About />
-      <Projects />
+      <main>
+        <Hero />
+        <About />
+        <Projects />
+      </main>
       <Footer />
     </div>
   );

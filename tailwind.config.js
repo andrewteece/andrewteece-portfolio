@@ -11,13 +11,12 @@ export default {
     extend: {
       colors: {
         brand: {
-          DEFAULT: '#1A1A40',
-          light: '#343463',
-          accent: '#fff6b6b',
+          DEFAULT: '#4b4efc', // light mode brand
+          dark: '#1a1a40', // dark mode brand
         },
-        sky: {
-          light: '#e0f2ff',
-          dark: '#0f172a',
+        accent: {
+          light: '#ff6b6b',
+          dark: '#fbbf24',
         },
       },
       fontFamily: {

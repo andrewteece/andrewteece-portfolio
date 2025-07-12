@@ -1,11 +1,33 @@
 @import 'tailwindcss';
 
-@layer base {
+/* @layer base {
   html {
     @apply transition-colors duration-300;
   }
 
   body {
     @apply transition-colors duration-300;
+  }
+} */
+
+@layer base {
+  :root {
+    --color-bg: #f8fafc;
+    --color-text: #1e293b;
+    --color-accent: #ff6b6b;
+    --color-brand: #4b4efc;
+  }
+
+  .dark {
+    --color-bg: #0f172a;
+    --color-text: #e2e8f0;
+    --color-accent: #fbbf24;
+    --color-brand: #1a1a40;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 }
