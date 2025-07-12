@@ -1,1 +1,11 @@
 @import 'tailwindcss';
+
+@layer base {
+  html {
+    @apply transition-colors duration-300;
+  }
+
+  body {
+    @apply transition-colors duration-300;
+  }
+}

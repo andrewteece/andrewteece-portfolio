@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: [
     './index.html',
     './src/**/*.{ts,tsx}',
@@ -13,6 +14,10 @@ export default {
           DEFAULT: '#1A1A40',
           light: '#343463',
           accent: '#fff6b6b',
+        },
+        sky: {
+          light: '#e0f2ff',
+          dark: '#0f172a',
         },
       },
       fontFamily: {
