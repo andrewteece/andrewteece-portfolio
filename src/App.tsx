@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import Header from './components/Header';
+import Header from './components/Header/Header';
 import Hero from './components/Hero';
 import About from './components/About';
 import Projects from './components/Projects';
