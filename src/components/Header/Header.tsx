@@ -2,12 +2,7 @@ import { useEffect, useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import ThemeToggle from '../Header/ThemeToggle';
-
-const navItems = [
-  { href: '#about', label: 'About' },
-  { href: '#projects', label: 'Projects' },
-  { href: '#contact', label: 'Contact' },
-];
+import NavLinks from '../Header/NavLinks';
 
 export default function Header() {
   const [isDark, setIsDark] = useState(
@@ -15,6 +10,7 @@ export default function Header() {
   );
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', isDark);
@@ -22,14 +18,13 @@ export default function Header() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = navItems
-        .map((item) => {
-          const el = document.querySelector(item.href);
+      setScrolled(window.scrollY > 10);
+
+      const sections = ['#about', '#projects', '#contact']
+        .map((id) => {
+          const el = document.querySelector(id);
           return el
-            ? {
-                id: item.href,
-                top: el.getBoundingClientRect().top + window.scrollY,
-              }
+            ? { id, top: el.getBoundingClientRect().top + window.scrollY }
             : null;
         })
         .filter(Boolean);
@@ -50,31 +45,28 @@ export default function Header() {
   }, []);
 
   return (
-    <header className='fixed top-0 left-0 right-0 z-50 border-b bg-[var(--color-bg)] text-[var(--color-text)] transition-colors backdrop-blur-md'>
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
+        scrolled
+          ? 'shadow-lg border-b border-[var(--color-accent)/40] backdrop-blur-md bg-[var(--color-bg)/90]'
+          : 'border-transparent backdrop-blur-md bg-[var(--color-bg)/70]'
+      }`}
+    >
       <div className='max-w-7xl mx-auto px-4 py-4 flex justify-between items-center'>
-        <h1 className='text-xl font-bold text-[var(--color-brand)]'>
+        <motion.h1
+          className='text-xl font-bold text-[var(--color-brand)]'
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
           Andrew Teece
-        </h1>
+        </motion.h1>
 
-        {/* Desktop Nav */}
         <nav className='hidden md:flex items-center gap-6 text-sm'>
-          {navItems.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              className={`hover:underline ${
-                activeSection === item.href
-                  ? 'text-[var(--color-accent)] font-medium'
-                  : ''
-              }`}
-            >
-              {item.label}
-            </a>
-          ))}
+          <NavLinks activeSection={activeSection} />
           <ThemeToggle isDark={isDark} toggle={() => setIsDark(!isDark)} />
         </nav>
 
-        {/* Mobile Toggle Button */}
         <div className='md:hidden flex items-center gap-3'>
           <ThemeToggle isDark={isDark} toggle={() => setIsDark(!isDark)} />
           <button
@@ -87,7 +79,6 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile Drawer Nav */}
       <AnimatePresence>
         {menuOpen && (
           <motion.aside
@@ -97,23 +88,10 @@ export default function Header() {
             exit={{ x: '100%' }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
           >
-            {navItems.map((item, i) => (
-              <motion.a
-                key={item.href}
-                href={item.href}
-                className={`text-lg ${
-                  activeSection === item.href
-                    ? 'text-[var(--color-accent)] font-medium'
-                    : 'text-[var(--color-text)]'
-                } hover:underline`}
-                onClick={() => setMenuOpen(false)}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.1 * i, duration: 0.4 }}
-              >
-                {item.label}
-              </motion.a>
-            ))}
+            <NavLinks
+              onClick={() => setMenuOpen(false)}
+              activeSection={activeSection}
+            />
           </motion.aside>
         )}
       </AnimatePresence>
