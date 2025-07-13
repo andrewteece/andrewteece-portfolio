@@ -1,17 +1,16 @@
-import { useTheme } from '../../context/ThemeProvider';
-import { Sun, Moon } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Moon, Sun } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+import type { FC } from 'react';
 
-export default function ThemeToggle() {
-  const { isDark, toggleTheme } = useTheme();
+export type ThemeToggleProps = {
+  isDark: boolean;
+  toggle: () => void;
+};
 
+const ThemeToggle: FC<ThemeToggleProps> = ({ isDark, toggle }) => {
   return (
-    <button
-      onClick={toggleTheme}
-      aria-label='Toggle dark mode'
-      className='p-1 rounded transition-colors'
-    >
-      <AnimatePresence mode='wait' initial={false}>
+    <button onClick={toggle} aria-label='Toggle theme' className='p-1'>
+      <AnimatePresence mode='wait'>
         {isDark ? (
           <motion.div
             key='moon'
@@ -36,4 +35,6 @@ export default function ThemeToggle() {
       </AnimatePresence>
     </button>
   );
-}
+};
+
+export default ThemeToggle;
