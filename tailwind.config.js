@@ -32,7 +32,7 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['Figtree', 'ui-sans-serif', 'system-ui'],
+        sans: ['Outfit', 'sans-serif'],
       },
     },
   },

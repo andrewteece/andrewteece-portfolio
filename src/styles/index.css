@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap');
 
 @import 'tailwindcss';
 
@@ -17,6 +18,7 @@
     --color-bg: #f9fafb;
     --color-text: #1e293b;
     --color-accent: #10b981;
+    --color-accent-alt: #22d3ee;
     --color-brand: #6366f1;
     --color-border: #cbd5e1;
     --bg-gradient: radial-gradient(
@@ -42,9 +44,24 @@
   body {
     background-color: var(--color-bg);
     color: var(--color-text);
-    font-family: theme('fontFamily.sans');
+    /* font-family: theme('fontFamily.sans'); */
+    font-family: 'Outfit', sans-serif;
     font-size: theme('fontSize.base');
     transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .bg-radial-light {
+    background: radial-gradient(
+      ellipse at center,
+      rgba(255, 255, 255, 0.6),
+      transparent 70%
+    );
+  }
+
+  .bg-noise {
+    background-image: url('/noise.png'); /* Add a subtle transparent PNG texture in /public */
+    background-size: 200px 200px;
+    background-repeat: repeat;
   }
 
   header,

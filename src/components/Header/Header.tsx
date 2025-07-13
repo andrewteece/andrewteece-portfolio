@@ -53,14 +53,14 @@ export default function Header() {
       }`}
     >
       <div className='max-w-7xl mx-auto px-4 py-4 flex justify-between items-center'>
-        <motion.h1
-          className='text-xl font-bold text-[var(--color-brand)]'
+        <motion.div
+          className='text-xl font-extrabold tracking-tight text-[var(--color-brand)] font-[Outfit,sans-serif]'
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          Andrew Teece
-        </motion.h1>
+          Andrew <span className='opacity-80'>Teece</span>
+        </motion.div>
 
         <nav className='hidden md:flex items-center gap-6 text-sm'>
           <NavLinks activeSection={activeSection} />
@@ -88,6 +88,21 @@ export default function Header() {
             exit={{ x: '100%' }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
           >
+            <motion.div
+              className='flex justify-end'
+              initial={{ opacity: 0, rotate: -90 }}
+              animate={{ opacity: 1, rotate: 0 }}
+              exit={{ opacity: 0, rotate: 90 }}
+              transition={{ duration: 0.3 }}
+            >
+              <button
+                onClick={() => setMenuOpen(false)}
+                aria-label='Close menu'
+                className='p-1 text-[var(--color-accent)]'
+              >
+                <X size={24} />
+              </button>
+            </motion.div>
             <NavLinks
               onClick={() => setMenuOpen(false)}
               activeSection={activeSection}
