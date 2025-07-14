@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion';
 import Header from './components/Header/Header';
-import Hero from './components/Hero';
-import About from './components/About';
+import Hero from './components/Hero/Hero';
+import TechStack from './components/Sections/TechStack';
+import About from './components/Sections/About';
 import Projects from './components/Projects';
 import Footer from './components/Footer';
 import './styles/index.css';
@@ -16,6 +17,7 @@ export default function App() {
         transition={{ duration: 0.5, ease: 'easeOut' }}
       >
         <Hero />
+        <TechStack />
         <About />
         <Projects />
       </motion.main>
