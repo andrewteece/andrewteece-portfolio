@@ -2,7 +2,10 @@ import SocialLinks from '../components/SocialLinks';
 
 export default function Footer() {
   return (
-    <footer className='border-t border-[var(--color-divider)] py-10 px-4 text-sm text-[var(--color-text-muted)] text-center'>
+    <footer
+      id='contact'
+      className='border-t border-[var(--color-divider)] py-10 px-4 text-sm text-[var(--color-text-muted)] text-center'
+    >
       <div className='mb-4 flex justify-center'>
         <SocialLinks />
       </div>
