@@ -1,6 +1,8 @@
+// src/components/sections/Hero.tsx
 import { motion } from 'framer-motion';
 import { ChevronDown, ArrowUp } from 'lucide-react';
 import { useEffect } from 'react';
+import SocialLinks from '../SocialLinks';
 
 export default function Hero() {
   useEffect(() => {
@@ -10,7 +12,7 @@ export default function Hero() {
   return (
     <motion.section
       id='home'
-      className='relative min-h-[80vh] flex flex-col justify-center items-center text-center px-4 py-20 overflow-hidden bg-gradient-to-b from-[var(--color-brand)]/10 via-transparent to-[var(--color-bg)] dark:from-white/5 dark:to-[var(--color-bg)]'
+      className='relative min-h-[80vh] flex flex-col justify-center items-center text-center px-4 py-20 overflow-hidden bg-gradient-to-b from-brand/10 via-transparent to-bg dark:from-brand/10 dark:to-bg'
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
@@ -67,6 +69,10 @@ export default function Hero() {
             Contact
           </a>
         </motion.div>
+      </div>
+
+      <div className='mt-6'>
+        <SocialLinks className='justify-center gap-4' />
       </div>
 
       {/* Scroll cue to next section */}
