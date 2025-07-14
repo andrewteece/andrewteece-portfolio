@@ -71,9 +71,21 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      <div className='mt-6'>
-        <SocialLinks className='justify-center gap-4' />
-      </div>
+      <motion.div
+        className='flex flex-wrap justify-center gap-4 mt-4'
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.8, duration: 0.6 }}
+      >
+        <motion.div
+          className='mt-10'
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8, duration: 0.5 }}
+        >
+          <SocialLinks />
+        </motion.div>
+      </motion.div>
 
       {/* Scroll cue to next section */}
       <a

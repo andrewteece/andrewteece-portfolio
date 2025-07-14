@@ -1,5 +1,5 @@
 import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
-import { cn } from '../../lib/utils';
+import { cn } from '../lib/utils';
 
 interface SocialLinksProps {
   className?: string;
@@ -20,26 +20,26 @@ export default function SocialLinks({ className }: SocialLinksProps) {
         aria-label='GitHub'
         className='hover:text-[var(--color-accent)] transition-colors duration-200'
       >
-        <FaGithub size={20} />
+        <FaGithub size={35} />
       </a>
       <a
-        href='https://www.linkedin.com/in/andrewteece/'
+        href='https://www.linkedin.com/in/andrew-teece/'
         target='_blank'
         rel='noopener noreferrer'
         aria-label='LinkedIn'
         className='hover:text-[var(--color-accent)] transition-colors duration-200'
       >
-        <FaLinkedin size={20} />
+        <FaLinkedin size={35} />
       </a>
-      <a
+      {/* <a
         href='https://twitter.com/andrewteece'
         target='_blank'
         rel='noopener noreferrer'
         aria-label='Twitter'
         className='hover:text-[var(--color-accent)] transition-colors duration-200'
       >
-        <FaTwitter size={20} />
-      </a>
+        <FaTwitter size={35} />
+      </a> */}
     </div>
   );
 }

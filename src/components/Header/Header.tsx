@@ -20,7 +20,7 @@ export default function Header() {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
 
-      const sections = ['#about', '#projects', '#contact']
+      const sections = ['#about', '#projects', '#footer']
         .map((id) => {
           const el = document.querySelector(id);
           return el
