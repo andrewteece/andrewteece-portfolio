@@ -1,28 +1,44 @@
-// src/components/sections/About.tsx
 import { motion } from 'framer-motion';
-import ScrollToTop from '../components/ui/ScrollToTop';
+import ProjectCard from './ProjectCard';
+import { projects } from '../data/portfolio/projects';
 
-export default function About() {
+export default function Projects() {
   return (
     <motion.section
-      id='about'
-      className='relative py-20 px-4 text-center max-w-4xl mx-auto'
+      id='projects'
+      className='relative py-24 px-4 text-center max-w-6xl mx-auto'
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
       viewport={{ once: true }}
     >
-      <h2 className='text-3xl md:text-4xl font-bold text-[var(--color-brand)] mb-6'>
-        About Me
+      <h2 className='text-3xl md:text-4xl font-bold text-[var(--color-brand)] mb-4'>
+        Featured Projects
       </h2>
-      <p className='text-lg text-[var(--color-text)] mb-10'>
-        I'm a seasoned frontend developer with over 20 years of experience
-        delivering scalable, user-focused applications. I specialize in React,
-        TypeScript, and design systems that drive performance, accessibility,
-        and maintainability.
+      <p className='text-lg text-[var(--color-text)] max-w-2xl mx-auto mb-10'>
+        Here are a few selected projects showcasing my work building performant,
+        accessible websites and applications with modern stacks.
       </p>
 
-      <ScrollToTop />
+      {/* Divider */}
+      <div className='border-t border-[var(--color-border)] dark:border-[var(--color-border-dark)] mb-10 w-full'></div>
+
+      <div className='grid md:grid-cols-2 gap-8 mb-10'>
+        {projects.map((project, idx) => (
+          <ProjectCard
+            key={idx}
+            title={project.title}
+            tech={project.tech}
+            description={project.description}
+            github={project.github}
+            demo={project.demo}
+            image={project.image}
+          />
+        ))}
+      </div>
+
+      {/* Divider */}
+      <div className='border-t border-[var(--color-border)] dark:border-[var(--color-border-dark)] mt-10 w-full'></div>
     </motion.section>
   );
 }
