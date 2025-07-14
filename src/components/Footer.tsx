@@ -11,7 +11,7 @@ export default function Footer() {
       {/* Background mesh gradient image */}
       <div className='absolute inset-0 rotate-180'>
         <img
-          src='/src/assets/bg-waves.png'
+          src='images/bg-waves.png'
           alt='Footer mesh background'
           className='w-full h-full object-cover opacity-20 dark:opacity-10 z-0'
           aria-hidden
