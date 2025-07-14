@@ -2,7 +2,6 @@
 import { motion } from 'framer-motion';
 import { ChevronDown, ArrowUp } from 'lucide-react';
 import { useEffect } from 'react';
-import SocialLinks from '../SocialLinks';
 
 export default function Hero() {
   useEffect(() => {
@@ -12,12 +11,20 @@ export default function Hero() {
   return (
     <motion.section
       id='home'
-      className='relative min-h-[80vh] flex flex-col justify-center items-center text-center px-4 py-20 overflow-hidden bg-gradient-to-b from-brand/10 via-transparent to-bg dark:from-brand/10 dark:to-bg'
+      className='relative min-h-[80vh] flex flex-col justify-center items-center text-center px-4 py-20 overflow-hidden bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-brand/10 via-transparent to-bg dark:from-brand/20 dark:to-bg'
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
     >
-      <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-[0.12] dark:opacity-[0.08] pointer-events-none z-0" />
+      {/* Background SVG Texture */}
+      <div className='absolute inset-0'>
+        <img
+          src='/src/assets/bg-waves.png'
+          alt='Mesh gradient background'
+          className='w-full h-full object-cover opacity-20 dark:opacity-10 z-0'
+          aria-hidden
+        />
+      </div>
 
       <div className='relative z-10 max-w-4xl w-full flex flex-col items-center space-y-6'>
         <motion.h1
@@ -70,22 +77,6 @@ export default function Hero() {
           </a>
         </motion.div>
       </div>
-
-      <motion.div
-        className='flex flex-wrap justify-center gap-4 mt-4'
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.8, duration: 0.6 }}
-      >
-        <motion.div
-          className='mt-10'
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.5 }}
-        >
-          <SocialLinks />
-        </motion.div>
-      </motion.div>
 
       {/* Scroll cue to next section */}
       <a

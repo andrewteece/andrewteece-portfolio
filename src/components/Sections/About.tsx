@@ -15,12 +15,12 @@ export default function About() {
         About Me
       </h2>
       <p className='text-lg text-[var(--color-text)] mb-10'>
-        I'm a seasoned Front-End Web Developer with 20+ years of hands-on
-        experience delivering responsive, performant, and accessible digital
-        experiences. I specialize in building scalable user interfaces using
-        modern frameworks like React, Next.js, TypeScript, and Tailwind CSS. My
-        focus is on clean code, design systems, and collaboration to deliver
-        real business impact.
+        I'm a seasoned Front-End Web Developer and IT Professional with 20+
+        years of hands-on experience delivering responsive, performant, and
+        accessible digital experiences. I specialize in building scalable user
+        interfaces using modern frameworks like React, Next.js, TypeScript, and
+        Tailwind CSS. My focus is on clean code, design systems, and
+        collaboration to deliver real business impact.
       </p>
 
       {/* Divider */}
