@@ -2,7 +2,6 @@
 import { motion } from 'framer-motion';
 import { ChevronDown, ArrowUp } from 'lucide-react';
 import { useEffect } from 'react';
-import waveBg from '../../assets/bg-waves.png';
 
 export default function Hero() {
   useEffect(() => {
@@ -20,7 +19,7 @@ export default function Hero() {
       {/* Background SVG Texture */}
       <div className='absolute inset-0'>
         <img
-          src={waveBg}
+          src='/images/bg-waves.png'
           alt='Mesh gradient background'
           className='w-full h-full object-cover opacity-20 dark:opacity-10 z-0'
           aria-hidden

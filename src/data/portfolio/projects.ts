@@ -1,7 +1,3 @@
-import coffeeShopImg from '../../assets/coffeeShop.png';
-import toDoImg from '../../assets/ToDo.png';
-import jobBoardImg from '../../assets/job.png';
-
 export type Project = {
   title: string;
   tech: string;
@@ -18,7 +14,7 @@ export const projects: Project[] = [
     description: 'React 19 and Material UI 7',
     github: 'https://github.com/andrewteece/coffeeShop',
     demo: 'https://coffee-shop-5k1rtk0qk-andrewteeces-projects.vercel.app/',
-    image: coffeeShopImg,
+    image: '/images/coffeeShop.png',
   },
   {
     title: 'Todo App',
@@ -26,7 +22,7 @@ export const projects: Project[] = [
     description: 'A simple productivity app with authentication.',
     github: 'https://github.com/andrewteece/todo-app',
     demo: 'https://todo.andrewteece.com',
-    image: toDoImg,
+    image: '/images/ToDo.png',
   },
   {
     title: 'Job Board',
@@ -34,6 +30,6 @@ export const projects: Project[] = [
     description: 'Job Board with NextJS',
     github: 'https://github.com/andrewteece/job-board',
     demo: 'https://todo.andrewteece.com',
-    image: jobBoardImg,
+    image: '/images/job.png',
   },
 ];
