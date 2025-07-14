@@ -19,7 +19,7 @@ export default function Hero() {
       {/* Background SVG Texture */}
       <div className='absolute inset-0'>
         <img
-          src='/images/bg-waves.png'
+          src='images/bg-waves.png'
           alt='Mesh gradient background'
           className='w-full h-full object-cover opacity-20 dark:opacity-10 z-0'
           aria-hidden
