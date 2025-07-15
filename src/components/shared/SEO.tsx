@@ -11,7 +11,7 @@ interface SEOProps {
 export default function SEO({
   title = 'Andrew Teece | Front-End Developer',
   description = 'Experienced front-end developer delivering performant, accessible, and beautiful web apps.',
-  image = 'https://andrewteece.com/images/social-preview.jpg',
+  image = 'https://andrewteece.com/images/social-preview.webp',
   url = 'https://andrewteece.com',
 }: SEOProps) {
   const structuredData = {
@@ -49,7 +49,7 @@ export default function SEO({
       <meta name='apple-mobile-web-app-title' content='Andrew Teece' />
 
       {/* Apple Touch Icon */}
-      <link rel='apple-touch-icon' href='/apple-touch-icon.png' />
+      <link rel='apple-touch-icon' href='/apple-touch-icon.webp' />
 
       {/* JSON-LD Structured Data */}
       <script type='application/ld+json'>
