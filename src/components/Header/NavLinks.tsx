@@ -1,10 +1,9 @@
 import { motion } from 'framer-motion';
-import { cn } from '../../lib/utils';
+import { cn } from '../../lib/utils'; // Or replace with basic utility below
 
 interface NavLinksProps {
   activeSection?: string;
   onClick?: () => void;
-  animated?: boolean;
 }
 
 const navItems = [
@@ -18,7 +17,7 @@ const navItems = [
 export default function NavLinks({ activeSection, onClick }: NavLinksProps) {
   return (
     <motion.ul
-      className='flex flex-col md:flex-row gap-4 text-lg'
+      className='flex flex-col items-center gap-4 text-lg md:flex-row md:gap-6'
       initial='hidden'
       animate='visible'
       exit='hidden'
@@ -35,8 +34,8 @@ export default function NavLinks({ activeSection, onClick }: NavLinksProps) {
         <motion.li
           key={href}
           variants={{
-            hidden: { opacity: 0, x: 20 },
-            visible: { opacity: 1, x: 0 },
+            hidden: { opacity: 0, y: -10 },
+            visible: { opacity: 1, y: 0 },
           }}
         >
           <a
