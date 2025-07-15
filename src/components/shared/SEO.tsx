@@ -29,13 +29,29 @@ export default function SEO({
 
   return (
     <Helmet>
+      {/* Standard Meta */}
       <title>{title}</title>
       <meta name='description' content={description} />
+
+      {/* Open Graph */}
       <meta property='og:title' content={title} />
       <meta property='og:description' content={description} />
       <meta property='og:image' content={image} />
       <meta property='og:url' content={url} />
+      <meta property='og:type' content='website' />
+
+      {/* Twitter Card */}
       <meta name='twitter:card' content='summary_large_image' />
+
+      {/* Apple Meta Tags */}
+      <meta name='apple-mobile-web-app-capable' content='yes' />
+      <meta name='apple-mobile-web-app-status-bar-style' content='default' />
+      <meta name='apple-mobile-web-app-title' content='Andrew Teece' />
+
+      {/* Apple Touch Icon */}
+      <link rel='apple-touch-icon' href='/apple-touch-icon.png' />
+
+      {/* JSON-LD Structured Data */}
       <script type='application/ld+json'>
         {JSON.stringify(structuredData)}
       </script>
