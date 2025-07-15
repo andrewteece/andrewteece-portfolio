@@ -1,36 +1,58 @@
-type NavLinksProps = {
-  onClick?: () => void;
-  activeSection?: string;
-};
+import { motion } from 'framer-motion';
+import { cn } from '../../lib/utils';
 
-const links = [
+interface NavLinksProps {
+  activeSection?: string;
+  onClick?: () => void;
+  animated?: boolean;
+}
+
+const navItems = [
+  { href: '#home', label: 'Home' },
+  { href: '#techstack', label: 'Tech Stack' },
   { href: '#about', label: 'About' },
   { href: '#projects', label: 'Projects' },
-  { href: '#contact', label: 'Contact' },
+  { href: '#footer', label: 'Contact' },
 ];
 
-export default function NavLinks({ onClick, activeSection }: NavLinksProps) {
+export default function NavLinks({ activeSection, onClick }: NavLinksProps) {
   return (
-    <>
-      {links.map((link) => (
-        <a
-          key={link.href}
-          href={link.href}
-          onClick={onClick}
-          className={`
-            relative text-sm transition-colors duration-300
-            after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-[var(--color-accent)]
-            after:transition-all after:duration-300 hover:after:w-full
-            ${
-              activeSection === link.href
-                ? 'text-[var(--color-accent)] font-medium after:w-full'
-                : ''
-            }
-          `}
+    <motion.ul
+      className='flex flex-col md:flex-row gap-4 text-lg'
+      initial='hidden'
+      animate='visible'
+      exit='hidden'
+      variants={{
+        hidden: {},
+        visible: {
+          transition: {
+            staggerChildren: 0.1,
+          },
+        },
+      }}
+    >
+      {navItems.map(({ href, label }) => (
+        <motion.li
+          key={href}
+          variants={{
+            hidden: { opacity: 0, x: 20 },
+            visible: { opacity: 1, x: 0 },
+          }}
         >
-          {link.label}
-        </a>
+          <a
+            href={href}
+            onClick={onClick}
+            className={cn(
+              'transition-colors hover:text-[var(--color-brand)]',
+              activeSection === href
+                ? 'text-[var(--color-brand)] font-semibold'
+                : ''
+            )}
+          >
+            {label}
+          </a>
+        </motion.li>
       ))}
-    </>
+    </motion.ul>
   );
 }

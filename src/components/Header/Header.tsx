@@ -81,33 +81,60 @@ export default function Header() {
 
       <AnimatePresence>
         {menuOpen && (
-          <motion.aside
-            className='fixed inset-0 bg-[var(--color-bg)] bg-opacity-95 backdrop-blur-md p-6 md:hidden z-40 flex flex-col gap-6'
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-          >
+          <>
             <motion.div
-              className='flex justify-end'
-              initial={{ opacity: 0, rotate: -90 }}
-              animate={{ opacity: 1, rotate: 0 }}
-              exit={{ opacity: 0, rotate: 90 }}
-              transition={{ duration: 0.3 }}
-            >
-              <button
-                onClick={() => setMenuOpen(false)}
-                aria-label='Close menu'
-                className='p-1 text-[var(--color-accent)]'
-              >
-                <X size={24} />
-              </button>
-            </motion.div>
-            <NavLinks
+              className='fixed inset-0 bg-black/50 z-30'
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
               onClick={() => setMenuOpen(false)}
-              activeSection={activeSection}
             />
-          </motion.aside>
+
+            <motion.aside
+              className='fixed inset-y-0 right-0 w-4/5 max-w-sm bg-[var(--color-bg)]/90 backdrop-blur-md shadow-lg z-40 p-6 flex flex-col gap-6 overflow-y-auto'
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', stiffness: 150, damping: 24 }}
+            >
+              <motion.div
+                className='flex justify-end'
+                initial={{ opacity: 0, rotate: -90 }}
+                animate={{ opacity: 1, rotate: 0 }}
+                exit={{ opacity: 0, rotate: 90 }}
+                transition={{ duration: 0.3 }}
+              >
+                <button
+                  onClick={() => setMenuOpen(false)}
+                  aria-label='Close menu'
+                  className='p-1 text-[var(--color-accent)]'
+                >
+                  <X size={24} />
+                </button>
+              </motion.div>
+
+              <motion.div
+                className='flex flex-col gap-4 mt-4'
+                initial='hidden'
+                animate='visible'
+                variants={{
+                  hidden: {},
+                  visible: {
+                    transition: {
+                      staggerChildren: 0.1,
+                    },
+                  },
+                }}
+              >
+                <NavLinks
+                  onClick={() => setMenuOpen(false)}
+                  activeSection={activeSection}
+                  animated
+                />
+              </motion.div>
+            </motion.aside>
+          </>
         )}
       </AnimatePresence>
     </header>
