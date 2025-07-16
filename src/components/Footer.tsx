@@ -3,10 +3,13 @@ import { motion } from 'framer-motion';
 import { Mail, ArrowUp } from 'lucide-react';
 import { Download } from 'lucide-react';
 import SocialLinks from '../components/SocialLinks';
+import { ActiveSectionContext } from '../context/ActiveSectionContext';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useContext } from 'react';
 
 export default function Footer() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { setActiveSection } = useContext(ActiveSectionContext);
   const [showScroll, setShowScroll] = useState(false);
 
   useEffect(() => {
@@ -17,8 +20,22 @@ export default function Footer() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setActiveSection('footer');
+      },
+      { threshold: 0.4 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => {
+      if (sectionRef.current) observer.unobserve(sectionRef.current);
+    };
+  }, []);
+
   return (
     <motion.footer
+      ref={sectionRef}
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}

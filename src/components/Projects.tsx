@@ -1,25 +1,50 @@
+// src/components/sections/Projects.tsx
 import { motion } from 'framer-motion';
+import { useEffect, useRef, useContext } from 'react';
+import { ActiveSectionContext } from '../context/ActiveSectionContext';
 import { projects } from '../data/portfolio/projects';
 import ProjectCard from './ProjectCard';
 
 export default function Projects() {
-  return (
-    <section id='projects' className='py-20 px-4 max-w-6xl mx-auto'>
-      <motion.h2
-        className='text-3xl font-semibold text-center mb-12 text-[var(--color-text)]'
-        initial={{ opacity: 0, y: -20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        viewport={{ once: true }}
-      >
-        Featured Projects
-      </motion.h2>
+  const sectionRef = useRef<HTMLElement>(null);
+  const { setActiveSection } = useContext(ActiveSectionContext);
 
-      <div className='grid gap-10 md:grid-cols-2 xl:grid-cols-3'>
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setActiveSection('projects');
+      },
+      { threshold: 0.6 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => {
+      if (sectionRef.current) observer.unobserve(sectionRef.current);
+    };
+  }, [setActiveSection]);
+
+  return (
+    <motion.section
+      id='projects'
+      ref={sectionRef}
+      className='relative py-24 px-4 text-center max-w-6xl mx-auto bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-brand/5 via-transparent to-bg dark:from-brand/10 dark:to-bg'
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ duration: 0.8 }}
+      viewport={{ once: true }}
+    >
+      <h2 className='text-3xl md:text-4xl font-bold text-[var(--color-brand)] mb-4'>
+        Projects
+      </h2>
+      <p className='text-lg text-[var(--color-text)] mb-10'>
+        Here’s a selection of some recent work. I’ve built everything from
+        full-stack SaaS apps to highly interactive front-end experiences.
+      </p>
+
+      <div className='grid gap-10 md:grid-cols-2 xl:grid-cols-3 px-2'>
         {projects.map((project, idx) => (
           <ProjectCard key={idx} {...project} />
         ))}
       </div>
-    </section>
+    </motion.section>
   );
 }

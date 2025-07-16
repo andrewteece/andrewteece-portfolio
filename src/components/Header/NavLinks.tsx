@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
-import { cn } from '../../lib/utils'; // Or replace with basic utility below
+import { cn } from '../../lib/utils';
+import { useActiveSection } from '../../context/ActiveSectionContext';
 
 interface NavLinksProps {
-  activeSection?: string;
   onClick?: () => void;
 }
 
@@ -14,7 +14,9 @@ const navItems = [
   { href: '#footer', label: 'Contact' },
 ];
 
-export default function NavLinks({ activeSection, onClick }: NavLinksProps) {
+export default function NavLinks({ onClick }: NavLinksProps) {
+  const { activeSection } = useActiveSection();
+
   return (
     <motion.ul
       className='flex flex-col items-center gap-4 text-lg md:flex-row md:gap-6'
@@ -43,7 +45,7 @@ export default function NavLinks({ activeSection, onClick }: NavLinksProps) {
             onClick={onClick}
             className={cn(
               'transition-colors hover:text-[var(--color-brand)]',
-              activeSection === href
+              activeSection === href.slice(1)
                 ? 'text-[var(--color-brand)] font-semibold'
                 : ''
             )}

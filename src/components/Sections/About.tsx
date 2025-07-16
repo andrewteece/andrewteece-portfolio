@@ -1,10 +1,29 @@
 // src/components/sections/About.tsx
 import { motion } from 'framer-motion';
+import { useEffect, useRef, useContext } from 'react';
+import { ActiveSectionContext } from '../../context/ActiveSectionContext';
 
 export default function About() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { setActiveSection } = useContext(ActiveSectionContext);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setActiveSection('about');
+      },
+      { threshold: 0.6 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => {
+      if (sectionRef.current) observer.unobserve(sectionRef.current);
+    };
+  }, []);
+
   return (
     <motion.section
       id='about'
+      ref={sectionRef}
       className='relative py-24 px-4 text-center max-w-4xl mx-auto'
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
@@ -23,7 +42,6 @@ export default function About() {
         collaboration to deliver real business impact.
       </p>
 
-      {/* Divider */}
       <div className='border-t border-[var(--color-border)] dark:border-[var(--color-border-dark)] mt-10 w-full'></div>
     </motion.section>
   );
