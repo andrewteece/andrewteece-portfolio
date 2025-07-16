@@ -33,19 +33,5 @@ export default {
       },
     },
   },
-  plugins: [
-    require('tailwind-scrollbar'),
-    function ({ addComponents }) {
-      addComponents({
-        '.btn-primary': {
-          '@apply px-6 py-2 bg-brand text-white rounded-xl font-medium hover:bg-opacity-90 transition-colors':
-            {},
-        },
-        '.btn-outline': {
-          '@apply px-6 py-2 border border-brand text-brand rounded-xl font-medium hover:bg-brand hover:text-white transition-colors':
-            {},
-        },
-      });
-    },
-  ],
+  plugins: [require('tailwind-scrollbar')],
 };
