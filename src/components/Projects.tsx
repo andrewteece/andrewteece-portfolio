@@ -36,8 +36,8 @@ export default function Projects() {
         Projects
       </h2>
       <p className='text-lg text-[var(--color-text)] mb-10'>
-        Here’s a selection of some recent work. I’ve built everything from
-        full-stack SaaS apps to highly interactive front-end experiences.
+        Projects from intuitive frontend interfaces to full-stack platforms—all
+        built with performance, accessibility, and clean design in mind
       </p>
 
       <div className='grid gap-10 md:grid-cols-2 xl:grid-cols-3 px-2'>

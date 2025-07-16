@@ -24,7 +24,7 @@ export default function Hero() {
         <div className='absolute inset-0'>
           <img
             src='images/bg-waves.webp'
-            alt='Mesh gradient background'
+            alt='Big blue waves background'
             className='w-full h-full object-cover opacity-20 dark:opacity-10 z-0'
             loading='eager'
             decoding='async'
