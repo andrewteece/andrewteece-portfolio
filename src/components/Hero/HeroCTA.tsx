@@ -8,16 +8,10 @@ export default function HeroCTA() {
       animate={{ opacity: 1 }}
       transition={{ delay: 0.5, duration: 0.6 }}
     >
-      <a
-        href='#projects'
-        className='px-6 py-2 bg-[var(--color-brand)] text-white rounded-xl text-sm md:text-base font-medium hover:bg-opacity-90 transition-colors'
-      >
+      <a href='#projects' className='btn-primary'>
         View Work
       </a>
-      <a
-        href='#contact'
-        className='px-6 py-2 border border-[var(--color-brand)] text-[var(--color-brand)] rounded-xl text-sm md:text-base font-medium hover:bg-[var(--color-brand)] hover:text-white transition-colors'
-      >
+      <a href='#contact' className='btn-outline'>
         Contact
       </a>
     </motion.div>
