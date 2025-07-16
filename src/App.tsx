@@ -1,4 +1,4 @@
-import { HelmetProvider } from 'react-helmet-async';
+import { HelmetProvider, Helmet } from 'react-helmet-async';
 import SEO from './components/shared/SEO';
 import { motion } from 'framer-motion';
 import Header from './components/Header/Header';
@@ -13,6 +13,16 @@ export default function App() {
   return (
     <HelmetProvider>
       <SEO />
+      <Helmet>
+        <link rel='preconnect' href='https://fonts.googleapis.com' />
+        <link
+          rel='preconnect'
+          href='https://fonts.gstatic.com'
+          crossOrigin='anonymous'
+        />
+        <link rel='dns-prefetch' href='https://fonts.googleapis.com' />
+        <link rel='dns-prefetch' href='https://fonts.gstatic.com' />
+      </Helmet>
       <div className='min-h-screen bg-bg text-text font-sans transition-colors duration-300 dark:bg-bg dark:text-text'>
         <Header />
         <motion.main
