@@ -25,11 +25,11 @@ export const projects: Project[] = [
     image: 'images/ToDo.webp',
   },
   {
-    title: 'Job Board',
-    tech: 'Next.js, Tailwind',
-    description: 'Job Board with NextJS',
-    github: 'https://github.com/andrewteece/job-board',
-    demo: 'https://todo.andrewteece.com',
-    image: 'images/job.webp',
+    title: 'Portfolio',
+    tech: 'React, TS, Tailwind',
+    description: 'Personal Portfolio with React',
+    github: 'https://github.com/andrewteece/andrewteece-portfolio',
+    demo: 'https://andrewteece.com',
+    image: 'images/portfolio.webp',
   },
 ];

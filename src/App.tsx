@@ -13,7 +13,7 @@ export default function App() {
   return (
     <HelmetProvider>
       <SEO />
-      <div className='min-h-screen bg-[var(--color-bg)] text-[var(--color-text)] transition-colors duration-300 font-sans'>
+      <div className='min-h-screen bg-bg text-text font-sans transition-colors duration-300 dark:bg-bg dark:text-text'>
         <Header />
         <motion.main
           initial={{ opacity: 0, y: 20 }}

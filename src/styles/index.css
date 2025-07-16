@@ -3,24 +3,16 @@
 
 @import 'tailwindcss';
 
-/* @layer base {
-  html {
-    @apply transition-colors duration-300;
-  }
-
-  body {
-    @apply transition-colors duration-300;
-  }
-} */
-
 @layer base {
   :root {
-    --color-bg: #f9fafb;
+    --color-bg: #ffffff;
     --color-text: #1e293b;
-    --color-accent: #10b981;
-    --color-accent-alt: #22d3ee;
-    --color-brand: #6366f1;
+    --color-text-light: #f8fafc;
+    --color-accent: #0f172a;
+    --color-brand: #2563eb;
     --color-border: #cbd5e1;
+    --color-muted: #64748b;
+    --color-highlight: #facc15;
     --bg-gradient: radial-gradient(
       circle at top left,
       #e0f2fe 0%,
@@ -30,10 +22,12 @@
 
   .dark {
     --color-bg: #0f172a;
-    --color-text: #e2e8f0;
-    --color-accent: #34d399;
-    --color-brand: #818cf8;
+    --color-text: #f8fafc;
+    --color-accent: #1e293b;
+    --color-brand: #2563eb;
     --color-border: #334155;
+    --color-muted: #94a3b8;
+    --color-highlight: #fde68a;
     --bg-gradient: radial-gradient(
       circle at bottom right,
       #1e293b 0%,
@@ -48,7 +42,6 @@
   body {
     background-color: var(--color-bg);
     color: var(--color-text);
-    /* font-family: theme('fontFamily.sans'); */
     font-family: 'Outfit', sans-serif;
     font-size: theme('fontSize.base');
     transition: background-color 0.3s ease, color 0.3s ease;
@@ -63,7 +56,7 @@
   }
 
   .bg-noise {
-    background-image: url('/noise.png'); /* Add a subtle transparent PNG texture in /public */
+    background-image: url('/noise.png');
     background-size: 200px 200px;
     background-repeat: repeat;
   }
@@ -103,7 +96,6 @@
     border-color: var(--color-border);
   }
 
-  /* Custom Scrollbar */
   ::-webkit-scrollbar {
     width: 12px;
   }
