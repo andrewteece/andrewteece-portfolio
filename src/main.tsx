@@ -1,3 +1,4 @@
+import { Toaster } from 'react-hot-toast';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles/index.css';
@@ -12,6 +13,24 @@ createRoot(document.getElementById('root')!).render(
       <HelmetProvider>
         <ActiveSectionProvider>
           <App />
+          <Toaster
+            position='bottom-center'
+            toastOptions={{
+              className:
+                'dark:bg-[var(--color-bg-alt)] dark:text-[var(--color-text)] dark:border dark:border-[var(--color-border)]',
+              style: {
+                background: 'var(--color-bg-alt)',
+                color: 'var(--color-text)',
+                border: '1px solid var(--color-border)',
+                padding: '0.75rem 1rem',
+                borderRadius: '0.5rem',
+                fontSize: '0.875rem',
+              },
+              success: {
+                icon: '✅',
+              },
+            }}
+          />
         </ActiveSectionProvider>
       </HelmetProvider>
     </ThemeProvider>

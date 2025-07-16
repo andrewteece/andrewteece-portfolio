@@ -1,4 +1,4 @@
-// src/components/sections/Footer.tsx
+import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
 import { Mail, ArrowUp } from 'lucide-react';
 import { Download } from 'lucide-react';
@@ -100,6 +100,21 @@ export default function Footer() {
           </a>
           <a
             href='mailto:andrew@andrewteece.com'
+            onClick={() =>
+              toast.success('Opening email app...', {
+                style: {
+                  background: 'var(--color-bg-alt)',
+                  color: 'var(--color-text)',
+                  border: '1px solid var(--color-border)',
+                  padding: '0.75rem 1rem',
+                  borderRadius: '0.5rem',
+                  fontSize: '0.875rem',
+                },
+                icon: '✅',
+                className:
+                  'dark:bg-[var(--color-bg-alt)] dark:text-[var(--color-text)] dark:border dark:border-[var(--color-border)]',
+              })
+            }
             className='inline-flex items-center gap-2 text-sm font-medium px-4 py-1.5 rounded-md border border-[var(--color-brand)] text-[var(--color-brand)] hover:bg-[var(--color-brand)] hover:text-white transition-all shadow-sm backdrop-blur dark:bg-white/10 dark:hover:bg-[var(--color-brand)/30]'
           >
             <motion.span
