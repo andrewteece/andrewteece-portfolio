@@ -25,6 +25,9 @@ export default function Hero() {
           <img
             src='images/bg-waves.webp'
             alt='Big blue waves background'
+            width={1600}
+            height={900}
+            style={{ width: '100%', height: 'auto' }}
             className='w-full h-full object-cover opacity-20 dark:opacity-10 z-0'
             loading='eager'
             decoding='async'
