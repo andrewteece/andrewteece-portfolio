@@ -34,4 +34,5 @@ export default {
     },
   },
   plugins: [require('tailwind-scrollbar')],
+  plugins: [require('@tailwindcss/typography')],
 };
