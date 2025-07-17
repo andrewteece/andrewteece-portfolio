@@ -4,6 +4,7 @@ export interface BlogPost {
   date: string;
   excerpt: string;
   image?: string;
+  tags?: string[];
 }
 
 export interface BlogPostModule {

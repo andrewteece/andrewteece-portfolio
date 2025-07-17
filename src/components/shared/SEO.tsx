@@ -1,4 +1,4 @@
-// src/components/SEO.tsx
+// src/components/shared/SEO.tsx
 import { Helmet } from 'react-helmet-async';
 
 interface SEOProps {
@@ -32,29 +32,40 @@ export default function SEO({
       {/* Standard Meta */}
       <title>{title}</title>
       <meta name='description' content={description} />
+      <meta name='author' content='Andrew Teece' />
+      <meta name='viewport' content='width=device-width, initial-scale=1' />
 
       {/* Open Graph */}
+      <meta property='og:type' content='article' />
       <meta property='og:title' content={title} />
       <meta property='og:description' content={description} />
       <meta property='og:image' content={image} />
       <meta property='og:url' content={url} />
-      <meta property='og:type' content='website' />
 
       {/* Twitter Card */}
       <meta name='twitter:card' content='summary_large_image' />
+      <meta name='twitter:title' content={title} />
+      <meta name='twitter:description' content={description} />
+      <meta name='twitter:image' content={image} />
 
       {/* Apple Meta Tags */}
       <meta name='apple-mobile-web-app-capable' content='yes' />
       <meta name='apple-mobile-web-app-status-bar-style' content='default' />
       <meta name='apple-mobile-web-app-title' content='Andrew Teece' />
-
-      {/* Apple Touch Icon */}
       <link rel='apple-touch-icon' href='/apple-touch-icon.webp' />
 
       {/* JSON-LD Structured Data */}
       <script type='application/ld+json'>
         {JSON.stringify(structuredData)}
       </script>
+
+      {/* RSS Feed */}
+      <link
+        rel='alternate'
+        type='application/rss+xml'
+        title='RSS Feed'
+        href='/feed.xml'
+      />
     </Helmet>
   );
 }

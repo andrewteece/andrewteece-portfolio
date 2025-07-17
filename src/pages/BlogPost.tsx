@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import type { BlogPostModule, BlogPost } from '../types/blog';
 import PostLayout from '../components/layout/PostLayout';
+import SEO from '../components/shared/SEO';
 
 export default function BlogPost() {
   const { slug } = useParams();
@@ -34,8 +35,17 @@ export default function BlogPost() {
   if (!PostComponent || !frontmatter) return <p className='p-8'>Loading...</p>;
 
   return (
-    <PostLayout frontmatter={frontmatter}>
-      <PostComponent />
-    </PostLayout>
+    <>
+      <SEO
+        title={frontmatter.title}
+        description={frontmatter.excerpt}
+        image={frontmatter.image}
+        url={`https://andrewteece.com/blog/${slug}`}
+      />
+
+      <PostLayout frontmatter={frontmatter}>
+        <PostComponent />
+      </PostLayout>
+    </>
   );
 }
