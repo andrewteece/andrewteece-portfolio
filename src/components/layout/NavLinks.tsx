@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { cn } from '../../lib/utils';
 import { useActiveSection } from '../../context/ActiveSectionContext';
 
@@ -8,15 +8,17 @@ interface NavLinksProps {
 }
 
 const navItems = [
-  { href: '#home', label: 'Home' },
-  { href: '#techstack', label: 'Tech Stack' },
-  { href: '#about', label: 'About' },
-  { href: '#projects', label: 'Projects' },
-  { href: '#footer', label: 'Contact' },
+  { href: 'home', label: 'Home' },
+  { href: 'techstack', label: 'Tech Stack' },
+  { href: 'about', label: 'About' },
+  { href: 'projects', label: 'Projects' },
+  { href: 'footer', label: 'Contact' },
 ];
 
 export default function NavLinks({ onClick }: NavLinksProps) {
   const { activeSection } = useActiveSection();
+  const location = useLocation();
+  const isBlogRoute = location.pathname.startsWith('/blog');
 
   return (
     <motion.ul
@@ -33,7 +35,7 @@ export default function NavLinks({ onClick }: NavLinksProps) {
         },
       }}
     >
-      {/* Blog link using react-router-dom */}
+      {/* Blog link */}
       <motion.li
         key='blog'
         variants={{
@@ -44,13 +46,22 @@ export default function NavLinks({ onClick }: NavLinksProps) {
         <Link
           to='/blog'
           onClick={onClick}
-          className='transition-colors hover:text-[var(--color-brand)]'
+          className={cn(
+            'relative transition-colors hover:text-[var(--color-brand)]',
+            isBlogRoute ? 'text-[var(--color-brand)] font-semibold' : ''
+          )}
         >
           Blog
+          <span
+            className={cn(
+              'absolute left-0 -bottom-1 h-[2px] w-full origin-left scale-x-0 bg-[var(--color-brand)] transition-transform duration-300',
+              isBlogRoute && 'scale-x-100'
+            )}
+          />
         </Link>
       </motion.li>
 
-      {/* Anchor links using hash navigation */}
+      {/* Section links */}
       {navItems.map(({ href, label }) => (
         <motion.li
           key={href}
@@ -59,18 +70,24 @@ export default function NavLinks({ onClick }: NavLinksProps) {
             visible: { opacity: 1, y: 0 },
           }}
         >
-          <a
-            href={href}
+          <Link
+            to={`/?scrollTo=${href}`}
             onClick={onClick}
             className={cn(
-              'transition-colors hover:text-[var(--color-brand)]',
-              activeSection === href.slice(1)
+              'relative transition-colors hover:text-[var(--color-brand)]',
+              activeSection === href
                 ? 'text-[var(--color-brand)] font-semibold'
                 : ''
             )}
           >
             {label}
-          </a>
+            <span
+              className={cn(
+                'absolute left-0 -bottom-1 h-[2px] w-full origin-left scale-x-0 bg-[var(--color-brand)] transition-transform duration-300',
+                activeSection === href && 'scale-x-100'
+              )}
+            />
+          </Link>
         </motion.li>
       ))}
     </motion.ul>

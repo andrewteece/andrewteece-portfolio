@@ -2,6 +2,7 @@ import { HelmetProvider, Helmet } from 'react-helmet-async';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SEO from './components/shared/SEO';
 import { motion } from 'framer-motion';
+import ScrollToAnchor from './components/ui/ScrollToAnchor';
 
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
@@ -35,7 +36,7 @@ export default function App() {
 
       <div className='min-h-screen bg-bg text-text font-sans transition-colors duration-300 dark:bg-bg dark:text-text'>
         <Header />
-
+        <ScrollToAnchor />
         <Routes>
           <Route
             path='/'
