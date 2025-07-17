@@ -1,6 +1,9 @@
+// src/components/ui/CodeBlock.tsx
 import { Highlight } from 'prism-react-renderer';
 import type { Language } from 'prism-react-renderer';
 import vsDark from 'prism-react-renderer/themes/vsDark.json';
+import vsLight from 'prism-react-renderer/themes/vsLight.json';
+import { useTheme } from '../../context/ThemeProvider';
 
 interface CodeBlockProps {
   children: string;
@@ -12,11 +15,12 @@ export default function CodeBlock({
   language = 'tsx',
 }: CodeBlockProps) {
   const code = children.trimEnd();
+  const { isDark } = useTheme();
 
   return Highlight({
     code,
     language,
-    theme: vsDark,
+    theme: isDark ? vsDark : vsLight,
     children: ({ className, style, tokens, getLineProps, getTokenProps }) => (
       <pre
         className={`${className} p-4 rounded-md overflow-x-auto text-sm`}
