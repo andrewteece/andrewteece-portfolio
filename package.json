@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mdx-js/react": "^3.1.0",
+    "@mdx-js/rollup": "^3.1.0",
     "@tailwindcss/vite": "^4.1.11",
     "framer-motion": "^12.23.3",
     "lucide-react": "^0.525.0",
