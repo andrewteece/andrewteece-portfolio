@@ -49,6 +49,10 @@ export default function Blog() {
     loadPosts();
   }, []);
 
+  const allTags = Array.from(
+    new Set(posts.flatMap((post) => post.tags ?? []))
+  ).sort();
+
   const filteredPosts = posts.filter((post) => {
     const matchesTag = selectedTag ? post.tags?.includes(selectedTag) : true;
     const matchesSearch =
@@ -77,6 +81,24 @@ export default function Blog() {
           className='w-full px-4 py-2 border border-[var(--color-border)] rounded-md text-sm bg-[var(--color-bg)] text-[var(--color-text)]'
         />
       </div>
+
+      {allTags.length > 0 && (
+        <div className='mb-8 flex flex-wrap gap-2'>
+          {allTags.map((tag) => (
+            <Link
+              key={tag}
+              to={`/blog?tag=${encodeURIComponent(tag)}`}
+              className={`px-2 py-1 text-xs rounded-full border transition ${
+                selectedTag === tag
+                  ? 'bg-[var(--color-brand)] text-white'
+                  : 'bg-[var(--color-bg)] text-[var(--color-brand)] border-[var(--color-border)] hover:bg-[var(--color-accent)]'
+              }`}
+            >
+              {tag}
+            </Link>
+          ))}
+        </div>
+      )}
 
       {selectedTag && (
         <div className='mb-6'>
