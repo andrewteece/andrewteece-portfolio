@@ -48,7 +48,14 @@ export default function Blog() {
       </h1>
       <ul className='space-y-10'>
         {posts.map((post) => (
-          <li key={post.slug}>
+          <li key={post.slug} className='flex flex-col gap-2'>
+            {post.image && (
+              <img
+                src={post.image}
+                alt={post.title}
+                className='rounded-lg w-full max-h-60 object-cover border border-[var(--color-border)]'
+              />
+            )}
             <Link
               to={`/blog/${post.slug}`}
               className='text-2xl font-semibold text-[var(--color-brand)] hover:underline'

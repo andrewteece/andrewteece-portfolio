@@ -14,6 +14,13 @@ export default function PostLayout({ frontmatter, children }: PostLayoutProps) {
           {frontmatter.title}
         </h1>
         <p className='text-sm text-gray-500'>{frontmatter.date}</p>
+        {frontmatter.image && (
+          <img
+            src={frontmatter.image}
+            alt={frontmatter.title}
+            className='rounded-lg w-full max-h-72 object-cover border border-[var(--color-border)] mb-6'
+          />
+        )}
         {frontmatter.excerpt && (
           <p className='mt-2 text-[var(--color-text)] text-base italic'>
             {frontmatter.excerpt}
