@@ -2,8 +2,8 @@ import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
 import { Mail, ArrowUp } from 'lucide-react';
 import { Download } from 'lucide-react';
-import SocialLinks from '../components/SocialLinks';
-import { ActiveSectionContext } from '../context/ActiveSectionContext';
+import SocialLinks from '../SocialLinks';
+import { ActiveSectionContext } from '../../context/ActiveSectionContext';
 import { Helmet } from 'react-helmet-async';
 import { useEffect, useState, useRef, useContext } from 'react';
 

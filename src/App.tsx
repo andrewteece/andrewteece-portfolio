@@ -1,12 +1,12 @@
 import { HelmetProvider, Helmet } from 'react-helmet-async';
 import SEO from './components/shared/SEO';
 import { motion } from 'framer-motion';
-import Header from './components/Header/Header';
-import Hero from './components/Hero/Hero';
-import TechStack from './components/Sections/TechStack';
-import About from './components/Sections/About';
+import Header from './components/layout/Header';
+import Hero from './components/sections/Hero';
+import TechStack from './components/sections/TechStack';
+import About from './components/sections/About';
 import Projects from './components/Projects';
-import Footer from './components/Footer';
+import Footer from './components/layout/Footer';
 import './styles/index.css';
 
 export default function App() {

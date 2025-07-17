@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
-import ThemeToggle from '../Header/ThemeToggle';
-import NavLinks from '../Header/NavLinks';
+import ThemeToggle from './ThemeToggle';
+import NavLinks from './NavLinks';
 
 export default function Header() {
   const [isDark, setIsDark] = useState(

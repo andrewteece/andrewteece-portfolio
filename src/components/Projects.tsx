@@ -2,7 +2,7 @@
 import { motion } from 'framer-motion';
 import { useEffect, useRef, useContext } from 'react';
 import { ActiveSectionContext } from '../context/ActiveSectionContext';
-import { projects } from '../data/portfolio/projects';
+import { projects } from '../content/projects';
 import ProjectCard from './ProjectCard';
 
 export default function Projects() {

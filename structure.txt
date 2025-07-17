@@ -1,0 +1,48 @@
+src
+├── App.tsx
+├── assets
+│   ├── bg-waves.png
+│   ├── blurry-gradient-haikei.svg
+│   ├── coffeeShop.png
+│   ├── hero-bg.svg
+│   ├── job.png
+│   ├── react.svg
+│   └── wave-haikei.svg
+├── components
+│   ├── layout
+│   │   ├── Footer.tsx
+│   │   ├── Header.tsx
+│   │   ├── NavLinks.tsx
+│   │   └── ThemeToggle.tsx
+│   ├── ProjectCard.tsx
+│   ├── Projects.tsx
+│   ├── sections
+│   │   ├── About.tsx
+│   │   ├── Hero.tsx
+│   │   ├── HeroCTA.tsx
+│   │   ├── HeroHeader.tsx
+│   │   ├── TechBadges.tsx
+│   │   └── TechStack.tsx
+│   ├── shared
+│   │   └── SEO.tsx
+│   ├── SocialLinks.tsx
+│   └── ui
+│       └── ScrollToTop.tsx
+├── content
+│   ├── blog
+│   └── projects.ts
+├── context
+│   ├── ActiveSectionContext.tsx
+│   └── ThemeProvider.tsx
+├── hooks
+├── lib
+│   └── utils.ts
+├── main.tsx
+├── pages
+│   └── StyleGuide.tsx
+├── styles
+│   └── index.css
+├── types
+└── vite-env.d.ts
+
+15 directories, 31 files
