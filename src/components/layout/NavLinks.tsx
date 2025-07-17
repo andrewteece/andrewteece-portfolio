@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { cn } from '../../lib/utils';
 import { useActiveSection } from '../../context/ActiveSectionContext';
 
@@ -32,6 +33,24 @@ export default function NavLinks({ onClick }: NavLinksProps) {
         },
       }}
     >
+      {/* Blog link using react-router-dom */}
+      <motion.li
+        key='blog'
+        variants={{
+          hidden: { opacity: 0, y: -10 },
+          visible: { opacity: 1, y: 0 },
+        }}
+      >
+        <Link
+          to='/blog'
+          onClick={onClick}
+          className='transition-colors hover:text-[var(--color-brand)]'
+        >
+          Blog
+        </Link>
+      </motion.li>
+
+      {/* Anchor links using hash navigation */}
       {navItems.map(({ href, label }) => (
         <motion.li
           key={href}
