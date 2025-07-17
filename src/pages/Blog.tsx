@@ -4,6 +4,7 @@ import type { BlogPost, BlogPostModule } from '../types/blog';
 
 export default function Blog() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -48,11 +49,34 @@ export default function Blog() {
     loadPosts();
   }, []);
 
+  const filteredPosts = posts.filter((post) => {
+    const matchesTag = selectedTag ? post.tags?.includes(selectedTag) : true;
+    const matchesSearch =
+      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
+
+    return matchesTag && matchesSearch;
+  });
+
   return (
     <main className='max-w-3xl mx-auto py-16 px-4'>
       <h1 className='text-4xl font-bold mb-8 text-[var(--color-brand)]'>
         Blog
       </h1>
+
+      <div className='mb-6'>
+        <label htmlFor='search' className='sr-only'>
+          Search blog posts
+        </label>
+        <input
+          id='search'
+          type='text'
+          placeholder='Search blog posts...'
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className='w-full px-4 py-2 border border-[var(--color-border)] rounded-md text-sm bg-[var(--color-bg)] text-[var(--color-text)]'
+        />
+      </div>
 
       {selectedTag && (
         <div className='mb-6'>
@@ -65,12 +89,9 @@ export default function Blog() {
         </div>
       )}
 
-      <ul className='space-y-10'>
-        {posts
-          .filter((post) =>
-            selectedTag ? post.tags?.includes(selectedTag) : true
-          )
-          .map((post) => (
+      {filteredPosts.length > 0 ? (
+        <ul className='space-y-10'>
+          {filteredPosts.map((post) => (
             <li key={post.slug} className='flex flex-col gap-2'>
               {post.image && (
                 <img
@@ -103,7 +124,12 @@ export default function Blog() {
               )}
             </li>
           ))}
-      </ul>
+        </ul>
+      ) : (
+        <p className='text-center text-sm text-[var(--color-text-muted)]'>
+          No blog posts found.
+        </p>
+      )}
     </main>
   );
 }
