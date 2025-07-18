@@ -58,7 +58,10 @@ export default function BlogPost() {
       <SEO
         title={frontmatter.title}
         description={frontmatter.excerpt}
-        image={frontmatter.image}
+        image={
+          frontmatter.image ||
+          'https://andrewteece.com/images/social-preview.webp'
+        }
         url={`https://andrewteece.com/blog/${slug}`}
       />
 
