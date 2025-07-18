@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import type { BlogPost, BlogPostModule } from '../types/blog';
 import PostLayout from '../components/layout/PostLayout';
 
@@ -11,19 +11,11 @@ export default function BlogPost() {
   const [PostComponent, setPostComponent] = useState<React.FC | null>(null);
 
   useEffect(() => {
-    if (!slug) {
-      console.log('Missing slug param');
-      return;
-    }
-
-    console.log('🔍 Slug:', slug);
-    console.log('🧾 Available post file paths:', Object.keys(postFiles));
+    if (!slug) return;
 
     const matchedPath = Object.keys(postFiles).find((path) =>
       path.includes(`${slug}.mdx`)
     );
-
-    console.log('📂 Matched path:', matchedPath);
 
     if (!matchedPath) {
       console.warn('No MDX file matched this slug.');
@@ -32,12 +24,6 @@ export default function BlogPost() {
 
     const loadPost = async () => {
       const mod = await postFiles[matchedPath]();
-
-      console.log('📦 Loaded MDX module:', mod);
-      console.log('📄 mod.default:', mod.default);
-      console.log('📝 mod.frontmatter:', mod.frontmatter);
-      console.log('🗂 mod.meta:', mod.meta);
-      console.log('🧾 mod.attributes:', mod.attributes);
 
       const frontmatter: BlogPost =
         mod.frontmatter ??
@@ -62,7 +48,40 @@ export default function BlogPost() {
 
   return (
     <PostLayout frontmatter={post}>
-      <PostComponent />
+      <article className='prose prose-neutral dark:prose-invert max-w-none'>
+        <h1 className='text-4xl font-bold mb-2'>{post.title}</h1>
+        <p className='text-muted-foreground text-sm mb-6'>
+          {new Date(post.date).toLocaleDateString(undefined, {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          })}
+        </p>
+
+        <PostComponent />
+
+        {post.tags?.length > 0 && (
+          <div className='mt-10 flex flex-wrap gap-2 text-sm'>
+            {post.tags.map((tag) => (
+              <span
+                key={tag}
+                className='bg-muted text-muted-foreground px-2 py-0.5 rounded'
+              >
+                #{tag}
+              </span>
+            ))}
+          </div>
+        )}
+
+        <div className='mt-10'>
+          <Link
+            to='/blog'
+            className='inline-block text-sm font-medium text-primary hover:underline underline-offset-4'
+          >
+            ← Back to Blog
+          </Link>
+        </div>
+      </article>
     </PostLayout>
   );
 }
