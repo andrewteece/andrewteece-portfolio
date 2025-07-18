@@ -5,6 +5,7 @@ export type BlogPost = {
   excerpt?: string;
   image?: string;
   tags?: string[];
+  readingTime?: string;
 };
 
 export type BlogPostModule = {

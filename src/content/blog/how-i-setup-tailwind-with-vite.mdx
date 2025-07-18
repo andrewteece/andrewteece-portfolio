@@ -1,0 +1,93 @@
+---
+title: "How I Set Up Tailwind CSS with Vite"
+slug: "how-i-setup-tailwind-with-vite"
+date: "2025-07-18"
+excerpt: "How I configured Tailwind CSS in my React + Vite portfolio project — including dark mode, global styling, and build-time optimization."
+image: "/images/blog/tailwind-vite.webp"
+tags: ["vite", "tailwind", "react", "css", "tooling"]
+---
+
+Setting up Tailwind CSS with Vite is a clean and efficient way to style modern web apps. In this post, I'll show you exactly how I configured it in my portfolio — including dark mode, utility classes, and performance tips.
+
+---
+
+## 🔧 1. Install Tailwind with Vite
+
+```bash
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+```
+
+This creates `tailwind.config.js` and `postcss.config.js` in the root of your project.
+
+---
+
+## 📁 2. Configure `tailwind.config.js`
+
+```js
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  darkMode: 'class',
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+```
+
+This sets up file scanning and enables the `class`-based dark mode strategy.
+
+---
+
+## 🎨 3. Add Tailwind to your CSS
+
+In `src/styles/index.css` (or similar), add:
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+Then import this CSS into your entry point, usually in `main.tsx`:
+
+```ts
+import './styles/index.css';
+```
+
+---
+
+## 🌙 4. Enable Dark Mode
+
+I use a custom `ThemeProvider` and a toggle button component. Tailwind automatically applies `.dark` styles using the `class` strategy:
+
+```tsx
+<div className="bg-white text-black dark:bg-zinc-900 dark:text-white">
+  ...
+</div>
+```
+
+This allows theme switching without using the OS preference.
+
+---
+
+## ✨ 5. Extra Enhancements
+
+These are bonus improvements that help polish the experience:
+
+- Add `@tailwindcss/typography` for prose styling
+- Customize theme colors and fonts using `theme.extend`
+- Enable JIT (Just-in-Time mode is on by default in Vite)
+- Add `preload` for fonts and images in your HTML
+- Use `clsx` or `classnames` for conditional utility classes
+
+---
+
+## 💬 Final Thoughts
+
+Tailwind CSS with Vite is a powerful combination that keeps your styling lean and consistent across components. I use this stack on every new project — and love how fast the dev experience is.
+
+Let me know if you'd like to see a complete starter template, or my preferred dark mode implementation.
+
+Thanks for reading!

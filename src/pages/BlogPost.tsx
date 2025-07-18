@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import type { BlogPost, BlogPostModule } from '../types/blog';
 import PostLayout from '../components/layout/PostLayout';
+import AuthorBlock from '../components/layout/AuthorBlock';
 
 const postFiles = import.meta.glob<BlogPostModule>('/src/content/blog/*.mdx');
 
@@ -31,7 +32,15 @@ export default function BlogPost() {
         mod.attributes ??
         ({} as BlogPost);
 
-      setPost(frontmatter);
+      // const Component = mod.default;
+
+      // ⏱️ Estimate reading time from rendered MDX source
+      const raw = mod?.default?.toString?.() ?? '';
+      const wordCount = raw.split(/\s+/).length;
+      const minutes = Math.max(1, Math.round(wordCount / 200));
+      const readingTime = `${minutes} min read`;
+
+      setPost({ ...frontmatter, readingTime });
       setPostComponent(() => mod.default);
     };
 
@@ -50,12 +59,19 @@ export default function BlogPost() {
     <PostLayout frontmatter={post}>
       <article className='prose prose-neutral dark:prose-invert max-w-none'>
         <h1 className='text-4xl font-bold mb-2'>{post.title}</h1>
+
+        {/* Date */}
         <p className='text-muted-foreground text-sm mb-6'>
           {new Date(post.date).toLocaleDateString(undefined, {
             year: 'numeric',
             month: 'long',
             day: 'numeric',
           })}
+        </p>
+
+        {/* Reading time + author */}
+        <p className='text-sm text-muted-foreground mb-6'>
+          ⏱️ {post.readingTime ?? '—'} • ✍️ Andrew Teece
         </p>
 
         <PostComponent />
@@ -72,6 +88,8 @@ export default function BlogPost() {
             ))}
           </div>
         )}
+
+        <AuthorBlock />
 
         <div className='mt-10'>
           <Link
