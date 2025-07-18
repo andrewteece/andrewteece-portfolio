@@ -7,9 +7,9 @@ import Footer from './components/layout/Footer';
 import ScrollToAnchor from './components/ui/ScrollToAnchor';
 import SEO from './components/shared/SEO';
 
-import Hero from './components/sections/Hero';
-import TechStack from './components/sections/TechStack';
-import About from './components/sections/About';
+import Hero from './components/Sections/Hero';
+import TechStack from './components/Sections/TechStack';
+import About from './components/Sections/About';
 import Projects from './components/Projects';
 
 import Blog from './pages/Blog';
