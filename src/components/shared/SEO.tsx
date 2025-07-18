@@ -11,7 +11,7 @@ interface SEOProps {
 export default function SEO({
   title = 'Andrew Teece | Front-End Developer',
   description = 'Experienced front-end developer delivering performant, accessible, and beautiful web apps.',
-  image = 'https://andrewteece.com/images/social-preview.webp',
+  image = 'https://andrewteece.com/images/social-preview.jpg',
   url = 'https://andrewteece.com',
 }: SEOProps) {
   const structuredData = {
