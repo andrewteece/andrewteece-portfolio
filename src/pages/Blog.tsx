@@ -22,6 +22,8 @@ export default function Blog() {
           const mod = await resolver();
           const frontmatter = mod.frontmatter;
 
+          console.log('Loaded post from', path, frontmatter);
+
           return {
             title: frontmatter.title ?? 'Untitled Post',
             slug:

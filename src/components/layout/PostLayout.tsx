@@ -1,4 +1,3 @@
-// src/components/layout/PostLayout.tsx
 import type { BlogPost } from '../../types/blog';
 
 interface PostLayoutProps {
@@ -29,6 +28,9 @@ export default function PostLayout({ frontmatter, children }: PostLayoutProps) {
       </header>
 
       <section className='prose prose-neutral dark:prose-invert max-w-none'>
+        <div style={{ background: 'lightyellow', padding: '1rem' }}>
+          Debug: children go here
+        </div>
         {children}
       </section>
     </article>
