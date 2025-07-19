@@ -34,6 +34,7 @@ export default function SEO({
       <meta name='description' content={description} />
       <meta name='author' content='Andrew Teece' />
       <meta name='viewport' content='width=device-width, initial-scale=1' />
+      <link rel='icon' href='/favicon.ico' />
 
       {/* Open Graph */}
       <meta property='og:type' content='article' />
