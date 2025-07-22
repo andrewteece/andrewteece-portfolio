@@ -83,12 +83,12 @@ export default function Footer() {
             </p>
             <div className='mt-2 flex flex-col sm:flex-row items-center justify-center gap-2'>
               <a
-                href='https://github.com/andrewteece/portfolio/actions'
+                href='https://github.com/andrewteece/andrewteece-portfolio/actions'
                 target='_blank'
                 rel='noopener noreferrer'
               >
                 <img
-                  src='https://github.com/andrewteece/portfolio/actions/workflows/test.yml/badge.svg'
+                  src='https://github.com/andrewteece/andrewteece-portfolio/actions/workflows/test.yml/badge.svg'
                   alt='Test Status'
                   className='h-5'
                 />
