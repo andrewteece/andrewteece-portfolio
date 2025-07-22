@@ -20,6 +20,7 @@ import {
   SiFigma,
   SiAdobephotoshop,
   SiJest,
+  SiVitest,
 } from 'react-icons/si';
 
 const techGroups = {
@@ -41,6 +42,7 @@ const techGroups = {
     { label: 'MongoDB', icon: <SiMongodb /> },
     { label: 'Vite', icon: <SiVite /> },
     { label: 'Docker', icon: <SiDocker /> },
+    { label: 'Vitest', icon: <SiVitest /> },
     { label: 'Jest', icon: <SiJest /> },
   ],
   Design: [
