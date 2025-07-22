@@ -4,7 +4,7 @@ export default function HeroHeader() {
   return (
     <>
       <motion.h1
-        className='text-4xl md:text-5xl font-extrabold tracking-tight text-[var(--color-brand)] font-sans leading-tight z-10'
+        className='text-4xl md:text-5xl font-extrabold tracking-tight text-[var(--color-brand)] font-display leading-tight z-10'
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}

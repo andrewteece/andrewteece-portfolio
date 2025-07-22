@@ -25,8 +25,8 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['Outfit', 'sans-serif'],
-        display: ['Figtree', 'sans-serif'],
+        sans: ['Inter', 'sans-serif'],
+        display: ['Space Grotesk', 'sans-serif'],
       },
       backgroundImage: {
         'hero-gradient': 'var(--bg-gradient)',

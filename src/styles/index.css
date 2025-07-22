@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
 
 @import 'tailwindcss';
 
@@ -42,7 +41,6 @@
   body {
     background-color: var(--color-bg);
     color: var(--color-text);
-    font-family: 'Outfit', sans-serif;
     font-size: theme('fontSize.base');
     transition: background-color 0.3s ease, color 0.3s ease;
   }
@@ -67,11 +65,13 @@
     background-color: var(--color-bg);
     color: var(--color-text);
     transition: background-color 0.3s ease, color 0.3s ease;
+    font-family: 'Space Grotesk', sans-serif;
   }
 
   h1 {
     font-size: theme('fontSize.4xl');
     color: var(--color-brand);
+    font-family: 'Space Grotesk', sans-serif;
   }
 
   h2 {
@@ -82,6 +82,12 @@
   h3 {
     font-size: theme('fontSize.2xl');
     color: var(--color-brand);
+  }
+
+  p,
+  a,
+  span {
+    font-family: 'Inter', sans-serif;
   }
 
   a {
