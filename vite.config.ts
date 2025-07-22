@@ -23,7 +23,8 @@ export default defineConfig({
     setupFiles: './vitest.setup.ts',
     exclude: [...configDefaults.exclude, 'dist', 'coverage'],
     coverage: {
-      reporter: ['text', 'json', 'html'],
+      provider: 'v8',
+      reporter: ['text', 'json', 'html', 'clover'],
     },
   },
 });
