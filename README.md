@@ -25,21 +25,13 @@
 ### Core
 - React
 - TypeScript
-- Tailwind CSS
 - Vite
 
 ### Testing
 - Vitest
-- Jest
 
 ### Styling
-- SASS
-- Bootstrap
-
-### Design & DevOps
-- Adobe Photoshop
-- Docker
-- Figma
+- Tailwind CSS
 
 ## 📂 Project Structure
 
