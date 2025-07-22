@@ -9,5 +9,5 @@ test('renders Hero section with intro', () => {
     </HelmetProvider>
   );
   expect(screen.getByText(/andrew teece/i)).toBeInTheDocument();
-  expect(screen.getByText(/front-end developer/i)).toBeInTheDocument();
+  expect(screen.getByText(/front-end web developer/i)).toBeInTheDocument();
 });
