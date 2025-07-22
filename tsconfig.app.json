@@ -17,7 +17,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-    "types": ["node"]
+    "types": ["vitest", "node"]
   },
-  "include": ["src", "jest.setup.ts", "**/__tests__/**/*.{ts,tsx}"]
+  "include": ["src", "vitest.setup.ts", "**/__tests__/**/*.{ts,tsx}"]
 }

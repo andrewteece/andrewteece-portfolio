@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 import mdx from '@mdx-js/rollup';
 import remarkFrontmatter from 'remark-frontmatter';
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter';
+import { configDefaults } from 'vitest/config';
 
 export default defineConfig({
   plugins: [
@@ -16,4 +17,13 @@ export default defineConfig({
       ],
     }),
   ],
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './vitest.setup.ts',
+    exclude: [...configDefaults.exclude, 'dist', 'coverage'],
+    coverage: {
+      reporter: ['text', 'json', 'html'],
+    },
+  },
 });

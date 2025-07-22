@@ -1,4 +1,4 @@
-name: Run Tests
+name: Run Vitest
 
 on:
   push:
@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout repository
+      - name: 🛎️ Checkout repo
         uses: actions/checkout@v3
 
-      - name: 🔧 Setup Node.js
+      - name: 🧰 Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: 18
@@ -21,14 +21,12 @@ jobs:
       - name: 📦 Install dependencies (legacy mode)
         run: npm install --legacy-peer-deps
 
-      - name: 🧪 Run tests with coverage
-        run: npm test
+      - name: 🧪 Run Vitest
+        run: npm run coverage
 
       - name: 📤 Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
-          # Remove this line entirely if your repo is public
-          # token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./coverage/lcov.info
+          files: ./coverage/clover.xml
           flags: unittests
           name: codecov-coverage
