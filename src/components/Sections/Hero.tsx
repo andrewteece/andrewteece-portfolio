@@ -56,7 +56,7 @@ export default function Hero() {
           </motion.h2>
 
           <motion.p
-            className='text-lg md:text-xl max-w-2xl text-[var(--color-text)]'
+            className='text-lg md:text-xl max-w-2xl text-[var(--color-text)] text-center'
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.6 }}
