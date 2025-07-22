@@ -81,7 +81,7 @@ export default function Footer() {
             <p className='text-sm text-muted'>
               © {new Date().getFullYear()} Andrew Teece. All rights reserved.
             </p>
-            <div className='mt-2'>
+            <div className='mt-2 flex flex-col sm:flex-row items-center justify-center gap-2'>
               <a
                 href='https://github.com/andrewteece/portfolio/actions'
                 target='_blank'
@@ -90,6 +90,17 @@ export default function Footer() {
                 <img
                   src='https://github.com/andrewteece/portfolio/actions/workflows/test.yml/badge.svg'
                   alt='Test Status'
+                  className='h-5'
+                />
+              </a>
+              <a
+                href='https://codecov.io/gh/andrewteece/andrewteece-portfolio'
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                <img
+                  src='https://codecov.io/gh/andrewteece/andrewteece-portfolio/branch/main/graph/badge.svg'
+                  alt='Code coverage badge'
                   className='h-5'
                 />
               </a>
