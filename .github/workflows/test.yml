@@ -18,7 +18,7 @@ jobs:
         with:
           node-version: 18
 
-      - name: 📦 Install dependencies
+      - name: 📦 Install dependencies (legacy mode)
         run: npm install --legacy-peer-deps
 
       - name: 🧪 Run tests with coverage
