@@ -19,6 +19,7 @@ import {
   SiDocker,
   SiFigma,
   SiAdobephotoshop,
+  SiJest,
 } from 'react-icons/si';
 
 const techGroups = {
@@ -40,6 +41,7 @@ const techGroups = {
     { label: 'MongoDB', icon: <SiMongodb /> },
     { label: 'Vite', icon: <SiVite /> },
     { label: 'Docker', icon: <SiDocker /> },
+    { label: 'Jest', icon: <SiJest /> },
   ],
   Design: [
     { label: 'Figma', icon: <SiFigma /> },
