@@ -17,12 +17,12 @@ export const projects: Project[] = [
     image: 'images/proShop.webp',
   },
   {
-    title: 'Todo App',
-    tech: 'TypeScript, Clerk',
-    description: 'A simple productivity app with authentication.',
-    github: 'https://github.com/andrewteece/todo-app',
-    demo: 'https://todo.andrewteece.com',
-    image: 'images/ToDo.webp',
+    title: 'Product-Feedback App',
+    tech: 'Next.js, Tailwind, Zustand',
+    description: 'Product-Feedback',
+    github: 'https://github.com/andrewteece/product-feedback-app',
+    demo: 'https://product-feedback-pcqy81jhq-andrewteeces-projects.vercel.app/',
+    image: 'images/product-feedback.webp',
   },
   {
     title: 'Portfolio',
