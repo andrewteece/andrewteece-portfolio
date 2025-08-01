@@ -1,18 +1,16 @@
-export type BlogPost = {
+export interface BlogPost {
   title: string;
   slug: string;
   date: string;
   excerpt?: string;
   image?: string;
-  tags?: string[];
+  tags: string[];
   readingTime?: string;
-};
+}
 
-export type BlogPostModule = {
-  default: React.FC;
-  frontmatter?: BlogPost;
-  attributes?: BlogPost;
-  meta?: {
-    frontmatter?: BlogPost;
-  };
-};
+export interface BlogPostModule {
+  default: unknown;
+  frontmatter?: Partial<BlogPost>;
+  meta?: { frontmatter?: Partial<BlogPost> };
+  attributes?: Partial<BlogPost>;
+}

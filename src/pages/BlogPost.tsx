@@ -3,13 +3,18 @@ import { useParams, Link } from 'react-router-dom';
 import type { BlogPost, BlogPostModule } from '../types/blog';
 import PostLayout from '../components/layout/PostLayout';
 import AuthorBlock from '../components/layout/AuthorBlock';
+import type { ComponentType } from 'react';
+import type { MDXComponents } from 'mdx/types';
 
 const postFiles = import.meta.glob<BlogPostModule>('/src/content/blog/*.mdx');
+
+type MDXContentComponent = ComponentType<{ components?: MDXComponents }>;
 
 export default function BlogPost() {
   const { slug } = useParams();
   const [post, setPost] = useState<BlogPost | null>(null);
-  const [PostComponent, setPostComponent] = useState<React.FC | null>(null);
+  const [PostComponent, setPostComponent] =
+    useState<MDXContentComponent | null>(null);
 
   useEffect(() => {
     if (!slug) return;
@@ -26,22 +31,26 @@ export default function BlogPost() {
     const loadPost = async () => {
       const mod = await postFiles[matchedPath]();
 
-      const frontmatter: BlogPost =
-        mod.frontmatter ??
-        mod.meta?.frontmatter ??
-        mod.attributes ??
-        ({} as BlogPost);
+      const raw =
+        mod.frontmatter ?? mod.meta?.frontmatter ?? mod.attributes ?? {};
 
-      // const Component = mod.default;
-
-      // ⏱️ Estimate reading time from rendered MDX source
-      const raw = mod?.default?.toString?.() ?? '';
-      const wordCount = raw.split(/\s+/).length;
+      const mdxString = mod?.default?.toString?.() ?? '';
+      const wordCount = mdxString.split(/\s+/).length;
       const minutes = Math.max(1, Math.round(wordCount / 200));
       const readingTime = `${minutes} min read`;
 
-      setPost({ ...frontmatter, readingTime });
-      setPostComponent(() => mod.default);
+      const postData: BlogPost = {
+        title: raw.title ?? 'Untitled',
+        slug,
+        date: raw.date ?? 'Unknown date',
+        excerpt: raw.excerpt ?? '',
+        image: raw.image,
+        tags: raw.tags ?? [],
+        readingTime,
+      };
+
+      setPost(postData);
+      setPostComponent(mod.default as MDXContentComponent);
     };
 
     loadPost();
@@ -74,9 +83,11 @@ export default function BlogPost() {
           ⏱️ {post.readingTime ?? '—'} • ✍️ Andrew Teece
         </p>
 
-        <PostComponent />
+        {/* Render MDX content with props */}
+        <PostComponent components={{}} />
 
-        {post.tags?.length > 0 && (
+        {/* Tags */}
+        {post.tags.length > 0 && (
           <div className='mt-10 flex flex-wrap gap-2 text-sm'>
             {post.tags.map((tag) => (
               <span

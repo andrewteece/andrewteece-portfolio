@@ -14,28 +14,27 @@ export default function Blog() {
         Object.entries(postFiles).map(async ([path, resolver]) => {
           const mod = await resolver();
 
-          const frontmatter: BlogPost =
-            mod.frontmatter ??
-            mod.meta?.frontmatter ??
-            mod.attributes ??
-            ({} as BlogPost);
+          const raw =
+            mod.frontmatter ?? mod.meta?.frontmatter ?? mod.attributes ?? {};
 
           const slug =
-            frontmatter.slug ??
+            raw.slug ??
             path
               .split('/')
               .pop()
               ?.replace(/\.mdx$/, '') ??
             'unknown';
 
-          return {
-            title: frontmatter.title ?? 'Untitled',
+          const normalizedPost: BlogPost = {
+            title: raw.title ?? 'Untitled',
             slug,
-            date: frontmatter.date ?? 'Unknown date',
-            excerpt: frontmatter.excerpt ?? '',
-            image: frontmatter.image,
-            tags: frontmatter.tags ?? [],
+            date: raw.date ?? 'Unknown date',
+            excerpt: raw.excerpt ?? '',
+            image: raw.image,
+            tags: raw.tags ?? [],
           };
+
+          return normalizedPost;
         })
       );
 
@@ -95,7 +94,7 @@ export default function Blog() {
                     {post.excerpt}
                   </p>
                 </div>
-                {post.tags?.length > 0 && (
+                {post.tags.length > 0 && (
                   <div className='mt-4 flex flex-wrap gap-2 text-xs'>
                     {post.tags.map((tag) => (
                       <span
