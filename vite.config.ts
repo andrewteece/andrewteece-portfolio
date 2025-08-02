@@ -5,13 +5,16 @@ import mdx from '@mdx-js/rollup';
 import remarkFrontmatter from 'remark-frontmatter';
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter';
 import { configDefaults } from 'vitest/config';
+import remarkGfm from 'remark-gfm';
 
 export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
     mdx({
+      providerImportSource: '@mdx-js/react',
       remarkPlugins: [
+        remarkGfm,
         remarkFrontmatter,
         [remarkMdxFrontmatter, { name: 'frontmatter' }],
       ],

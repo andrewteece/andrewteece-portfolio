@@ -1,20 +1,26 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ComponentType, Suspense, lazy } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { MDXProvider } from '@mdx-js/react';
+import type { MDXComponents } from 'mdx/types';
 import type { BlogPost, BlogPostModule } from '../types/blog';
 import PostLayout from '../components/layout/PostLayout';
 import AuthorBlock from '../components/layout/AuthorBlock';
-import type { ComponentType } from 'react';
-import type { MDXComponents } from 'mdx/types';
 
 const postFiles = import.meta.glob<BlogPostModule>('/src/content/blog/*.mdx');
 
-type MDXContentComponent = ComponentType<{ components?: MDXComponents }>;
+// MDX component overrides
+const components: MDXComponents = {
+  h1: (props) => <h1 className='text-3xl font-bold mt-6 mb-4' {...props} />,
+  a: (props) => <a className='text-blue-600 hover:underline' {...props} />,
+  code: (props) => <code className='bg-muted px-1 rounded' {...props} />,
+};
 
 export default function BlogPost() {
   const { slug } = useParams();
   const [post, setPost] = useState<BlogPost | null>(null);
-  const [PostComponent, setPostComponent] =
-    useState<MDXContentComponent | null>(null);
+  const [Component, setComponent] = useState<React.LazyExoticComponent<
+    ComponentType<Record<string, unknown>>
+  > | null>(null);
 
   useEffect(() => {
     if (!slug) return;
@@ -24,39 +30,50 @@ export default function BlogPost() {
     );
 
     if (!matchedPath) {
-      console.warn('No MDX file matched this slug.');
+      console.warn('No MDX file matched this slug:', slug);
       return;
     }
 
     const loadPost = async () => {
-      const mod = await postFiles[matchedPath]();
+      try {
+        const module = await postFiles[matchedPath]();
 
-      const raw =
-        mod.frontmatter ?? mod.meta?.frontmatter ?? mod.attributes ?? {};
+        const frontmatter =
+          module.frontmatter ??
+          module.meta?.frontmatter ??
+          module.attributes ??
+          {};
 
-      const mdxString = mod?.default?.toString?.() ?? '';
-      const wordCount = mdxString.split(/\s+/).length;
-      const minutes = Math.max(1, Math.round(wordCount / 200));
-      const readingTime = `${minutes} min read`;
+        const mdxString = module?.default?.toString?.() ?? '';
+        const wordCount = mdxString.split(/\s+/).length;
+        const minutes = Math.max(1, Math.round(wordCount / 200));
+        const readingTime = `${minutes} min read`;
 
-      const postData: BlogPost = {
-        title: raw.title ?? 'Untitled',
-        slug,
-        date: raw.date ?? 'Unknown date',
-        excerpt: raw.excerpt ?? '',
-        image: raw.image,
-        tags: raw.tags ?? [],
-        readingTime,
-      };
+        setPost({
+          title: frontmatter.title ?? 'Untitled',
+          slug,
+          date: frontmatter.date ?? 'Unknown date',
+          excerpt: frontmatter.excerpt ?? '',
+          image: frontmatter.image,
+          tags: frontmatter.tags ?? [],
+          readingTime,
+        });
 
-      setPost(postData);
-      setPostComponent(mod.default as MDXContentComponent);
+        // 🔥 Use React.lazy so hooks stay in sync
+        const LazyComponent = lazy(async () => ({
+          default: module.default as ComponentType<Record<string, unknown>>,
+        }));
+
+        setComponent(() => LazyComponent);
+      } catch (err) {
+        console.error('Error loading post:', err);
+      }
     };
 
     loadPost();
   }, [slug]);
 
-  if (!PostComponent || !post) {
+  if (!post || !Component) {
     return (
       <main className='max-w-3xl mx-auto px-4 py-20 text-center'>
         <p>Loading post...</p>
@@ -69,7 +86,6 @@ export default function BlogPost() {
       <article className='prose prose-neutral dark:prose-invert max-w-none'>
         <h1 className='text-4xl font-bold mb-2'>{post.title}</h1>
 
-        {/* Date */}
         <p className='text-muted-foreground text-sm mb-6'>
           {new Date(post.date).toLocaleDateString(undefined, {
             year: 'numeric',
@@ -78,15 +94,16 @@ export default function BlogPost() {
           })}
         </p>
 
-        {/* Reading time + author */}
         <p className='text-sm text-muted-foreground mb-6'>
-          ⏱️ {post.readingTime ?? '—'} • ✍️ Andrew Teece
+          ⏱️ {post.readingTime} • ✍️ Andrew Teece
         </p>
 
-        {/* Render MDX content with props */}
-        <PostComponent components={{}} />
+        <MDXProvider components={components}>
+          <Suspense fallback={<p>Loading content...</p>}>
+            <Component />
+          </Suspense>
+        </MDXProvider>
 
-        {/* Tags */}
         {post.tags.length > 0 && (
           <div className='mt-10 flex flex-wrap gap-2 text-sm'>
             {post.tags.map((tag) => (
