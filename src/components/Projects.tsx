@@ -10,25 +10,39 @@ export default function Projects() {
   const { setActiveSection } = useContext(ActiveSectionContext);
 
   useEffect(() => {
+    const node = sectionRef.current;
+    if (!node) return;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) setActiveSection('projects');
       },
       { threshold: 0.6 }
     );
-    if (sectionRef.current) observer.observe(sectionRef.current);
+
+    observer.observe(node);
+
     return () => {
-      if (sectionRef.current) observer.unobserve(sectionRef.current);
+      observer.unobserve(node);
     };
   }, [setActiveSection]);
+
+  const containerVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.15,
+      },
+    },
+  };
 
   return (
     <motion.section
       id='projects'
       ref={sectionRef}
       className='relative py-24 px-4 text-center max-w-6xl mx-auto bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-brand/5 via-transparent to-bg dark:from-brand/10 dark:to-bg'
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
+      initial='hidden'
+      whileInView='visible'
       transition={{ duration: 0.8 }}
       viewport={{ once: true }}
     >
@@ -40,11 +54,14 @@ export default function Projects() {
         built with performance, accessibility, and clean design in mind
       </p>
 
-      <div className='grid gap-10 md:grid-cols-2 xl:grid-cols-3 px-2'>
+      <motion.div
+        className='grid gap-10 md:grid-cols-2 xl:grid-cols-3 px-2'
+        variants={containerVariants}
+      >
         {projects.map((project, idx) => (
           <ProjectCard key={idx} {...project} />
         ))}
-      </div>
+      </motion.div>
     </motion.section>
   );
 }
