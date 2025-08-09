@@ -1,5 +1,5 @@
 // src/components/shared/SEO.tsx
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from '@dr.pogodin/react-helmet';
 
 interface SEOProps {
   title?: string;

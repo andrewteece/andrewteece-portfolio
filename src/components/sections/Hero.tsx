@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { ChevronDown, ArrowUp } from 'lucide-react';
 import { useEffect } from 'react';
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from '@dr.pogodin/react-helmet';
 
 export default function Hero() {
   useEffect(() => {
@@ -28,14 +28,14 @@ export default function Hero() {
             width={1600}
             height={900}
             style={{ width: '100%', height: 'auto' }}
-            className='w-full h-full object-cover opacity-20 dark:opacity-10 z-0'
+            className='z-0 object-cover w-full h-full opacity-20 dark:opacity-10'
             loading='eager'
             decoding='async'
             aria-hidden
           />
         </div>
 
-        <div className='relative z-10 max-w-4xl w-full flex flex-col items-center space-y-6'>
+        <div className='relative z-10 flex flex-col items-center w-full max-w-4xl space-y-6'>
           <motion.h1
             className='text-4xl md:text-6xl font-bold text-[var(--color-brand)]'
             initial={{ opacity: 0, y: -30 }}

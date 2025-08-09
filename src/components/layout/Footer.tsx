@@ -4,7 +4,7 @@ import { Mail, ArrowUp } from 'lucide-react';
 import { Download } from 'lucide-react';
 import SocialLinks from '../SocialLinks';
 import { ActiveSectionContext } from '../../context/ActiveSectionContext';
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from '@dr.pogodin/react-helmet';
 import { useEffect, useState, useRef, useContext } from 'react';
 
 export default function Footer() {
@@ -55,14 +55,14 @@ export default function Footer() {
           <img
             src='images/bg-waves.webp'
             alt='Footer mesh background'
-            className='w-full h-full object-cover opacity-20 dark:opacity-10 z-0'
+            className='z-0 object-cover w-full h-full opacity-20 dark:opacity-10'
             loading='eager'
             decoding='async'
             aria-hidden
           />
         </div>
 
-        <div className='relative z-10 flex flex-col items-center gap-10 text-center max-w-4xl mx-auto px-6'>
+        <div className='relative z-10 flex flex-col items-center max-w-4xl gap-10 px-6 mx-auto text-center'>
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -81,7 +81,7 @@ export default function Footer() {
             <p className='text-sm text-muted'>
               © {new Date().getFullYear()} Andrew Teece. All rights reserved.
             </p>
-            <div className='mt-2 flex flex-col sm:flex-row items-center justify-center gap-2'>
+            <div className='flex flex-col items-center justify-center gap-2 mt-2 sm:flex-row'>
               <a
                 href='https://github.com/andrewteece/andrewteece-portfolio/actions'
                 target='_blank'
@@ -111,7 +111,7 @@ export default function Footer() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.4 }}
-            className='flex flex-col sm:flex-row items-center justify-center flex-wrap gap-4 pt-4'
+            className='flex flex-col flex-wrap items-center justify-center gap-4 pt-4 sm:flex-row'
           >
             <SocialLinks className='justify-center gap-4' />
             <a

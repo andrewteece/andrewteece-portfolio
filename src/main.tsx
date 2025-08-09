@@ -1,7 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import { HelmetProvider } from 'react-helmet-async';
+import { HelmetProvider } from '@dr.pogodin/react-helmet';
 import { ThemeProvider } from './context/ThemeProvider.tsx';
 import { ActiveSectionProvider } from './context/ActiveSectionContext.tsx';
 import { Toaster } from 'react-hot-toast';

@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { Helmet, HelmetProvider } from '@dr.pogodin/react-helmet';
 import { motion } from 'framer-motion';
 
 import Header from './components/layout/Header';
@@ -31,7 +31,7 @@ export default function App() {
         />
       </Helmet>
 
-      <div className='min-h-screen bg-bg text-text font-sans transition-colors duration-300 dark:bg-bg dark:text-text'>
+      <div className='min-h-screen font-sans transition-colors duration-300 bg-bg text-text dark:bg-bg dark:text-text'>
         <Header />
         <ScrollToAnchor />
 
