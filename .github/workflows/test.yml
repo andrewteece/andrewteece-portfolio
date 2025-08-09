@@ -8,20 +8,24 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
       - name: 🛎️ Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 🧰 Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: '20'
+          cache: 'npm'
 
-      - name: 📦 Install dependencies (legacy mode)
-        run: npm install --legacy-peer-deps
+      - name: 📦 Install dependencies
+        run: npm ci
 
-      - name: 🧪 Run Vitest
+      - name: 🧪 Run Vitest (coverage)
+        env:
+          CI: 'true'
+          STORYBOOK_DISABLE_TELEMETRY: '1'
+          VITEST_STORYBOOK: '0'
         run: npm run coverage
 
       - name: 📤 Upload coverage to Codecov
@@ -30,3 +34,4 @@ jobs:
           files: ./coverage/clover.xml
           flags: unittests
           name: codecov-coverage
+          # token: ${{ secrets.CODECOV_TOKEN }} # uncomment if repo is private
