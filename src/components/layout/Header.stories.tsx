@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import Header from './Header';
 import { MemoryRouter } from 'react-router-dom';
-import { within, userEvent, expect } from '@storybook/test';
+import { within, userEvent, expect, waitFor } from '@storybook/test';
 
 const meta: Meta<typeof Header> = {
   title: 'Header/Header',
@@ -27,35 +27,37 @@ export const Default: Story = {};
 
 export const MobileMenuFlow: Story = {
   parameters: {
-    // SB v9 has viewport built-in; no addon import needed
     viewport: { defaultViewport: 'mobile1' },
-    // Ensure Chromatic also renders small
     chromatic: { viewports: [320] },
   },
 
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    // Open the menu
+    // Open menu
     const menuToggle = await canvas.findByRole('button', {
       name: /toggle menu/i,
     });
     await userEvent.click(menuToggle);
 
-    // Assert menu is open by finding the Close button
+    // Verify Close button is visible
     const closeBtn = await canvas.findByRole('button', { name: /close menu/i });
-    await expect(closeBtn).toBeInTheDocument(); // <-- awaited
+    await expect(closeBtn).toBeInTheDocument();
 
     // Close the menu
     await userEvent.click(closeBtn);
 
-    // Menu-closed assertion
-    await expect(
-      canvas.queryByRole('button', { name: /close menu/i })
-    ).toBeNull();
+    // Wait until the close button is removed from DOM
+    await waitFor(async () => {
+      await expect(
+        canvas.queryByRole('button', { name: /close menu/i })
+      ).toBeNull();
+    });
 
-    // Also exercise the theme toggle
-    const themeToggle = canvas.getByRole('button', { name: /toggle theme/i });
+    // Toggle theme as extra interaction
+    const themeToggle = await canvas.findByRole('button', {
+      name: /toggle theme/i,
+    });
     await userEvent.click(themeToggle);
   },
 };
