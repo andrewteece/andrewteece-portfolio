@@ -16,10 +16,7 @@ export default function Header() {
   }, [isDark]);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
-    };
-
+    const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener('scroll', handleScroll);
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
@@ -33,7 +30,7 @@ export default function Header() {
           : 'border-transparent backdrop-blur-md bg-[var(--color-bg)/70]'
       }`}
     >
-      <div className='max-w-7xl mx-auto px-4 py-4 flex justify-between items-center'>
+      <div className='flex items-center justify-between px-4 py-4 mx-auto max-w-7xl'>
         <motion.div
           className='text-xl font-extrabold tracking-tight text-[var(--color-brand)] font-[Outfit,sans-serif]'
           initial={{ opacity: 0, y: -10 }}
@@ -43,20 +40,24 @@ export default function Header() {
           Andrew <span className='opacity-80'>Teece</span>
         </motion.div>
 
-        <nav className='hidden md:flex items-center gap-6 text-sm'>
+        {/* Desktop nav */}
+        <nav className='items-center hidden gap-6 text-sm md:flex'>
           <NavLinks onClick={() => setMenuOpen(false)} />
           <ThemeToggle isDark={isDark} toggle={() => setIsDark(!isDark)} />
         </nav>
 
-        <div className='md:hidden flex items-center gap-3'>
+        {/* Mobile nav button */}
+        <div className='flex items-center gap-3 md:hidden'>
           <ThemeToggle isDark={isDark} toggle={() => setIsDark(!isDark)} />
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label='Toggle menu'
-            className='p-1'
-          >
-            {menuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          {!menuOpen && (
+            <button
+              onClick={() => setMenuOpen(true)}
+              aria-label='Toggle menu'
+              className='p-1'
+            >
+              <Menu size={24} />
+            </button>
+          )}
         </div>
       </div>
 
@@ -64,7 +65,7 @@ export default function Header() {
         {menuOpen && (
           <>
             <motion.div
-              className='fixed inset-0 bg-black/50 z-30'
+              className='fixed inset-0 z-30 bg-black/50'
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -79,6 +80,7 @@ export default function Header() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ type: 'spring', stiffness: 160, damping: 22 }}
             >
+              {/* Close button only when open */}
               <motion.div
                 className='flex justify-end w-full'
                 initial={{ opacity: 0, rotate: -90 }}
@@ -89,7 +91,10 @@ export default function Header() {
                 <button
                   onClick={() => setMenuOpen(false)}
                   aria-label='Close menu'
-                  className='p-1 text-[var(--color-accent)]'
+                  className='p-1 text-[var(--color-accent)] rounded-md 
+                    duration-200 hover:opacity-85 
+                    transform transition-transform hover:scale-[1.03] focus:outline-none 
+                    focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]/40'
                 >
                   <X size={24} />
                 </button>
@@ -101,11 +106,7 @@ export default function Header() {
                 animate='visible'
                 variants={{
                   hidden: {},
-                  visible: {
-                    transition: {
-                      staggerChildren: 0.1,
-                    },
-                  },
+                  visible: { transition: { staggerChildren: 0.1 } },
                 }}
               >
                 <NavLinks onClick={() => setMenuOpen(false)} />
