@@ -13,6 +13,7 @@ const config: StorybookConfig = {
     '@storybook/addon-vitest',
     '@storybook/addon-themes',
     '@storybook/addon-links',
+    '@storybook/addon-viewport',
   ],
   staticDirs: ['../public'],
   framework: {

@@ -1,17 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import NavLinks from './NavLinks';
-import { MemoryRouter } from 'react-router-dom';
+// import { MemoryRouter } from 'react-router-dom';
 
 const meta = {
   title: 'Header/NavLinks',
   component: NavLinks,
-  decorators: [
-    (Story) => (
-      <MemoryRouter initialEntries={['/']}>
-        <Story />
-      </MemoryRouter>
-    ),
-  ],
+  // decorators: [
+  //   (Story) => (
+  //     <MemoryRouter initialEntries={['/']}>
+  //       <Story />
+  //     </MemoryRouter>
+  //   ),
+  // ],
   args: {
     activeSection: '#home',
   },
