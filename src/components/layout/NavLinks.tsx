@@ -4,8 +4,11 @@ import { cn } from '../../lib/utils';
 import { useActiveSection } from '../../context/ActiveSectionContext';
 
 interface NavLinksProps {
+  activeSection?: string;
   onClick?: () => void;
 }
+
+export type { NavLinksProps };
 
 const navItems = [
   { href: 'home', label: 'Home' },
