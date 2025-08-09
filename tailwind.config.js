@@ -1,7 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: 'class', // Explicit class-based dark mode
-  content: ['./index.html', './src/**/*.{ts,tsx}', './src/styles/index.css'],
+  content: [
+    './index.html',
+    './src/**/*.{ts,tsx}',
+    './src/styles/index.css',
+    './src/**/*.stories.@(ts|tsx|mdx)',
+  ],
+
   theme: {
     extend: {
       colors: {
