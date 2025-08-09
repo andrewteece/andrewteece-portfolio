@@ -1,10 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import Header from './Header';
+import { MemoryRouter } from 'react-router-dom';
 import { within, userEvent, expect } from '@storybook/test';
 
 const meta: Meta<typeof Header> = {
   title: 'Header/Header',
   component: Header,
+  decorators: [
+    (Story) => (
+      <MemoryRouter initialEntries={['/']}>
+        <Story />
+      </MemoryRouter>
+    ),
+  ],
   parameters: {
     layout: 'fullscreen',
     viewport: { defaultViewport: 'mobile1' },
@@ -18,6 +26,13 @@ type Story = StoryObj<typeof Header>;
 export const Default: Story = {};
 
 export const MobileMenuFlow: Story = {
+  parameters: {
+    // SB v9 has viewport built-in; no addon import needed
+    viewport: { defaultViewport: 'mobile1' },
+    // Ensure Chromatic also renders small
+    chromatic: { viewports: [320] },
+  },
+
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 

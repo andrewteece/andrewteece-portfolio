@@ -15,7 +15,7 @@ const navItems = [
   { href: 'techstack', label: 'Tech Stack' },
   { href: 'about', label: 'About' },
   { href: 'projects', label: 'Projects' },
-  { href: 'footer', label: 'Contact' },
+  { href: 'contact', label: 'Contact' },
 ];
 
 export default function NavLinks({ onClick }: NavLinksProps) {
