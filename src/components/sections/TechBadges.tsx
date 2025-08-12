@@ -77,7 +77,6 @@ const allTech = [
     color: 'bg-[#0C344B] text-white',
     glow: 'shadow-[0_0_8px_#0C344B]',
   },
-
   {
     name: 'MongoDB',
     icon: <SiMongodb />,
@@ -105,6 +104,14 @@ const allTech = [
     link: 'https://sb9-showcase-b6whfr8e5-andrewteeces-projects.vercel.app/storybook/',
     pulse: true, // synced 3s pulse
   },
+  // NEW — Clerk
+  {
+    name: 'Clerk',
+    icon: <img src='/icons/clerk.svg' alt='Clerk' className='w-4 h-4' />,
+    color: 'bg-gradient-to-r from-[#6E56CF] to-[#A78BFA] text-white',
+    glow: 'shadow-[0_0_8px_#A78BFA]',
+    link: 'https://clerk.com',
+  },
 ];
 
 export default function TechBadges() {
@@ -122,8 +129,7 @@ export default function TechBadges() {
         const badge = (
           <motion.span
             key={name}
-            className={`flex-shrink-0 flex items-center gap-2 px-4 py-1 rounded-full text-sm font-medium border border-white/20 ${glow} shadow-sm
-                        transition-transform duration-300 ease-out hover:scale-105 hover:brightness-110 ${color}`}
+            className={`flex-shrink-0 flex items-center gap-2 px-4 py-1 rounded-full text-sm font-medium border border-white/20 ${glow} shadow-sm transition-transform duration-300 ease-out hover:scale-105 hover:brightness-110 ${color}`}
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{
               opacity: 1,
@@ -148,7 +154,7 @@ export default function TechBadges() {
                     boxShadow: {
                       repeat: Infinity,
                       repeatType: 'mirror',
-                      duration: 3, // sync with hero & CTA
+                      duration: 3,
                       ease: 'easeInOut',
                     },
                   }

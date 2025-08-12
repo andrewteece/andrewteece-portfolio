@@ -22,8 +22,12 @@ import {
   SiAdobephotoshop,
   SiStorybook,
 } from 'react-icons/si';
-
 import { type ReactNode } from 'react';
+
+// Clerk SVG icon from /public/icons/
+const ClerkIcon = () => (
+  <img src='/icons/clerk.svg' alt='Clerk' className='w-5 h-5' />
+);
 
 type Tech = {
   label: string;
@@ -96,6 +100,14 @@ const groups: Record<string, Tech[]> = {
       color: 'bg-[#007FFF] text-white',
       glow: 'shadow-[0_0_8px_#007FFF]',
     },
+    // NEW — Clerk
+    {
+      label: 'Clerk',
+      icon: <ClerkIcon />,
+      color: 'bg-gradient-to-r from-[#6E56CF] to-[#A78BFA] text-white',
+      glow: 'shadow-[0_0_8px_#A78BFA]',
+      link: 'https://clerk.com',
+    },
   ],
   'Backend / Tools': [
     {
@@ -104,7 +116,6 @@ const groups: Record<string, Tech[]> = {
       color: 'bg-[#0C344B] text-white',
       glow: 'shadow-[0_0_8px_#0C344B]',
     },
-
     {
       label: 'PostgreSQL',
       icon: <SiPostgresql />,
@@ -186,7 +197,7 @@ function Badge({ label, icon, color, glow, link, pulse }: Tech) {
               boxShadow: {
                 repeat: Infinity,
                 repeatType: 'mirror',
-                duration: 3, // sync with hero & CTA
+                duration: 3,
                 ease: 'easeInOut',
               },
             },
