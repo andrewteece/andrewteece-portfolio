@@ -9,12 +9,12 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    title: 'ProShop',
-    tech: 'NextJS, PostgreSQL, ShadCN',
-    description: 'NextJS eCommerce',
-    github: 'https://github.com/andrewteece/prostore',
-    demo: 'https://prostore-navy-ten.vercel.app/',
-    image: 'images/proShop.webp',
+    title: 'Storybook v9 Showcase',
+    tech: 'Vite, React(TS), Storybook',
+    description: 'Storybook v9 Showcase',
+    github: 'https://github.com/andrewteece/sb9-showcase',
+    demo: 'https://sb9-showcase-b6whfr8e5-andrewteeces-projects.vercel.app/',
+    image: 'images/Storybook.webp',
   },
   {
     title: 'Product-Feedback App',
