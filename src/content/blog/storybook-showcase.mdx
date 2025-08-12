@@ -1,0 +1,83 @@
+---
+title: "Storybook Showcase — Building a Visual Component Library"
+date: "2025-08-12"
+description: "A behind-the-scenes look at how I built and deployed the Storybook Showcase, a live, interactive component documentation site for my portfolio."
+coverImage: "/images/blog/storybook-showcase-cover.webp"
+tags: ["Storybook", "React", "UI Design", "Component Library", "Portfolio"]
+---
+
+![Storybook Showcase preview](/images/blog/storybook-showcase-cover.webp)
+
+## Introduction
+
+As part of my ongoing effort to create a professional and transparent portfolio, I wanted a way for potential employers, collaborators, and clients to **interactively explore my React components**.  
+That’s where the **Storybook Showcase** came in — a dedicated environment to present, test, and document my design system in real-time.
+
+## Why Storybook?
+
+Storybook is a developer’s playground for UI components.  
+It allowed me to:
+
+- Build and preview components in isolation
+- Document props, states, and variations
+- Run automated accessibility and interaction tests
+- Share an interactive gallery without needing to spin up the full app
+
+In short, it’s the perfect way to **demonstrate both design and engineering skills**.
+
+## Project Goals
+
+When I started this build, my main objectives were:
+
+1. **Component Transparency** – Let people see exactly how I build interfaces.
+2. **Design System Consistency** – Ensure a unified visual language across projects.
+3. **Developer Experience** – Make it easy to extend and maintain over time.
+4. **Live Deployment** – Host a public version so anyone can explore it.
+
+## Tech Stack
+
+The Storybook Showcase was built with the following tools:
+
+- **React + TypeScript** – For strongly typed, reusable components
+- **Tailwind CSS** – For a scalable utility-first styling approach
+- **Framer Motion** – To add smooth, polished animations
+- **Lucide Icons** – For modern, lightweight icons
+- **Storybook 9** – For component documentation, controls, and testing
+- **Vercel** – For fast, reliable hosting
+
+## Key Features
+
+### 🔍 Component Previews  
+Every component is displayed in isolation, with live previews and props controls.
+
+### 🎨 Theming & Dark Mode  
+I used a `ThemeProvider` and Tailwind’s class-based dark mode to preview components in both light and dark themes.
+
+### 🧪 Accessibility & Play Functions  
+Storybook’s test runner checks components for accessibility issues, and `play()` functions simulate real user interactions.
+
+### 📱 Responsive Layout Testing  
+Built-in viewport tools let viewers see how components behave at different screen sizes.
+
+## Deployment
+
+The Storybook build is deployed via **Vercel**, ensuring lightning-fast loading and easy version updates.  
+I also disabled the old GitHub Pages workflow to keep things clean and consistent.
+
+**Live Demo:** [View the Storybook Showcase](https://sb9-showcase-2hjyf95gd-andrewteeces-projects.vercel.app/)
+
+## Lessons Learned
+
+- **Storybook 9’s new workflow** integrates beautifully with modern CI/CD pipelines.
+- Accessibility tests can catch small UI issues before they reach production.
+- Component-driven documentation makes onboarding and collaboration much smoother.
+
+## Conclusion
+
+The Storybook Showcase isn’t just a “nice-to-have” — it’s now an integral part of how I present my work.  
+It proves that my design decisions are **intentional, tested, and built to scale**.
+
+---
+
+**💡 Tip for other developers:** If you’re building a portfolio, consider adding a Storybook instance. It shows your code quality in a way screenshots never can.
+
