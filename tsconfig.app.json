@@ -17,7 +17,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-    "types": ["vitest", "node"]
+    "types": ["vitest", "node", "react", "react-dom"]
   },
   "include": ["src", "vitest.setup.ts", "**/__tests__/**/*.{ts,tsx}"]
 }

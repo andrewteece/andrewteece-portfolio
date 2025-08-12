@@ -6,8 +6,24 @@ export default function HeroHeader() {
       <motion.h1
         className='text-4xl md:text-5xl font-extrabold tracking-tight text-[var(--color-brand)] font-display leading-tight z-10'
         initial={{ opacity: 0, y: -30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
+        animate={{
+          opacity: 1,
+          y: 0,
+          textShadow: [
+            '0 0 8px var(--color-brand)',
+            '0 0 16px var(--color-brand)',
+            '0 0 8px var(--color-brand)',
+          ],
+        }}
+        transition={{
+          duration: 0.6,
+          textShadow: {
+            repeat: Infinity,
+            repeatType: 'mirror',
+            duration: 3, // sync with CTA & Storybook badges
+            ease: 'easeInOut',
+          },
+        }}
       >
         Andrew Teece
       </motion.h1>
