@@ -1,11 +1,41 @@
 // src/components/sections/Hero.tsx
 import { motion } from 'framer-motion';
 import { ChevronDown, ArrowUp } from 'lucide-react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
+// Local types for requestIdleCallback (not in all TS lib.dom versions)
+interface IdleDeadline {
+  readonly didTimeout: boolean;
+  timeRemaining(): number;
+}
+type RequestIdleCallback = (
+  cb: (dl: IdleDeadline) => void,
+  opts?: { timeout?: number }
+) => number;
 
 export default function Hero() {
   useEffect(() => {
     document.documentElement.style.scrollBehavior = 'smooth';
+  }, []);
+
+  const [showBg, setShowBg] = useState(false);
+
+  useEffect(() => {
+    const scheduleIdle = (cb: () => void) => {
+      if (typeof window !== 'undefined') {
+        const w = window as Window & {
+          requestIdleCallback?: RequestIdleCallback;
+        };
+        if (typeof w.requestIdleCallback === 'function') {
+          w.requestIdleCallback(() => cb());
+          return;
+        }
+      }
+      // Fallback if RIC is unavailable
+      setTimeout(cb, 0);
+    };
+
+    scheduleIdle(() => setShowBg(true));
   }, []);
 
   return (
@@ -16,12 +46,14 @@ export default function Hero() {
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
     >
-      {/* Decorative background moved to CSS so it's NOT a candidate for LCP */}
-      <div
-        aria-hidden
-        className='absolute inset-0 z-0 bg-center bg-cover pointer-events-none opacity-20 dark:opacity-10'
-        style={{ backgroundImage: "url('/images/bg-waves.webp')" }}
-      />
+      {/* Decorative background: injected AFTER first paint so it can't be LCP */}
+      {showBg && (
+        <div
+          aria-hidden
+          className='absolute inset-0 z-0 bg-center bg-cover pointer-events-none opacity-20 dark:opacity-10'
+          style={{ backgroundImage: "url('/images/bg-waves.webp')" }}
+        />
+      )}
 
       <div className='relative z-10 flex flex-col items-center w-full max-w-4xl space-y-6'>
         <motion.h1
@@ -69,7 +101,6 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      {/* Scroll cue to next section */}
       <a
         href='#techstack'
         className='absolute bottom-6 text-[var(--color-brand)] dark:text-[var(--color-accent)] animate-bounce'
@@ -78,7 +109,6 @@ export default function Hero() {
         <ChevronDown size={28} />
       </a>
 
-      {/* Back to top button */}
       <a
         href='#home'
         className='fixed bottom-6 right-6 bg-[var(--color-brand)] text-white p-2 rounded-full shadow-lg hover:bg-opacity-80 transition-opacity'
