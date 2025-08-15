@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import { Helmet, HelmetProvider } from '@dr.pogodin/react-helmet';
+import { Helmet } from '@dr.pogodin/react-helmet'; // ← no Provider here
 import { motion } from 'framer-motion';
 
 import Header from './components/layout/Header';
@@ -19,7 +19,7 @@ import NotFound from './pages/NotFound';
 
 export default function App() {
   return (
-    <HelmetProvider>
+    <>
       <SEO />
       <Helmet>
         <link rel='preload' as='image' href='/images/bg-waves.webp' />
@@ -54,11 +54,11 @@ export default function App() {
           <Route path='/blog' element={<Blog />} />
           <Route path='/blog/:slug' element={<BlogPost />} />
           <Route path='/styleguide' element={<StyleGuide />} />
-          <Route path='*' element={<NotFound />} />
+          <Route path='* ' element={<NotFound />} />
         </Routes>
 
         <Footer />
       </div>
-    </HelmetProvider>
+    </>
   );
 }

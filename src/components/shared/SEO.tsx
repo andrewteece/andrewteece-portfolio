@@ -1,72 +1,120 @@
 // src/components/shared/SEO.tsx
 import { Helmet } from '@dr.pogodin/react-helmet';
 
-interface SEOProps {
+type SEOType = 'website' | 'article';
+
+export interface SEOProps {
   title?: string;
   description?: string;
-  image?: string;
-  url?: string;
+  image?: string; // absolute or relative
+  url?: string; // absolute or relative
+  type?: SEOType; // 'website' | 'article'
+  publishedTime?: string;
+  modifiedTime?: string;
+  authorName?: string;
+  tags?: string[];
+  siteName?: string;
+  canonical?: string; // ✅ allow explicit canonical override
+}
+
+const SITE_URL = 'https://andrewteece.com';
+const DEFAULT_TITLE = 'Andrew Teece | Front-End Developer';
+const DEFAULT_DESC =
+  'Experienced front-end developer delivering performant, accessible, and beautiful web apps.';
+const DEFAULT_IMAGE = '/images/social-preview.jpg';
+
+function toAbs(input?: string): string | undefined {
+  if (!input) return undefined;
+  try {
+    return input.startsWith('http')
+      ? input
+      : new URL(input, SITE_URL).toString();
+  } catch {
+    return input;
+  }
 }
 
 export default function SEO({
-  title = 'Andrew Teece | Front-End Developer',
-  description = 'Experienced front-end developer delivering performant, accessible, and beautiful web apps.',
-  image = 'https://andrewteece.com/images/social-preview.jpg',
-  url = 'https://andrewteece.com',
+  title = DEFAULT_TITLE,
+  description = DEFAULT_DESC,
+  image = DEFAULT_IMAGE,
+  url = SITE_URL,
+  type = 'website',
+  publishedTime,
+  modifiedTime,
+  authorName = 'Andrew Teece',
+  tags = [],
+  siteName = 'Andrew Teece',
+  canonical,
 }: SEOProps) {
-  const structuredData = {
-    '@context': 'https://schema.org',
-    '@type': 'Person',
-    name: 'Andrew Teece',
-    url,
-    sameAs: [
-      'https://github.com/andrewteece',
-      'https://www.linkedin.com/in/andrew-teece/',
-    ],
-    jobTitle: 'Front-End Web Developer',
-    image,
-  };
+  const finalUrl = toAbs(url) ?? SITE_URL;
+  const finalImage = toAbs(image) ?? toAbs(DEFAULT_IMAGE)!;
+  const canonicalUrl = toAbs(canonical) ?? finalUrl;
+
+  const isArticle = type === 'article';
+
+  const jsonLd = isArticle
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: title,
+        description,
+        image: [finalImage],
+        datePublished: publishedTime,
+        dateModified: modifiedTime ?? publishedTime,
+        author: [{ '@type': 'Person', name: authorName }],
+        mainEntityOfPage: { '@type': 'WebPage', '@id': finalUrl },
+        publisher: { '@type': 'Person', name: authorName },
+      }
+    : {
+        '@context': 'https://schema.org',
+        '@type': 'WebSite',
+        name: siteName,
+        url: SITE_URL,
+      };
 
   return (
     <Helmet>
-      {/* Standard Meta */}
+      {/* Standard */}
       <title>{title}</title>
       <meta name='description' content={description} />
-      <meta name='author' content='Andrew Teece' />
-      <meta name='viewport' content='width=device-width, initial-scale=1' />
-      <link rel='icon' href='/favicon.ico' />
+      <link rel='canonical' href={canonicalUrl} />
 
       {/* Open Graph */}
-      <meta property='og:type' content='article' />
+      <meta property='og:site_name' content={siteName} />
+      <meta property='og:type' content={type} />
       <meta property='og:title' content={title} />
       <meta property='og:description' content={description} />
-      <meta property='og:image' content={image} />
-      <meta property='og:url' content={url} />
+      <meta property='og:image' content={finalImage} />
+      <meta property='og:url' content={finalUrl} />
 
-      {/* Twitter Card */}
+      {/* Article extras */}
+      {isArticle && (
+        <>
+          {publishedTime && (
+            <meta property='article:published_time' content={publishedTime} />
+          )}
+          {(modifiedTime ?? publishedTime) && (
+            <meta
+              property='article:modified_time'
+              content={modifiedTime ?? publishedTime}
+            />
+          )}
+          <meta property='article:author' content={authorName} />
+          {tags.map((t) => (
+            <meta key={t} property='article:tag' content={t} />
+          ))}
+        </>
+      )}
+
+      {/* Twitter */}
       <meta name='twitter:card' content='summary_large_image' />
       <meta name='twitter:title' content={title} />
       <meta name='twitter:description' content={description} />
-      <meta name='twitter:image' content={image} />
+      <meta name='twitter:image' content={finalImage} />
 
-      {/* Apple Meta Tags */}
-      <meta name='apple-mobile-web-app-capable' content='yes' />
-      <meta name='apple-mobile-web-app-status-bar-style' content='default' />
-      <meta name='apple-mobile-web-app-title' content='Andrew Teece' />
-      <link rel='apple-touch-icon' href='/apple-touch-icon.webp' />
-
-      {/* JSON-LD Structured Data */}
-      <script type='application/ld+json'>
-        {JSON.stringify(structuredData)}
-      </script>
-
-      {/* RSS Feed */}
-      <link
-        rel='alternate'
-        type='application/rss+xml'
-        title='RSS Feed'
-        href='/feed.xml'
-      />
+      {/* JSON-LD */}
+      <script type='application/ld+json'>{JSON.stringify(jsonLd)}</script>
     </Helmet>
   );
 }

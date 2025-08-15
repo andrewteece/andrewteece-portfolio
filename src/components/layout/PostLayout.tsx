@@ -1,38 +1,97 @@
+// src/components/layout/PostLayout.tsx
+import type { PropsWithChildren } from 'react';
+import SEO from '../shared/SEO';
 import type { BlogPost } from '../../types/blog';
 
+type Frontmatter = BlogPost & {
+  imageAlt?: string;
+  readingTime?: string;
+};
+
 interface PostLayoutProps {
-  frontmatter: BlogPost;
+  frontmatter: Frontmatter;
   children: React.ReactNode;
 }
 
-export default function PostLayout({ frontmatter, children }: PostLayoutProps) {
-  return (
-    <article className='max-w-3xl mx-auto px-4 py-16'>
-      <header className='mb-10'>
-        <h1 className='text-4xl font-bold text-[var(--color-brand)] mb-2'>
-          {frontmatter.title}
-        </h1>
-        <p className='text-sm text-gray-500'>{frontmatter.date}</p>
-        {frontmatter.image && (
-          <img
-            src={frontmatter.image}
-            alt={frontmatter.title}
-            className='rounded-lg w-full max-h-72 object-cover border border-[var(--color-border)] mb-6'
-          />
-        )}
-        {frontmatter.excerpt && (
-          <p className='mt-2 text-[var(--color-text)] text-base italic'>
-            {frontmatter.excerpt}
-          </p>
-        )}
-      </header>
+const SITE_URL = 'https://andrewteece.com';
 
-      <section className='prose prose-neutral dark:prose-invert max-w-none'>
-        {/* <div style={{ background: 'lightyellow', padding: '1rem' }}>
-          Debug: children go here
-        </div> */}
-        {children}
-      </section>
-    </article>
+export default function PostLayout({
+  frontmatter,
+  children,
+}: PropsWithChildren<PostLayoutProps>) {
+  const {
+    title,
+    slug,
+    date,
+    excerpt,
+    image,
+    imageAlt,
+    tags = [],
+    readingTime,
+  } = frontmatter;
+
+  const canonical = `${SITE_URL}/blog/${slug}`;
+
+  return (
+    <>
+      {/* SEO: article-aware OpenGraph/Twitter + JSON-LD */}
+      <SEO
+        title={`${title} — Blog`}
+        description={excerpt}
+        image={image}
+        url={canonical}
+        canonical={canonical}
+        type='article'
+        publishedTime={date}
+        tags={tags}
+        authorName='Andrew Teece'
+      />
+
+      <main className='max-w-3xl px-4 py-16 mx-auto'>
+        <header className='mb-6'>
+          <h1 className='text-3xl md:text-4xl font-extrabold tracking-tight text-[var(--color-brand)]'>
+            {title}
+          </h1>
+
+          <div className='mt-2 flex flex-wrap items-center gap-2 text-sm text-[var(--color-text)]/70'>
+            <time>
+              {new Date(date).toLocaleDateString(undefined, {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </time>
+            {readingTime && (
+              <>
+                <span aria-hidden>•</span>
+                <span>⏱️ {readingTime}</span>
+              </>
+            )}
+            <span aria-hidden>•</span>
+            <span>✍️ Andrew Teece</span>
+          </div>
+        </header>
+
+        {image && (
+          <figure className='not-prose mb-8 overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] shadow-sm'>
+            <div className='aspect-[16/9] w-full overflow-hidden'>
+              <img
+                src={image}
+                alt={imageAlt ?? title}
+                className='object-cover w-full h-full'
+                loading='eager'
+                decoding='async'
+                width={1280}
+                height={720}
+              />
+            </div>
+          </figure>
+        )}
+
+        <article className='prose prose-neutral dark:prose-invert max-w-none'>
+          {children}
+        </article>
+      </main>
+    </>
   );
 }
