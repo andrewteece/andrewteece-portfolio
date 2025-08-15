@@ -1,4 +1,13 @@
-import { useEffect, useState, type ComponentType, Suspense, lazy } from 'react';
+// src/pages/BlogPost.tsx
+import {
+  useEffect,
+  useState,
+  type ComponentType,
+  Suspense,
+  lazy,
+  useRef,
+  type ComponentProps,
+} from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { MDXProvider } from '@mdx-js/react';
 import type { MDXComponents } from 'mdx/types';
@@ -8,13 +17,6 @@ import AuthorBlock from '../components/layout/AuthorBlock';
 
 const postFiles = import.meta.glob<BlogPostModule>('/src/content/blog/*.mdx');
 
-// MDX component overrides
-const components: MDXComponents = {
-  h1: (props) => <h1 className='text-3xl font-bold mt-6 mb-4' {...props} />,
-  a: (props) => <a className='text-blue-600 hover:underline' {...props} />,
-  code: (props) => <code className='bg-muted px-1 rounded' {...props} />,
-};
-
 export default function BlogPost() {
   const { slug } = useParams();
   const [post, setPost] = useState<BlogPost | null>(null);
@@ -22,82 +24,79 @@ export default function BlogPost() {
     ComponentType<Record<string, unknown>>
   > | null>(null);
 
+  // must be before any early return
+  const skippedHeroRef = useRef(false);
+
   useEffect(() => {
     if (!slug) return;
-
-    const matchedPath = Object.keys(postFiles).find((path) =>
-      path.includes(`${slug}.mdx`)
+    const matchedPath = Object.keys(postFiles).find((p) =>
+      p.includes(`${slug}.mdx`)
     );
+    if (!matchedPath) return;
 
-    if (!matchedPath) {
-      console.warn('No MDX file matched this slug:', slug);
-      return;
-    }
+    (async () => {
+      const module = await postFiles[matchedPath]();
+      const fm =
+        module.frontmatter ??
+        module.meta?.frontmatter ??
+        module.attributes ??
+        {};
 
-    const loadPost = async () => {
-      try {
-        const module = await postFiles[matchedPath]();
+      const mdxString = module?.default?.toString?.() ?? '';
+      const words = mdxString.split(/\s+/).length;
+      const readingTime = `${Math.max(1, Math.round(words / 200))} min read`;
 
-        const frontmatter =
-          module.frontmatter ??
-          module.meta?.frontmatter ??
-          module.attributes ??
-          {};
+      setPost({
+        title: fm.title ?? 'Untitled',
+        slug,
+        date: fm.date ?? 'Unknown date',
+        excerpt: fm.excerpt ?? '',
+        image: fm.image,
+        tags: fm.tags ?? [],
+        readingTime,
+      });
 
-        const mdxString = module?.default?.toString?.() ?? '';
-        const wordCount = mdxString.split(/\s+/).length;
-        const minutes = Math.max(1, Math.round(wordCount / 200));
-        const readingTime = `${minutes} min read`;
-
-        setPost({
-          title: frontmatter.title ?? 'Untitled',
-          slug,
-          date: frontmatter.date ?? 'Unknown date',
-          excerpt: frontmatter.excerpt ?? '',
-          image: frontmatter.image,
-          tags: frontmatter.tags ?? [],
-          readingTime,
-        });
-
-        // 🔥 Use React.lazy so hooks stay in sync
-        const LazyComponent = lazy(async () => ({
-          default: module.default as ComponentType<Record<string, unknown>>,
-        }));
-
-        setComponent(() => LazyComponent);
-      } catch (err) {
-        console.error('Error loading post:', err);
-      }
-    };
-
-    loadPost();
+      const Lazy = lazy(async () => ({
+        default: module.default as ComponentType<Record<string, unknown>>,
+      }));
+      setComponent(() => Lazy);
+    })().catch((e) => console.error(e));
   }, [slug]);
 
   if (!post || !Component) {
     return (
-      <main className='max-w-3xl mx-auto px-4 py-20 text-center'>
+      <main className='max-w-3xl px-4 py-20 mx-auto text-center'>
         <p>Loading post...</p>
       </main>
     );
   }
 
+  // MDX overrides:
+  // - Demote any body <h1> to <h2> so layout H1 stays unique
+  // - Skip the first <img> if it matches the frontmatter hero
+  const components: MDXComponents = {
+    h1: (props: ComponentProps<'h1'>) => <h2 {...props} />, // layout owns the H1
+    img: (props: ComponentProps<'img'>) => {
+      const src = typeof props.src === 'string' ? props.src : undefined;
+      const isDuplicateHero = !!post.image && src === post.image;
+      if (isDuplicateHero && !skippedHeroRef.current) {
+        skippedHeroRef.current = true;
+        return null;
+      }
+      return <img {...props} />;
+    },
+    code: (props: ComponentProps<'code'>) => (
+      <code
+        className='px-1 py-0.5 rounded bg-[var(--color-bg-alt)]'
+        {...props}
+      />
+    ),
+  };
+
   return (
     <PostLayout frontmatter={post}>
+      {/* Body only; layout renders title/meta/hero */}
       <article className='prose prose-neutral dark:prose-invert max-w-none'>
-        <h1 className='text-4xl font-bold mb-2'>{post.title}</h1>
-
-        <p className='text-muted-foreground text-sm mb-6'>
-          {new Date(post.date).toLocaleDateString(undefined, {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-          })}
-        </p>
-
-        <p className='text-sm text-muted-foreground mb-6'>
-          ⏱️ {post.readingTime} • ✍️ Andrew Teece
-        </p>
-
         <MDXProvider components={components}>
           <Suspense fallback={<p>Loading content...</p>}>
             <Component />
@@ -105,11 +104,11 @@ export default function BlogPost() {
         </MDXProvider>
 
         {post.tags.length > 0 && (
-          <div className='mt-10 flex flex-wrap gap-2 text-sm'>
+          <div className='flex flex-wrap gap-2 mt-10 text-sm not-prose'>
             {post.tags.map((tag) => (
               <span
                 key={tag}
-                className='bg-muted text-muted-foreground px-2 py-0.5 rounded'
+                className='rounded-full border border-[var(--color-border)] px-2 py-0.5 text-[var(--color-text)]/75'
               >
                 #{tag}
               </span>
@@ -119,10 +118,10 @@ export default function BlogPost() {
 
         <AuthorBlock />
 
-        <div className='mt-10'>
+        <div className='mt-10 not-prose'>
           <Link
             to='/blog'
-            className='inline-block text-sm font-medium text-primary hover:underline underline-offset-4'
+            className='inline-block text-sm font-medium text-[var(--color-brand)] hover:underline underline-offset-4'
           >
             ← Back to Blog
           </Link>
