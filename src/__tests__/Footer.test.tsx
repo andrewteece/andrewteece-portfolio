@@ -8,6 +8,5 @@ test('renders footer with CI badges', () => {
       <Footer />
     </HelmetProvider>
   );
-
-  expect(screen.getByText(/©/i)).toBeInTheDocument(); // or whatever assertion makes sense
+  expect(screen.getByText(/©/i)).toBeInTheDocument();
 });

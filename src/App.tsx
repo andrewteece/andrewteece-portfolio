@@ -1,5 +1,6 @@
+// src/App.tsx
 import { Routes, Route } from 'react-router-dom';
-import { Helmet } from '@dr.pogodin/react-helmet'; // ← no Provider here
+
 import { motion } from 'framer-motion';
 
 import Header from './components/layout/Header';
@@ -17,19 +18,15 @@ import BlogPost from './pages/BlogPost';
 import StyleGuide from './pages/StyleGuide';
 import NotFound from './pages/NotFound';
 
+import { useGaPageViews } from './hooks/useGaPageViews'; // ← add this
+
 export default function App() {
+  // GA4 SPA pageviews
+  useGaPageViews('G-HRXLND5LVK');
+
   return (
     <>
       <SEO />
-      <Helmet>
-        <link rel='preload' as='image' href='/images/bg-waves.webp' />
-        <link
-          rel='alternate'
-          type='application/rss+xml'
-          title='RSS Feed'
-          href='/feed.xml'
-        />
-      </Helmet>
 
       <div className='min-h-screen font-sans transition-colors duration-300 bg-bg text-text dark:bg-bg dark:text-text'>
         <Header />
@@ -54,7 +51,8 @@ export default function App() {
           <Route path='/blog' element={<Blog />} />
           <Route path='/blog/:slug' element={<BlogPost />} />
           <Route path='/styleguide' element={<StyleGuide />} />
-          <Route path='* ' element={<NotFound />} />
+          <Route path='*' element={<NotFound />} />{' '}
+          {/* ← removed stray space */}
         </Routes>
 
         <Footer />

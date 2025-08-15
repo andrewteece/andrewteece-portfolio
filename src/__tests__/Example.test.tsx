@@ -7,11 +7,11 @@ import App from '../App';
 test('renders the app', () => {
   render(
     <MemoryRouter>
-      <ThemeProvider>
-        <HelmetProvider>
+      <HelmetProvider>
+        <ThemeProvider>
           <App />
-        </HelmetProvider>
-      </ThemeProvider>
+        </ThemeProvider>
+      </HelmetProvider>
     </MemoryRouter>
   );
 

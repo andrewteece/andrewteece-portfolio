@@ -2,11 +2,87 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="./favicon.png" type="image/png" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
 
-    <!-- Google tag (gtag.js) -->
+    <!-- Primary -->
+    <title>Andrew Teece | Front-end Web Developer</title>
+    <meta
+      name="description"
+      content="Andrew Teece builds responsive, performant, and accessible web experiences with React, TypeScript, and Tailwind CSS."
+    />
+    <link rel="canonical" href="https://andrewteece.com/" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="RSS Feed"
+      href="/feed.xml"
+    />
+    <link rel="stylesheet" href="/src/styles/index.css" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Andrew Teece" />
+    <meta
+      property="og:title"
+      content="Andrew Teece | Front-End Web Developer"
+    />
+    <meta
+      property="og:description"
+      content="Crafting performant, accessible web experiences with React, TypeScript, and Tailwind CSS."
+    />
+    <meta
+      property="og:image"
+      content="https://andrewteece.com/images/social-preview.jpg"
+    />
+    <meta property="og:url" content="https://andrewteece.com/" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Andrew Teece | Front-End Developer" />
+    <meta
+      name="twitter:description"
+      content="Modern portfolio showcasing clean code, responsive UI, and cutting-edge front-end development."
+    />
+    <meta
+      name="twitter:image"
+      content="https://andrewteece.com/images/social-preview.jpg"
+    />
+
+    <!-- Icons -->
+    <link rel="icon" href="/favicon.png" type="image/png" />
+    <!-- Optional richer icon set:
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    -->
+
+    <!-- RSS -->
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="RSS Feed"
+      href="/feed.xml"
+    />
+
+    <!-- Display / theming -->
+    <meta name="color-scheme" content="light dark" />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: light)"
+      content="#ffffff"
+    />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: dark)"
+      content="#0b0b0b"
+    />
+
+    <!-- Google tag (GA4) — SPA-friendly (pageviews sent from React Router) -->
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
     <script
       async
       src="https://www.googletagmanager.com/gtag/js?id=G-HRXLND5LVK"
@@ -17,64 +93,11 @@
         dataLayer.push(arguments);
       }
       gtag('js', new Date());
-
-      gtag('config', 'G-HRXLND5LVK');
+      // SPA: we'll send page_view on route changes (see useGaPageViews hook)
+      gtag('config', 'G-HRXLND5LVK', { send_page_view: false });
     </script>
 
-    <!-- Title -->
-    <title>Andrew Teece | Front-end Web Developer</title>
-    <meta
-      name="description"
-      content="Delivering responsive, performant, and accessible web experiences with React, TypeScript, and modern tools."
-    />
-    <!-- Meta Description -->
-    <meta
-      name="description"
-      content="Andrew Teece is a seasoned Front-End Web Developer crafting performant, accessible websites using React, Next.js, TypeScript, and Tailwind CSS."
-    />
-
-    <!-- Keywords -->
-    <meta
-      name="keywords"
-      content="Andrew Teece, Frontend Developer, React, TypeScript, Next.js, Tailwind, Web Developer Portfolio"
-    />
-
-    <!-- Author -->
-    <meta name="author" content="Andrew Teece" />
-    <!-- Open Graph (Facebook, LinkedIn) -->
-    <meta
-      property="og:title"
-      content="Andrew Teece | Front-End Web Developer"
-    />
-    <meta
-      property="og:description"
-      content="Crafting performant, accessible web experiences with React, TypeScript, and Tailwind CSS."
-    />
-    <meta property="og:image" content="/images/social-preview.jpg" />
-    <meta property="og:url" content="https://andrewteece.com" />
-    <meta
-      property="og:title"
-      content="Andrew Teece | Front-End Web Developer"
-    />
-    <meta property="og:type" content="website" />
-    <meta
-      property="og:image"
-      content="https://andrewteece.com/images/social-preview.jpg"
-    />
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Andrew Teece | Front-End Developer" />
-    <meta property="twitter:url" content="https://andrewteece.com/" />
-    <meta
-      name="twitter:description"
-      content="Modern portfolio showcasing clean code, responsive UI, and cutting-edge front-end development."
-    />
-    <meta name="twitter:image" content="/images/social-preview.jpg" />
-    <meta
-      property="twitter:image"
-      content="https://andrewteece.com/images/social-preview.jpg"
-    />
-    <link rel="canonical" href="https://andrewteece.com/" />
+    <!-- Person JSON-LD -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",

@@ -6,6 +6,8 @@
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": { "@/*": ["src/*"] },
     "types": ["node", "vitest", "react", "react-dom"]
 }
 }

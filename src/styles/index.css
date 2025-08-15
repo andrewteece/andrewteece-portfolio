@@ -41,7 +41,7 @@
   body {
     background-color: var(--color-bg);
     color: var(--color-text);
-    font-size: theme('fontSize.base');
+    font-size: theme(fontSize.base);
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 
@@ -69,18 +69,18 @@
   }
 
   h1 {
-    font-size: theme('fontSize.4xl');
+    font-size: theme(fontSize.4xl);
     color: var(--color-brand);
     font-family: 'Space Grotesk', sans-serif;
   }
 
   h2 {
-    font-size: theme('fontSize.3xl');
+    font-size: theme(fontSize.3xl);
     color: var(--color-brand);
   }
 
   h3 {
-    font-size: theme('fontSize.2xl');
+    font-size: theme(fontSize.2xl);
     color: var(--color-brand);
   }
 

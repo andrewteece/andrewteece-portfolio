@@ -1,4 +1,3 @@
-// vite.config.ts
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import react from '@vitejs/plugin-react';
@@ -56,7 +55,6 @@ export default defineConfig({
         'src/content/**',
       ],
     },
-
     // ✅ Only define `projects` when Storybook tests are explicitly enabled
     ...(ENABLE_STORYBOOK_TESTS
       ? {
