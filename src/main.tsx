@@ -2,11 +2,11 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from '@dr.pogodin/react-helmet';
-import { ThemeProvider } from './context/ThemeProvider.tsx';
-import { ActiveSectionProvider } from './context/ActiveSectionContext.tsx';
+import { ThemeProvider } from './context/ThemeProvider';
+import { ActiveSectionProvider } from './context/ActiveSectionContext';
 import { Toaster } from 'react-hot-toast';
 import { MDXProvider } from '@mdx-js/react'; //
-import App from './App.tsx';
+import App from './App';
 import './styles/index.css';
 
 createRoot(document.getElementById('root')!).render(
