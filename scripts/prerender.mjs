@@ -70,7 +70,9 @@ function serveDist(port = 5179) {
   const { server, port } = await serveDist();
   const baseUrl = `http://127.0.0.1:${port}`;
 
-  const browser = await chromium.launch();
+  const browser = await chromium.launch({
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+  });
   const ctx = await browser.newContext();
 
   for (const route of routes) {
