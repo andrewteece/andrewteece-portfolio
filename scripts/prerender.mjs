@@ -1,4 +1,3 @@
-// scripts/prerender.mjs
 import http from 'http';
 import fs from 'fs';
 import path from 'path';
@@ -8,7 +7,6 @@ const ROOT = process.cwd();
 const DIST = path.join(ROOT, 'dist');
 const PKG = path.join(ROOT, 'package.json');
 
-// --- static server (SPA fallback to index.html) ---
 const MIME = {
   '.html': 'text/html',
   '.js': 'application/javascript',
@@ -32,28 +30,21 @@ function serveDist(port = 5179) {
   const server = http.createServer((req, res) => {
     const url = decodeURIComponent(req.url.split('?')[0]);
     let filePath = path.join(DIST, url);
-
-    // if path is a directory, try index.html
     if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
       filePath = path.join(filePath, 'index.html');
     }
-
-    // if file doesn’t exist, fallback to SPA index.html
     if (!fs.existsSync(filePath)) {
       filePath = path.join(DIST, 'index.html');
     }
-
     const ext = path.extname(filePath);
     res.setHeader('Content-Type', MIME[ext] || 'application/octet-stream');
     fs.createReadStream(filePath).pipe(res);
   });
-
   return new Promise((resolve) => {
     server.listen(port, () => resolve({ server, port }));
   });
 }
 
-// --- main prerender ---
 (async () => {
   if (!fs.existsSync(DIST)) {
     console.error('❌ dist/ not found. Run `vite build` first.');
@@ -71,7 +62,7 @@ function serveDist(port = 5179) {
   const baseUrl = `http://127.0.0.1:${port}`;
 
   const browser = await chromium.launch({
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    args: ['--no-sandbox', '--disable-setuid-sandbox'], // ✅ sandbox-safe for Vercel
   });
   const ctx = await browser.newContext();
 
@@ -83,15 +74,14 @@ function serveDist(port = 5179) {
     try {
       await page.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
 
-      // Wait for Helmet-managed tags to appear
+      // Wait for Helmet tags to appear
       await page.waitForFunction(
         () =>
           document.head.querySelectorAll('[data-rh="true"]').length > 0 &&
           document.head.querySelector('meta[property="og:title"]'),
         { timeout: 15000 }
       );
-
-      // If this is a blog route, ensure BlogPosting schema is present
+      // For blog routes, ensure BlogPosting schema exists
       if (/^\/blog\/.+/.test(route)) {
         await page.waitForFunction(
           () =>
@@ -103,13 +93,14 @@ function serveDist(port = 5179) {
       }
 
       const html = await page.content();
-
-      // Write to dist/<route>/index.html
       const outFile = path.join(DIST, route, 'index.html');
       fs.mkdirSync(path.dirname(outFile), { recursive: true });
       fs.writeFileSync(outFile, html, 'utf8');
 
-      console.log('✅');
+      const bytes = fs.statSync(outFile).size;
+      console.log(
+        `✅ wrote ${outFile.replace(ROOT + '/', '')} (${bytes} bytes)`
+      );
     } catch (e) {
       console.log('❌', e.message);
     } finally {
