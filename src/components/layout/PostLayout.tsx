@@ -15,6 +15,10 @@ interface PostLayoutProps {
 
 const SITE_URL = 'https://andrewteece.com';
 
+// Default social/OG dimensions that match your rendered 16:9 hero (1280x720)
+const OG_WIDTH = 1280;
+const OG_HEIGHT = 720;
+
 export default function PostLayout({
   frontmatter,
   children,
@@ -31,6 +35,7 @@ export default function PostLayout({
   } = frontmatter;
 
   const canonical = `${SITE_URL}/blog/${slug}`;
+  const socialAlt = imageAlt ?? title;
 
   return (
     <>
@@ -39,6 +44,9 @@ export default function PostLayout({
         title={`${title} — Blog`}
         description={excerpt}
         image={image}
+        imageAlt={socialAlt}
+        imageWidth={OG_WIDTH}
+        imageHeight={OG_HEIGHT}
         url={canonical}
         canonical={canonical}
         type='article'
@@ -77,20 +85,27 @@ export default function PostLayout({
             <div className='aspect-[16/9] w-full overflow-hidden'>
               <img
                 src={image}
-                alt={imageAlt ?? title}
+                alt={socialAlt}
                 className='object-cover w-full h-full'
                 loading='eager'
                 decoding='async'
-                width={1280}
-                height={720}
+                width={OG_WIDTH}
+                height={OG_HEIGHT}
               />
             </div>
+            {/* Optional: uncomment to show a visible caption
+            <figcaption className="px-4 py-2 text-xs text-[var(--color-text)]/60">
+              {socialAlt}
+            </figcaption>
+            */}
           </figure>
         )}
 
         <article className='prose prose-neutral dark:prose-invert max-w-none'>
           {children}
         </article>
+
+        {/* (Optional) Related posts section could be injected here later */}
       </main>
     </>
   );

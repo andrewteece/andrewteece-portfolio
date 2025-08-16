@@ -50,15 +50,11 @@
       name="twitter:image"
       content="https://andrewteece.com/images/social-preview.jpg"
     />
+    <meta name="twitter:site" content="@AndrewTeec43111" />
+    <meta name="twitter:creator" content="@AndrewTeec43111" />
 
     <!-- Icons -->
     <link rel="icon" href="/favicon.png" type="image/png" />
-    <!-- Optional richer icon set:
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="manifest" href="/site.webmanifest" />
-    -->
 
     <!-- RSS -->
     <link
@@ -81,7 +77,7 @@
       content="#0b0b0b"
     />
 
-    <!-- Google tag (GA4) — SPA-friendly (pageviews sent from React Router) -->
+    <!-- Google tag (GA4) -->
     <link rel="preconnect" href="https://www.googletagmanager.com" />
     <script
       async
@@ -93,7 +89,6 @@
         dataLayer.push(arguments);
       }
       gtag('js', new Date());
-      // SPA: we'll send page_view on route changes (see useGaPageViews hook)
       gtag('config', 'G-HRXLND5LVK', { send_page_view: false });
     </script>
 
@@ -106,7 +101,8 @@
         "url": "https://andrewteece.com",
         "sameAs": [
           "https://github.com/andrewteece",
-          "https://www.linkedin.com/in/andrew-teece/"
+          "https://www.linkedin.com/in/andrew-teece/",
+          "https://x.com/AndrewTeec43111"
         ],
         "jobTitle": "Front-End Web Developer",
         "image": "https://andrewteece.com/images/social-preview.jpg"
