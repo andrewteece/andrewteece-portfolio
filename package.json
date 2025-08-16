@@ -8,17 +8,16 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc -p tsconfig.app.json && vite build && node scripts/build-prerender-list.mjs && node scripts/prerender.mjs && tsx scripts/generate-rss.ts",
-    "vercel-build": "tsc -p tsconfig.app.json && vite build && node scripts/build-prerender-list.mjs && node scripts/prerender.mjs && tsx scripts/generate-rss.ts",
-    "prerender": "node scripts/build-prerender-list.mjs && node scripts/prerender.mjs",
+    "build": "tsc -p tsconfig.app.json && vite build && node scripts/prerender.mjs && tsx scripts/generate-rss.ts",
+    "vercel-build": "tsc -p tsconfig.app.json && vite build && node scripts/prerender.mjs && tsx scripts/generate-rss.ts",
+    "prerender": "node scripts/prerender.mjs",
     "typecheck": "tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.test.json --noEmit",
     "lint": "eslint .",
     "preview": "vite preview",
     "rss": "tsx scripts/generate-rss.ts",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "coverage": "vitest run --coverage",
-    "postinstall": "playwright install chromium"
+    "coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@dr.pogodin/react-helmet": "^3.0.2",
@@ -69,7 +68,6 @@
     "fast-glob": "^3.3.3",
     "gray-matter": "^4.0.3",
     "jsdom": "^26.1.0",
-    "playwright": "^1.54.2",
     "rehype-autolink-headings": "^7.1.0",
     "rehype-slug": "^6.0.0",
     "storybook": "^9.1.1",
