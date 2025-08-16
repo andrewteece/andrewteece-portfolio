@@ -5,16 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -p tsconfig.app.json && vite build",
-    "postbuild": "node scripts/build-prerender-list.mjs && node scripts/prerender.mjs && tsx scripts/generate-rss.ts",
-    "postinstall": "playwright install chromium",
+    "build": "tsc -p tsconfig.app.json && vite build && node scripts/build-prerender-list.mjs && node scripts/prerender.mjs && tsx scripts/generate-rss.ts",
     "typecheck": "tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.test.json --noEmit",
     "lint": "eslint .",
     "preview": "vite preview",
     "rss": "tsx scripts/generate-rss.ts",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "postinstall": "playwright install chromium"
   },
   "reactSnap": {
     "source": "dist",
