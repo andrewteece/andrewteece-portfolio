@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect, useState, startTransition } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 
 import Header from './components/layout/Header';
@@ -13,7 +13,7 @@ const Blog = lazy(() => import('./pages/Blog'));
 const BlogPost = lazy(() => import('./pages/BlogPost'));
 const StyleGuide = lazy(() => import('./pages/StyleGuide'));
 
-// Home sections that aren’t LCP — load after first paint
+// Home sections that aren’t LCP — defer until idle
 const TechStack = lazy(() => import('./components/sections/TechStack'));
 const About = lazy(() => import('./components/sections/About'));
 const Projects = lazy(() => import('./components/Projects'));
@@ -27,6 +27,27 @@ export default function App() {
   const { pathname } = useLocation();
   const isHome = pathname === '/' || pathname === '';
   const isBlogList = pathname === '/blog';
+
+  // NEW: gate non-critical home sections until after first idle slice
+  const [showSections, setShowSections] = useState(false);
+  useEffect(() => {
+    const w = window as Window & {
+      requestIdleCallback?: (
+        cb: () => void,
+        opts?: { timeout?: number }
+      ) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+
+    const schedule = () => startTransition(() => setShowSections(true));
+
+    if (typeof w.requestIdleCallback === 'function') {
+      const id = w.requestIdleCallback(schedule, { timeout: 1500 });
+      return () => w.cancelIdleCallback?.(id);
+    }
+    const t = setTimeout(schedule, 0);
+    return () => clearTimeout(t);
+  }, []);
 
   return (
     <>
@@ -59,21 +80,27 @@ export default function App() {
           <Route
             path='/'
             element={
-              // ❌ No Framer Motion on first paint — keep hero fast
+              // No entry animations on first paint — keep hero fast
               <main>
                 <Hero />
-                <Suspense fallback={<Fallback />}>
-                  <TechStack />
-                </Suspense>
-                <Suspense fallback={<Fallback />}>
-                  <About />
-                </Suspense>
-                <Suspense fallback={<Fallback />}>
-                  <Projects />
-                </Suspense>
+
+                {showSections && (
+                  <>
+                    <Suspense fallback={<Fallback />}>
+                      <TechStack />
+                    </Suspense>
+                    <Suspense fallback={<Fallback />}>
+                      <About />
+                    </Suspense>
+                    <Suspense fallback={<Fallback />}>
+                      <Projects />
+                    </Suspense>
+                  </>
+                )}
               </main>
             }
           />
+
           <Route
             path='/blog'
             element={
@@ -88,6 +115,7 @@ export default function App() {
               </Suspense>
             }
           />
+
           <Route
             path='/blog/:slug'
             element={
@@ -102,6 +130,7 @@ export default function App() {
               </Suspense>
             }
           />
+
           <Route
             path='/styleguide'
             element={
@@ -116,6 +145,7 @@ export default function App() {
               </Suspense>
             }
           />
+
           <Route path='*' element={<main>Not found</main>} />
         </Routes>
 

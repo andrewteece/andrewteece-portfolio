@@ -111,6 +111,7 @@ const allTech = [
     color: 'bg-gradient-to-r from-[#6E56CF] to-[#A78BFA] text-white',
     glow: 'shadow-[0_0_8px_#A78BFA]',
     link: 'https://clerk.com',
+    alt: 'Link to Clerk',
   },
 ];
 
