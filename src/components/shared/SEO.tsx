@@ -21,7 +21,7 @@ export interface SEOProps {
   locale?: string;
 }
 
-const SITE_URL = 'https://andrewteece.com';
+const SITE_URL = 'https://www.andrewteece.com';
 const DEFAULT_TITLE = 'Andrew Teece | Front-End Developer';
 const DEFAULT_DESC =
   'Experienced front-end developer delivering performant, accessible, and beautiful web apps.';

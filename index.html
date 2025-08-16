@@ -7,61 +7,24 @@
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
 
-    <!-- Primary -->
+    <!-- Primary (keep minimal; Helmet prerender will add page-specific SEO) -->
     <title>Andrew Teece | Front-end Web Developer</title>
     <meta
       name="description"
       content="Andrew Teece builds responsive, performant, and accessible web experiences with React, TypeScript, and Tailwind CSS."
     />
-    <link rel="canonical" href="https://andrewteece.com/" />
+    <!-- No canonical here; Helmet will inject the correct one per page -->
+
+    <!-- Optional site-wide RSS link -->
     <link
       rel="alternate"
       type="application/rss+xml"
       title="RSS Feed"
       href="/feed.xml"
     />
-
-    <!-- Open Graph -->
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Andrew Teece" />
-    <meta
-      property="og:title"
-      content="Andrew Teece | Front-End Web Developer"
-    />
-    <meta
-      property="og:description"
-      content="Crafting performant, accessible web experiences with React, TypeScript, and Tailwind CSS."
-    />
-    <meta
-      property="og:image"
-      content="https://andrewteece.com/images/social-preview.jpg"
-    />
-    <meta property="og:url" content="https://andrewteece.com/" />
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Andrew Teece | Front-End Developer" />
-    <meta
-      name="twitter:description"
-      content="Modern portfolio showcasing clean code, responsive UI, and cutting-edge front-end development."
-    />
-    <meta
-      name="twitter:image"
-      content="https://andrewteece.com/images/social-preview.jpg"
-    />
-    <meta name="twitter:site" content="@AndrewTeec43111" />
-    <meta name="twitter:creator" content="@AndrewTeec43111" />
 
     <!-- Icons -->
     <link rel="icon" href="/favicon.png" type="image/png" />
-
-    <!-- RSS -->
-    <link
-      rel="alternate"
-      type="application/rss+xml"
-      title="RSS Feed"
-      href="/feed.xml"
-    />
 
     <!-- Display / theming -->
     <meta name="color-scheme" content="light dark" />
@@ -91,20 +54,20 @@
       gtag('config', 'G-HRXLND5LVK', { send_page_view: false });
     </script>
 
-    <!-- Person JSON-LD -->
+    <!-- Person JSON-LD (homepage identity) -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "Person",
         "name": "Andrew Teece",
-        "url": "https://andrewteece.com",
+        "url": "https://www.andrewteece.com",
         "sameAs": [
           "https://github.com/andrewteece",
           "https://www.linkedin.com/in/andrew-teece/",
           "https://x.com/AndrewTeec43111"
         ],
         "jobTitle": "Front-End Web Developer",
-        "image": "https://andrewteece.com/images/social-preview.jpg"
+        "image": "https://www.andrewteece.com/images/social-preview.jpg"
       }
     </script>
   </head>

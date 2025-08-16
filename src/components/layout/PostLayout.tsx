@@ -13,9 +13,9 @@ interface PostLayoutProps {
   children: React.ReactNode;
 }
 
-const SITE_URL = 'https://andrewteece.com';
+const SITE_URL = 'https://www.andrewteece.com'; // ✅ use www
 
-// Default social/OG dimensions that match your rendered 16:9 hero (1280x720)
+// Default social/OG dimensions (match your 16:9 hero)
 const OG_WIDTH = 1280;
 const OG_HEIGHT = 720;
 
@@ -34,12 +34,11 @@ export default function PostLayout({
     readingTime,
   } = frontmatter;
 
-  const canonical = `${SITE_URL}/blog/${slug}`;
+  const canonical = `${SITE_URL}/blog/${slug}`; // ✅ www canonical
   const socialAlt = imageAlt ?? title;
 
   return (
     <>
-      {/* SEO: article-aware OpenGraph/Twitter + JSON-LD */}
       <SEO
         title={`${title} — Blog`}
         description={excerpt}
@@ -93,19 +92,12 @@ export default function PostLayout({
                 height={OG_HEIGHT}
               />
             </div>
-            {/* Optional: uncomment to show a visible caption
-            <figcaption className="px-4 py-2 text-xs text-[var(--color-text)]/60">
-              {socialAlt}
-            </figcaption>
-            */}
           </figure>
         )}
 
         <article className='prose prose-neutral dark:prose-invert max-w-none'>
           {children}
         </article>
-
-        {/* (Optional) Related posts section could be injected here later */}
       </main>
     </>
   );
