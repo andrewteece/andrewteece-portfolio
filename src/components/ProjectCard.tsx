@@ -20,7 +20,7 @@ export default function ProjectCard({
 }: ProjectProps) {
   return (
     <motion.div
-      className='group bg-[var(--color-bg-alt)] border border-[var(--color-divider)] rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col transform hover:-translate-y-1 hover:scale-[1.02]'
+      className='flex flex-col overflow-hidden transition-all duration-300 border shadow-sm  group rounded-xl border-subtle bg-surface hover:-translate-y-1 hover:shadow-md'
       variants={{
         hidden: { opacity: 0, y: 20 },
         visible: { opacity: 1, y: 0 },
@@ -33,19 +33,26 @@ export default function ProjectCard({
           <img
             src={image}
             alt={title}
-            className='w-full h-48 object-cover object-top rounded-t-xl border-b border-[var(--color-divider)] transition-transform duration-500 group-hover:scale-105'
+            className='object-cover object-top w-full h-48 transition-transform duration-500 border-b rounded-t-xl border-subtle group-hover:scale-105'
             loading='lazy'
+            decoding='async'
+            width={1280}
+            height={720}
+            sizes='(min-width:1280px) 384px, (min-width:768px) 50vw, 100vw'
           />
         </div>
       )}
-      <div className='p-6 flex-1 flex flex-col justify-between'>
+
+      <div className='flex flex-col justify-between flex-1 p-6'>
         <div>
           <h3 className='text-xl font-bold text-[var(--color-brand)] group-hover:underline underline-offset-4'>
             {title}
           </h3>
-          <p className='text-[var(--color-text)] text-sm mt-2'>{description}</p>
-          <p className='text-xs text-[var(--color-text-muted)] mt-2'>{tech}</p>
+
+          <p className='mt-2 text-[var(--color-text)] text-sm'>{description}</p>
+          <p className='mt-2 text-xs text-muted'>{tech}</p>
         </div>
+
         <div className='flex gap-4 mt-4'>
           {github && (
             <a

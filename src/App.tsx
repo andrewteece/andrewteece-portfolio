@@ -1,3 +1,4 @@
+// src/App.tsx
 import { lazy, Suspense, useEffect, useState, startTransition } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 
@@ -23,12 +24,58 @@ function Fallback() {
   return <div className='h-6' aria-hidden />;
 }
 
+// Helper: update (or create) a dynamic theme-color meta that follows the .dark class
+function useDynamicThemeColor() {
+  useEffect(() => {
+    const ensureMeta = (): HTMLMetaElement => {
+      const existing = document.querySelector<HTMLMetaElement>(
+        'meta[name="theme-color"][data-dynamic="true"]'
+      );
+      if (existing) return existing;
+
+      const meta = document.createElement('meta');
+      meta.name = 'theme-color';
+      meta.setAttribute('data-dynamic', 'true');
+      document.head.appendChild(meta);
+      return meta;
+    };
+
+    const meta = ensureMeta();
+    const apply = () => {
+      const isDark = document.documentElement.classList.contains('dark');
+      meta.content = isDark ? '#0f172a' : '#ffffff';
+    };
+
+    apply();
+    const mo = new MutationObserver(apply);
+    mo.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+    return () => mo.disconnect();
+  }, []);
+}
+
+// Helper: send GA page_view on route changes (GA is configured with send_page_view: false)
+function useGAPageViews(pathname: string) {
+  useEffect(() => {
+    type GTagWindow = Window & { gtag?: (...args: unknown[]) => void };
+    const w = window as GTagWindow;
+    if (typeof w.gtag !== 'function') return;
+    w.gtag('event', 'page_view', {
+      page_path: pathname,
+      page_location: window.location.href,
+      page_title: document.title,
+    });
+  }, [pathname]);
+}
+
 export default function App() {
   const { pathname } = useLocation();
   const isHome = pathname === '/' || pathname === '';
   const isBlogList = pathname === '/blog';
 
-  // NEW: gate non-critical home sections until after first idle slice
+  // Gate non-critical home sections until after first idle slice
   const [showSections, setShowSections] = useState(false);
   useEffect(() => {
     const w = window as Window & {
@@ -48,6 +95,10 @@ export default function App() {
     const t = setTimeout(schedule, 0);
     return () => clearTimeout(t);
   }, []);
+
+  // Hook up dynamic theme color + GA page_view
+  useDynamicThemeColor();
+  useGAPageViews(pathname);
 
   return (
     <>
@@ -73,6 +124,14 @@ export default function App() {
       )}
 
       <div className='min-h-screen font-sans transition-colors duration-300 bg-bg text-text dark:bg-bg dark:text-text'>
+        {/* Accessible skip link */}
+        <a
+          href='#main'
+          className='sr-only focus:not-sr-only fixed top-2 left-2 z-[9999] rounded bg-[var(--color-brand)] text-white px-3 py-2'
+        >
+          Skip to content
+        </a>
+
         <Header />
         <ScrollToAnchor />
 
@@ -81,7 +140,7 @@ export default function App() {
             path='/'
             element={
               // No entry animations on first paint — keep hero fast
-              <main>
+              <main id='main'>
                 <Hero />
 
                 {showSections && (
@@ -106,7 +165,7 @@ export default function App() {
             element={
               <Suspense
                 fallback={
-                  <main>
+                  <main id='main'>
                     <Fallback />
                   </main>
                 }
@@ -121,7 +180,7 @@ export default function App() {
             element={
               <Suspense
                 fallback={
-                  <main>
+                  <main id='main'>
                     <Fallback />
                   </main>
                 }
@@ -136,7 +195,7 @@ export default function App() {
             element={
               <Suspense
                 fallback={
-                  <main>
+                  <main id='main'>
                     <Fallback />
                   </main>
                 }
@@ -146,7 +205,7 @@ export default function App() {
             }
           />
 
-          <Route path='*' element={<main>Not found</main>} />
+          <Route path='*' element={<main id='main'>Not found</main>} />
         </Routes>
 
         <Footer />

@@ -1,16 +1,25 @@
+import type { ComponentType } from 'react';
+
+export interface BlogFrontmatter {
+  title: string;
+  date?: string | Date;
+  excerpt?: string;
+  image?: string;
+  tags?: string[];
+  slug?: string;
+  hero?: string;
+}
+
 export interface BlogPost {
   title: string;
   slug: string;
-  date: string;
+  date?: string | Date;
   excerpt?: string;
   image?: string;
   tags: string[];
-  readingTime?: string;
 }
 
 export interface BlogPostModule {
-  default: unknown;
-  frontmatter?: Partial<BlogPost>;
-  meta?: { frontmatter?: Partial<BlogPost> };
-  attributes?: Partial<BlogPost>;
+  frontmatter?: BlogFrontmatter;
+  default: ComponentType<unknown>;
 }

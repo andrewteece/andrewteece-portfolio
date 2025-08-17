@@ -1,51 +1,57 @@
 import { motion } from 'framer-motion';
+import { H1, H2, P } from '../shared/Section';
 
 export default function HeroHeader() {
   return (
     <>
-      <motion.h1
-        className='text-4xl md:text-5xl font-extrabold tracking-tight text-[var(--color-brand)] font-display leading-tight z-10'
+      {/* Glow wrapper animates filter so we keep the pulse */}
+      <motion.div
         initial={{ opacity: 0, y: -30 }}
         animate={{
           opacity: 1,
           y: 0,
-          textShadow: [
-            '0 0 8px var(--color-brand)',
-            '0 0 16px var(--color-brand)',
-            '0 0 8px var(--color-brand)',
+          filter: [
+            'drop-shadow(0 0 0 var(--color-brand))',
+            'drop-shadow(0 0 16px var(--color-brand))',
+            'drop-shadow(0 0 0 var(--color-brand))',
           ],
         }}
         transition={{
           duration: 0.6,
-          textShadow: {
+          filter: {
             repeat: Infinity,
             repeatType: 'mirror',
-            duration: 3, // sync with CTA & Storybook badges
+            duration: 3,
             ease: 'easeInOut',
           },
         }}
+        className='z-10'
       >
-        Andrew Teece
-      </motion.h1>
+        <H1 className='font-extrabold text-[var(--color-brand)]'>
+          Andrew Teece
+        </H1>
+      </motion.div>
 
-      <motion.h2
-        className='mt-2 text-xl md:text-2xl font-medium text-[var(--color-text)] z-10'
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2, duration: 0.6 }}
       >
-        Crafting beautiful, performant web experiences.
-      </motion.h2>
+        <H2 className='mt-2 text-[var(--color-text)]'>
+          Crafting beautiful, performant web experiences.
+        </H2>
+      </motion.div>
 
-      <motion.p
-        className='mt-4 max-w-2xl mx-auto text-base md:text-lg text-[var(--color-text)] leading-relaxed font-light z-10'
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.4, duration: 0.6 }}
       >
-        I specialize in building fast, accessible interfaces using modern web
-        technologies:
-      </motion.p>
+        <P className='mt-4 mx-auto max-w-2xl text-[var(--color-text)] leading-relaxed font-light'>
+          I specialize in building fast, accessible interfaces using modern web
+          technologies:
+        </P>
+      </motion.div>
     </>
   );
 }

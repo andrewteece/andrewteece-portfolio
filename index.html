@@ -9,6 +9,12 @@
 
     <!-- Primary (keep minimal; Helmet prerender will add page-specific SEO) -->
     <title>Andrew Teece | Front-end Web Developer</title>
+
+    <!-- Preconnects for fonts (faster first paint) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Hero background image hint -->
     <link
       rel="preload"
       as="image"
@@ -16,11 +22,13 @@
       fetchpriority="high"
     />
 
-    <!-- <meta
+    <!-- Optional site-wide description (per-page SEO handled by SEO component) -->
+    <!--
+    <meta
       name="description"
       content="Andrew Teece builds responsive, performant, and accessible web experiences with React, TypeScript, and Tailwind CSS."
-    /> -->
-    <!-- No canonical here; Helmet will inject the correct one per page -->
+    />
+    -->
 
     <!-- Optional site-wide RSS link -->
     <link
@@ -35,6 +43,7 @@
 
     <!-- Display / theming -->
     <meta name="color-scheme" content="light dark" />
+    <!-- Static theme-color fallbacks (overridden at runtime by App.tsx dynamic meta) -->
     <meta
       name="theme-color"
       media="(prefers-color-scheme: light)"
@@ -43,7 +52,7 @@
     <meta
       name="theme-color"
       media="(prefers-color-scheme: dark)"
-      content="#0b0b0b"
+      content="#0f172a"
     />
 
     <!-- Google tag (GA4) -->
@@ -58,6 +67,7 @@
         dataLayer.push(arguments);
       }
       gtag('js', new Date());
+      // NOTE: send_page_view is disabled; App.tsx sends page_view on route changes.
       gtag('config', 'G-HRXLND5LVK', { send_page_view: false });
     </script>
 

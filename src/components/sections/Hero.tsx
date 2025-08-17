@@ -1,6 +1,7 @@
 // src/components/sections/Hero.tsx
 import { ChevronDown, ArrowUp } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { H1, H2, P } from '../shared/Section'; // ⬅️ add this
 
 // Minimal types so TS is happy without DOM lib updates
 interface IdleDeadline {
@@ -18,7 +19,6 @@ export default function Hero() {
   }, []);
 
   const [showBg, setShowBg] = useState(false);
-
   useEffect(() => {
     const scheduleIdle = (cb: () => void) => {
       if (typeof window !== 'undefined') {
@@ -39,13 +39,13 @@ export default function Hero() {
   return (
     <section
       id='home'
-      className="
+      className='
         relative min-h-[80vh] flex flex-col justify-center items-center text-center px-4 py-20
         overflow-hidden
         bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-brand/10 via-transparent to-bg
         dark:from-brand/20 dark:to-bg
-        [contain:content]  /* ✅ replaces style={{ contain: 'content' }} with no 'any' */
-      "
+        [contain:content]
+      '
     >
       {showBg && (
         <div
@@ -56,20 +56,18 @@ export default function Hero() {
       )}
 
       <div className='relative z-10 flex flex-col items-center w-full max-w-4xl space-y-6'>
-        <h1 className='text-4xl md:text-6xl font-bold text-[var(--color-brand)]'>
-          Andrew Teece
-        </h1>
+        <H1 className='text-[var(--color-brand)]'>Andrew Teece</H1>
 
-        <h2 className='text-xl md:text-2xl font-medium text-[var(--color-text)]'>
+        <H2 className='text-[var(--color-text)]'>
           Front-End Web Developer focused on clean code and user-centric design.
-        </h2>
+        </H2>
 
-        <p className='text-lg md:text-xl max-w-2xl text-[var(--color-text)] text-center'>
+        <P className='max-w-2xl text-[var(--color-text)] text-center text-lg md:text-xl'>
           Delivering responsive, performant, and accessible digital experiences
-          using modern tools like
-          <strong> React</strong>, <strong> Next.js</strong>,{' '}
-          <strong> TypeScript</strong>, and <strong> Tailwind CSS</strong>.
-        </p>
+          using modern tools like <strong>React</strong>,{' '}
+          <strong>Next.js</strong>, <strong>TypeScript</strong>, and{' '}
+          <strong>Tailwind CSS</strong>.
+        </P>
 
         <div className='flex flex-wrap justify-center gap-4'>
           <a href='#projects' className='btn-primary'>

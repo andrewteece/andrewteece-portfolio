@@ -1,11 +1,29 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "module": "ESNext",            // ✅ add this
-    "moduleResolution": "bundler", // ✅ and this
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "jsx": "react-jsx",
-    "types": ["vitest/globals", "vite/client"],
-    "noEmit": true
+    "jsxImportSource": "react",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+
+    /* Use Vitest, not Jest; add Vite + MDX ambient types */
+    "types": ["vitest/globals", "vite/client", "mdx"],
+
+    "noEmit": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "useDefineForClassFields": true
   },
-  "include": ["src/__tests__/**/*", "src/**/*.test.*", "vitest.setup.*"]
+  "include": [
+    "src",
+    "src/**/*.test.*",
+    "src/__tests__/**/*",
+    "vitest.setup.ts",
+    "vite-env.d.ts"
+  ]
 }

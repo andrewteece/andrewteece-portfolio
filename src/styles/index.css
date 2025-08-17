@@ -5,8 +5,8 @@
 @layer base {
   :root {
     --color-bg: #ffffff;
-    --color-text: #1e293b;
-    --color-text-light: #f8fafc;
+    --color-text: #1e293b; /* slate-800 */
+    --color-text-light: #475569; /* readable muted text in LIGHT */
     --color-accent: #0f172a;
     --color-brand: #2563eb;
     --color-border: #cbd5e1;
@@ -17,11 +17,26 @@
       #e0f2fe 0%,
       #f9fafb 100%
     );
+
+    /* RGB triplets for translucent backgrounds/borders/text */
+    --bg-rgb: 255 255 255;
+    --text-rgb: 30 41 59;
+    --brand-rgb: 37 99 235;
+    --accent-rgb: 15 23 42;
+    --border-rgb: 203 213 225;
+
+    /* cross-theme surface */
+    --surface-1: rgba(0, 0, 0, 0.04);
+
+    /* Sticky-header safe anchor scrolling */
+    --header-h: 64px; /* mobile header height */
+    --scroll-mt: calc(var(--header-h) + 16px);
   }
 
   .dark {
     --color-bg: #0f172a;
     --color-text: #f8fafc;
+    --color-text-light: #cbd5e1; /* readable muted text in DARK */
     --color-accent: #facc15;
     --color-brand: #3b82f6;
     --color-border: #334155;
@@ -32,6 +47,27 @@
       #1e293b 0%,
       #0f172a 100%
     );
+
+    /* RGB triplets (dark) */
+    --bg-rgb: 15 23 42;
+    --text-rgb: 248 250 252;
+    --brand-rgb: 59 130 246;
+    --accent-rgb: 250 204 21;
+    --border-rgb: 51 65 85;
+
+    --surface-1: rgba(255, 255, 255, 0.06);
+  }
+
+  /* Bump header height for larger viewports if your header grows */
+  @media (min-width: 640px) {
+    :root {
+      --header-h: 72px;
+    }
+  }
+  @media (min-width: 1024px) {
+    :root {
+      --header-h: 80px;
+    }
   }
 
   html {
@@ -41,8 +77,18 @@
   body {
     background-color: var(--color-bg);
     color: var(--color-text);
-    font-size: theme(fontSize.base);
+    /* was: theme(fontSize.base); use a fixed value to avoid parser issues */
+    font-size: 1rem;
     transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* Pretty selection + mobile tap highlight */
+  ::selection {
+    background: rgba(var(--brand-rgb), 0.25);
+    color: var(--color-text);
+  }
+  :root {
+    -webkit-tap-highlight-color: rgba(var(--brand-rgb), 0.15);
   }
 
   .bg-radial-light {
@@ -69,18 +115,16 @@
   }
 
   h1 {
-    font-size: theme(fontSize.4xl);
+    font-size: clamp(2rem, 2.2vw + 1rem, 2.5rem);
     color: var(--color-brand);
     font-family: 'Space Grotesk', sans-serif;
   }
-
   h2 {
-    font-size: theme(fontSize.3xl);
+    font-size: clamp(1.5rem, 1.4vw + 1rem, 2rem);
     color: var(--color-brand);
   }
-
   h3 {
-    font-size: theme(fontSize.2xl);
+    font-size: clamp(1.25rem, 1vw + 0.9rem, 1.5rem);
     color: var(--color-brand);
   }
 
@@ -93,9 +137,14 @@
   a {
     color: var(--color-accent);
   }
-
-  a:hover {
-    opacity: 0.85;
+  /* Crisp hover without reducing contrast */
+  @media (hover: hover) and (pointer: fine) {
+    a:hover {
+      text-decoration: underline;
+      text-underline-offset: 0.18em;
+      text-decoration-thickness: 0.08em;
+      color: var(--color-brand);
+    }
   }
 
   .border {
@@ -105,15 +154,23 @@
   ::-webkit-scrollbar {
     width: 12px;
   }
-
   ::-webkit-scrollbar-track {
     background: var(--color-bg);
   }
-
   ::-webkit-scrollbar-thumb {
     background-color: var(--color-border);
     border-radius: 6px;
     border: 3px solid var(--color-bg);
+  }
+
+  /* Brand headings inside prose MDX */
+  .prose :where(h1, h2, h3) {
+    color: var(--color-brand);
+  }
+
+  /* Apply scroll margin to ALL anchorable sections & headings */
+  :where(section, h1, h2, h3, h4, h5, h6)[id] {
+    scroll-margin-top: var(--scroll-mt);
   }
 }
 
@@ -127,6 +184,9 @@
     font-weight: 500;
     transition: all 0.2s;
   }
+  .btn-primary:hover {
+    filter: brightness(0.96);
+  }
 
   .btn-outline {
     padding: 0.5rem 1.5rem;
@@ -137,7 +197,6 @@
     font-weight: 500;
     transition: all 0.2s;
   }
-
   .btn-outline:hover {
     background-color: var(--color-brand);
     color: white;
@@ -147,15 +206,74 @@
   .btn-outline {
     outline: none;
   }
-
   .btn-primary:focus,
   .btn-outline:focus {
     outline: 2px solid var(--color-highlight);
     outline-offset: 2px;
   }
-
   .btn-primary:active,
   .btn-outline:active {
     transform: scale(0.98);
+  }
+}
+
+@layer utilities {
+  /* readable muted text in both themes */
+  .text-muted {
+    color: rgba(var(--text-rgb), 0.65);
+  }
+  .text-muted-2 {
+    color: rgba(var(--text-rgb), 0.54);
+  }
+
+  /* neutral elevated surface */
+  .bg-surface {
+    background-color: var(--surface-1);
+  }
+
+  /* subtle border that works in both themes */
+  .border-subtle {
+    border-color: rgba(var(--border-rgb), 0.7);
+  }
+
+  /* glassy backgrounds, var-safe opacity */
+  .bg-glass-70 {
+    background-color: rgba(var(--bg-rgb), 0.7);
+  }
+  .bg-glass-90 {
+    background-color: rgba(var(--bg-rgb), 0.9);
+  }
+
+  /* accent border with alpha */
+  .border-accent-40 {
+    border-color: rgba(var(--accent-rgb), 0.4);
+  }
+
+  /* tasteful focus-visible ring sitewide */
+  :where(a, button, [role='button'], input, select, textarea):focus-visible {
+    outline: 2px solid rgba(var(--brand-rgb), 0.45);
+    outline-offset: 2px;
+    border-radius: 0.5rem;
+  }
+
+  /* card hover helper */
+  .hover-card {
+    transition: transform 180ms ease, box-shadow 180ms ease;
+  }
+  .hover-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px -12px rgba(0, 0, 0, 0.25);
+  }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }

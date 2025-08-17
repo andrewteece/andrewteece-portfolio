@@ -9,6 +9,7 @@ import remarkGfm from 'remark-gfm';
 
 import { defineConfig, configDefaults } from 'vitest/config';
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 const dirname =
   typeof __dirname !== 'undefined'
@@ -22,6 +23,7 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
+    visualizer({ open: true }),
     mdx({
       providerImportSource: '@mdx-js/react',
       remarkPlugins: [

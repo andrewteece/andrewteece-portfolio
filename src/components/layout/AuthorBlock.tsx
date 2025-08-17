@@ -4,18 +4,22 @@ import { Link } from 'react-router-dom';
 export default function AuthorBlock() {
   return (
     <div
-      className='flex items-start gap-4 pt-8 mt-16 text-sm border-t text-muted-foreground'
+      className='mt-16 flex items-start gap-4 border-t border-[var(--color-border)] pt-8 text-sm text-[var(--color-text)]/75'
       itemScope
       itemType='https://schema.org/Person'
     >
       <img
         src='/images/andrew-avatar.webp'
         alt='Portrait of Andrew Teece, Front-End Developer'
-        className='w-12 h-12 border rounded-full'
+        className='h-12 w-12 rounded-full border border-[var(--color-border)]'
         itemProp='image'
+        loading='lazy'
+        decoding='async'
+        width={48}
+        height={48}
       />
       <div>
-        <p className='font-medium text-foreground' itemProp='name'>
+        <p className='font-medium text-[var(--color-text)]' itemProp='name'>
           Andrew Teece
         </p>
         <p itemProp='jobTitle'>
@@ -25,7 +29,7 @@ export default function AuthorBlock() {
         <div className='flex flex-wrap gap-3 mt-1'>
           <Link
             to='/'
-            className='inline-block text-primary hover:underline underline-offset-4'
+            className='inline-block text-[var(--color-brand)] underline-offset-4 hover:underline'
             itemProp='url'
           >
             andrewteece.com →
@@ -34,7 +38,7 @@ export default function AuthorBlock() {
             href='https://github.com/andrewteece'
             target='_blank'
             rel='noopener noreferrer'
-            className='inline-block text-primary hover:underline underline-offset-4'
+            className='inline-block text-[var(--color-brand)] underline-offset-4 hover:underline'
             itemProp='sameAs'
           >
             GitHub
@@ -43,7 +47,7 @@ export default function AuthorBlock() {
             href='https://www.linkedin.com/in/andrew-teece/'
             target='_blank'
             rel='noopener noreferrer'
-            className='inline-block text-primary hover:underline underline-offset-4'
+            className='inline-block text-[var(--color-brand)] underline-offset-4 hover:underline'
             itemProp='sameAs'
           >
             LinkedIn
@@ -52,7 +56,7 @@ export default function AuthorBlock() {
             href='https://x.com/AndrewTeec43111'
             target='_blank'
             rel='noopener noreferrer'
-            className='inline-block text-primary hover:underline underline-offset-4'
+            className='inline-block text-[var(--color-brand)] underline-offset-4 hover:underline'
             itemProp='sameAs'
           >
             Twitter

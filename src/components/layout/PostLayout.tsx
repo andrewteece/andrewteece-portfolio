@@ -13,11 +13,38 @@ interface PostLayoutProps {
   children: React.ReactNode;
 }
 
-const SITE_URL = 'https://www.andrewteece.com'; // ✅ use www
-
-// Default social/OG dimensions (match your 16:9 hero)
+const SITE_URL = 'https://www.andrewteece.com';
 const OG_WIDTH = 1280;
 const OG_HEIGHT = 720;
+
+// ---- helpers ----
+const toISO = (d: unknown): string => {
+  if (d instanceof Date && !Number.isNaN(d.getTime())) return d.toISOString();
+  if (typeof d === 'string' || typeof d === 'number') {
+    const t = Date.parse(String(d));
+    if (Number.isFinite(t)) return new Date(t).toISOString();
+  }
+  return '';
+};
+
+const fmtDate = (d: unknown): string => {
+  if (d instanceof Date && !Number.isNaN(d.getTime()))
+    return d.toLocaleDateString(undefined, {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  if (typeof d === 'string' || typeof d === 'number') {
+    const dt = new Date(d);
+    if (!Number.isNaN(dt.getTime()))
+      return dt.toLocaleDateString(undefined, {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
+  }
+  return '—';
+};
 
 export default function PostLayout({
   frontmatter,
@@ -34,8 +61,11 @@ export default function PostLayout({
     readingTime,
   } = frontmatter;
 
-  const canonical = `${SITE_URL}/blog/${slug}`; // ✅ www canonical
+  const canonical = `${SITE_URL}/blog/${slug}`;
   const socialAlt = imageAlt ?? title;
+
+  const iso = toISO(date);
+  const human = fmtDate(date);
 
   return (
     <>
@@ -49,25 +79,25 @@ export default function PostLayout({
         url={canonical}
         canonical={canonical}
         type='article'
-        publishedTime={date}
+        publishedTime={iso || undefined}
         tags={tags}
         authorName='Andrew Teece'
       />
 
-      <main className='max-w-3xl px-4 py-16 mx-auto'>
+      <main id='main' className='max-w-3xl px-4 py-16 mx-auto'>
         <header className='mb-6'>
           <h1 className='text-3xl md:text-4xl font-extrabold tracking-tight text-[var(--color-brand)]'>
             {title}
           </h1>
 
           <div className='mt-2 flex flex-wrap items-center gap-2 text-sm text-[var(--color-text)]/70'>
-            <time>
-              {new Date(date).toLocaleDateString(undefined, {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </time>
+            {human !== '—' ? (
+              <time dateTime={iso} itemProp='datePublished'>
+                {human}
+              </time>
+            ) : (
+              <span>—</span>
+            )}
             {readingTime && (
               <>
                 <span aria-hidden>•</span>
@@ -90,6 +120,7 @@ export default function PostLayout({
                 decoding='async'
                 width={OG_WIDTH}
                 height={OG_HEIGHT}
+                sizes='(min-width:1024px) 768px, 100vw'
               />
             </div>
           </figure>

@@ -4,10 +4,8 @@ import { cn } from '../../lib/utils';
 import { useActiveSection } from '../../context/ActiveSectionContext';
 
 interface NavLinksProps {
-  activeSection?: string;
   onClick?: () => void;
 }
-
 export type { NavLinksProps };
 
 const navItems = [
@@ -17,6 +15,46 @@ const navItems = [
   { href: 'projects', label: 'Projects' },
   { href: 'contact', label: 'Contact' },
 ];
+
+function ItemLink({
+  to,
+  label,
+  active,
+  onClick,
+}: {
+  to: string;
+  label: string;
+  active: boolean;
+  onClick?: () => void;
+}) {
+  return (
+    <Link
+      to={to}
+      onClick={onClick}
+      aria-current={active ? 'page' : undefined}
+      className={cn(
+        'group relative inline-block px-1 py-2 text-base md:text-sm transition-colors duration-200',
+        'hover:text-[var(--color-brand)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand)]/40 rounded',
+        active ? 'text-[var(--color-brand)] font-semibold' : ''
+      )}
+    >
+      <span className='relative z-10'>{label}</span>
+
+      {/* animated underline */}
+      <span
+        aria-hidden
+        className={cn(
+          'pointer-events-none absolute left-1 right-1 -bottom-1 h-[2px] rounded',
+          'bg-[var(--color-brand)] transform-gpu origin-left will-change-transform',
+          'transition-transform duration-300 motion-reduce:transition-none',
+          active
+            ? 'scale-x-100'
+            : 'scale-x-0 group-hover:scale-x-100 group-focus-visible:scale-x-100'
+        )}
+      />
+    </Link>
+  );
+}
 
 export default function NavLinks({ onClick }: NavLinksProps) {
   const { activeSection } = useActiveSection();
@@ -31,14 +69,10 @@ export default function NavLinks({ onClick }: NavLinksProps) {
       exit='hidden'
       variants={{
         hidden: {},
-        visible: {
-          transition: {
-            staggerChildren: 0.1,
-          },
-        },
+        visible: { transition: { staggerChildren: 0.1 } },
       }}
     >
-      {/* Blog link */}
+      {/* Blog */}
       <motion.li
         key='blog'
         variants={{
@@ -46,22 +80,12 @@ export default function NavLinks({ onClick }: NavLinksProps) {
           visible: { opacity: 1, y: 0 },
         }}
       >
-        <Link
+        <ItemLink
           to='/blog'
+          label='Blog'
+          active={isBlogRoute}
           onClick={onClick}
-          className={cn(
-            'relative transition-colors hover:text-[var(--color-brand)]',
-            isBlogRoute ? 'text-[var(--color-brand)] font-semibold' : ''
-          )}
-        >
-          Blog
-          <span
-            className={cn(
-              'absolute left-0 -bottom-1 h-[2px] w-full origin-left scale-x-0 bg-[var(--color-brand)] transition-transform duration-300',
-              isBlogRoute && 'scale-x-100'
-            )}
-          />
-        </Link>
+        />
       </motion.li>
 
       {/* Section links */}
@@ -73,24 +97,12 @@ export default function NavLinks({ onClick }: NavLinksProps) {
             visible: { opacity: 1, y: 0 },
           }}
         >
-          <Link
+          <ItemLink
             to={`/?scrollTo=${href}`}
+            label={label}
+            active={activeSection === href}
             onClick={onClick}
-            className={cn(
-              'relative transition-colors hover:text-[var(--color-brand)]',
-              activeSection === href
-                ? 'text-[var(--color-brand)] font-semibold'
-                : ''
-            )}
-          >
-            {label}
-            <span
-              className={cn(
-                'absolute left-0 -bottom-1 h-[2px] w-full origin-left scale-x-0 bg-[var(--color-brand)] transition-transform duration-300',
-                activeSection === href && 'scale-x-100'
-              )}
-            />
-          </Link>
+          />
         </motion.li>
       ))}
     </motion.ul>
