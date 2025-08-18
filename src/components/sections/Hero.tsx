@@ -1,7 +1,7 @@
 // src/components/sections/Hero.tsx
 import { ChevronDown, ArrowUp } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { H1, H2, P } from '../shared/Section'; // ⬅️ add this
+import { H1, H2, P } from '../shared/Section';
 
 // Minimal types so TS is happy without DOM lib updates
 interface IdleDeadline {
@@ -70,10 +70,16 @@ export default function Hero() {
         </P>
 
         <div className='flex flex-wrap justify-center gap-4'>
-          <a href='#projects' className='btn-primary'>
+          <a
+            href='#projects'
+            className='btn-primary focus:outline-none focus-visible:ring ring-[var(--color-brand)]/40'
+          >
             View Work
           </a>
-          <a href='#contact' className='btn-outline'>
+          <a
+            href='#contact'
+            className='btn-outline focus:outline-none focus-visible:ring ring-[var(--color-brand)]/40'
+          >
             Contact
           </a>
         </div>
@@ -81,7 +87,7 @@ export default function Hero() {
 
       <a
         href='#techstack'
-        className='absolute bottom-6 text-[var(--color-brand)] dark:text-[var(--color-accent)] animate-bounce'
+        className='absolute bottom-6 text-[var(--color-brand)] dark:text-[var(--color-accent)] motion-safe:animate-bounce print:hidden'
         aria-label='Scroll to tech stack'
       >
         <ChevronDown size={28} aria-hidden />
