@@ -1,6 +1,7 @@
 // src/App.tsx
 import { lazy, Suspense, useEffect, useState, startTransition } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
+import { SpeedInsights } from '@vercel/speed-insights';
 
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
@@ -209,6 +210,7 @@ export default function App() {
         </Routes>
 
         <Footer />
+        <SpeedInsights />
       </div>
     </>
   );
