@@ -1,0 +1,48 @@
+---
+title: "Modern Mega-Menu: A Case Study with React, Tailwind & Framer Motion"
+excerpt: "A hands-on demo project showing how to build a responsive, accessible mega-menu with React, Tailwind CSS, and Framer Motion—complete with keyboard support and motion polish."
+date: "2025-08-21"
+image: "/images/blog/mega-menu.webp"
+tags: ["React", "Tailwind", "Framer Motion", "Accessibility", "UI/UX"]
+---
+
+> **Live Demo:** [bapi-mega-menu.vercel.app](https://bapi-mega-menu-mbbgsw2xo-andrewteeces-projects.vercel.app/)
+> **Source Code:** [GitHub Repo](https://github.com/andrewteece/bapi-mega-menu)
+
+## Why this project?
+
+I built this mega-menu as a **self-contained demo** to showcase how I approach a real-world UI challenge: information-dense navigation that remains fast, accessible, and elegant. It’s not part of my portfolio site’s nav — this is a **standalone case study project**.
+
+## Goals
+
+- **Responsive UX**: Multi-column desktop layout, clean mobile fallback  
+- **A11y first**: Full keyboard navigation, visible focus, ARIA states  
+- **Motion with purpose**: Subtle easing, reduced-motion support  
+- **Data-driven**: Config-driven menu structure for flexibility  
+- **Themeable**: Works with light/dark via CSS variables  
+
+## Tech Stack
+
+- **React** for composable components and state  
+- **Tailwind CSS** for rapid, consistent styling  
+- **Framer Motion** for animations and micro-interactions  
+- **TypeScript** for type-safe config and props  
+
+## Takeaways
+This demo shows how to blend structure, accessibility, and motion into a cohesive navigation experience. The same approach scales to e-commerce, docs portals, or enterprise dashboards.
+
+## Information Architecture
+
+The menu is powered by a **typed config object** instead of hardcoded markup:
+
+```ts
+export type MegaMenuItem = {
+  label: string;
+  href?: string;
+  columns?: Array<{
+    heading?: string;
+    links: Array<{ label: string; href: string; icon?: JSX.Element }>;
+  }>;
+};
+
+
