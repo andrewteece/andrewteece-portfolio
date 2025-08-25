@@ -65,14 +65,14 @@ export default function TechStack() {
   return (
     <motion.section
       id='techstack'
-      className='relative text-center section-pad section-divider'
+      /* More top padding on mobile to re-open the space after the hero */
+      className='relative pb-16 text-center pt-14 md:pt-24 md:pb-24 section-divider'
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
       viewport={{ once: true }}
     >
       <div className='container-base'>
-        {/* Title */}
         <h2 className='text-3xl md:text-4xl font-bold text-[var(--color-brand)] mb-4 tracking-tight leading-tight hyphens-none'>
           My Tech Stack
         </h2>
@@ -86,7 +86,7 @@ export default function TechStack() {
         <div className='w-full mb-10 border-t hairline' />
 
         {Object.entries(techGroups).map(([category, items]) => (
-          <div key={category} className='mb-10 space-y-4'>
+          <div key={category} className='mb-8 space-y-4'>
             <h3 className='text-xl font-semibold leading-tight tracking-tight'>
               {category}
             </h3>
@@ -99,10 +99,10 @@ export default function TechStack() {
         ))}
       </div>
 
-      {/* Perfectly centered chevron pinned to the section bottom */}
+      {/* Centered chevron pinned to this section's bottom */}
       <a
         href='#projects'
-        className='absolute bottom-8 left-1/2 -translate-x-1/2 text-[var(--color-brand)] dark:text-[var(--color-accent)] animate-bounce'
+        className='absolute bottom-6 left-1/2 -translate-x-1/2 text-[var(--color-brand)] dark:text-[var(--color-accent)] animate-bounce'
         aria-label='Scroll to projects'
       >
         <ChevronDown size={28} />

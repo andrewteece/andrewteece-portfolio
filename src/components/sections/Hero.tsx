@@ -10,23 +10,22 @@ export default function Hero() {
   return (
     <section
       id='home'
-      /* Less bottom space + slightly shorter hero on desktop
-         and center the content vertically for a tighter feel */
-      className='relative min-h-[88vh] md:min-h-[78vh] pt-24 md:pt-28 pb-8 flex flex-col items-center justify-center text-center px-4 overflow-hidden'
+      /* Mobile: more top space and a little more bottom padding
+         Desktop: centered and comfy */
+      className='relative min-h-[50svh] md:min-h-[76vh] pt-24 md:pt-28 pb-6 md:pb-10 flex flex-col items-center justify-start md:justify-center text-center px-4 overflow-hidden'
       aria-label='Intro section'
     >
-      <div className='relative z-10 flex flex-col items-center w-full max-w-4xl gap-6'>
-        {/* Tighter, crisper heading on desktop */}
-        <h1 className='text-4xl md:text-6xl font-bold text-[var(--color-brand)] tracking-tight leading-tight'>
+      <div className='relative z-10 flex flex-col items-center w-full max-w-4xl gap-4 md:gap-6'>
+        <h1 className='text-3xl sm:text-4xl md:text-6xl font-bold text-[var(--color-brand)] tracking-tight leading-tight'>
           Andrew Teece
         </h1>
 
-        <h2 className='text-xl md:text-2xl font-medium text-[var(--color-text)] tracking-tight'>
+        <h2 className='text-base sm:text-lg md:text-2xl font-medium text-[var(--color-text)] tracking-tight max-w-2xl'>
           Front-End Web Developer focused on clean code and user-centric design.
         </h2>
 
         <motion.p
-          className='text-lg md:text-xl max-w-2xl text-[var(--color-text)]'
+          className='text-sm sm:text-base md:text-xl max-w-2xl text-[var(--color-text)]'
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.35, delay: 0.1 }}
@@ -38,7 +37,7 @@ export default function Hero() {
         </motion.p>
 
         <motion.div
-          className='flex flex-wrap justify-center gap-4 mt-2'
+          className='flex flex-wrap justify-center gap-3 mt-1 md:gap-4 md:mt-2'
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.35, delay: 0.2 }}
@@ -52,7 +51,7 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      {/* Centered chevron, pinned to the bottom of the hero */}
+      {/* Chevron pinned & centered, lifted slightly so the gap reads cleaner */}
       <a
         href='#techstack'
         className='absolute bottom-8 left-1/2 -translate-x-1/2 text-[var(--color-brand)] dark:text-[var(--color-accent)] animate-bounce'
@@ -61,7 +60,7 @@ export default function Hero() {
         <ChevronDown size={28} />
       </a>
 
-      {/* Back to top (stays fixed) */}
+      {/* Back to top (fixed) */}
       <a
         href='#home'
         className='fixed bottom-6 right-6 bg-[var(--color-brand)] text-white p-2 rounded-full shadow-lg hover:bg-opacity-80 transition-opacity'
