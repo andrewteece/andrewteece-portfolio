@@ -175,7 +175,7 @@ export const techGroups: Record<string, Tech[]> = {
       color:
         'bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white',
       glow: 'shadow-[0_0_8px_#FF4785]',
-      link: 'https://sb9-showcase-b6whfr8e5-andrewteeces-projects.vercel.app/storybook/',
+      link: 'https://sb9-showcase-ddnduoyeu-andrewteeces-projects.vercel.app/storybook/?path=/docs/docs-intro--docs',
       pulse: true,
     },
   ],
