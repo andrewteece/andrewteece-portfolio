@@ -6,7 +6,6 @@ import NavLinks from './NavLinks';
 
 const THEME_KEY = 'theme';
 
-/** Local type alias to avoid global re-declarations */
 type DocumentWithVT = Document & {
   startViewTransition?: (cb: () => void | Promise<void>) => {
     finished: Promise<void>;
@@ -35,16 +34,16 @@ async function applyTheme(next: 'light' | 'dark') {
     try {
       localStorage.setItem(THEME_KEY, next);
     } catch {
-      // Ignore write errors (e.g., private mode)
+      /* ignore */
     }
 
-    // Keep <meta name="theme-color"> in sync
+    // keep <meta name="theme-color"> in sync
     const meta = document.querySelector<HTMLMetaElement>(
       'meta[name="theme-color"]'
     );
     if (meta) meta.content = next === 'dark' ? '#0f172a' : '#ffffff';
 
-    // If dual favicons are present, keep them in sync
+    // dual favicons (optional)
     const iconLight = document.querySelector<HTMLLinkElement>(
       'link[rel="icon"][data-theme="light"]'
     );
@@ -74,14 +73,14 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  // Apply theme on state change (void to satisfy no-floating-promises in effects)
+  // apply theme on toggle
   useEffect(() => {
     void applyTheme(isDark ? 'dark' : 'light');
   }, [isDark]);
 
-  // Scroll shadow handling
+  // header shadow on scroll
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 10);
+    const handleScroll = () => setScrolled(window.scrollY > 8);
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
@@ -89,13 +88,11 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
-        scrolled
-          ? 'shadow-lg border-b border-[var(--color-accent)/40] backdrop-blur-md bg-[var(--color-bg)/90]'
-          : 'border-transparent backdrop-blur-md bg-[var(--color-bg)/70]'
+      className={`fixed top-0 left-0 right-0 z-50 surface-1 border-b hairline backdrop-blur-sm transition-shadow ${
+        scrolled ? 'shadow-sm' : ''
       }`}
     >
-      <div className='flex items-center justify-between px-4 py-4 mx-auto max-w-7xl'>
+      <div className='flex items-center justify-between py-4 container-base'>
         <motion.div
           className='text-xl font-extrabold tracking-tight text-[var(--color-brand)] font-[Outfit,sans-serif]'
           initial={{ opacity: 0, y: -10 }}
@@ -139,7 +136,7 @@ export default function Header() {
 
             {/* Mobile nav */}
             <motion.aside
-              className='fixed inset-x-4 top-[72px] mx-auto w-[90%] max-w-md bg-[var(--color-bg)]/95 backdrop-blur-md shadow-xl z-40 p-6 flex flex-col gap-6 items-center text-center rounded-lg'
+              className='fixed inset-x-4 top-[72px] mx-auto w-[90%] max-w-md surface-1 backdrop-blur-md shadow-xl z-40 p-6 flex flex-col gap-6 items-center text-center rounded-lg border hairline'
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}

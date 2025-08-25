@@ -4,7 +4,6 @@ import { H1, H2, P } from '../shared/Section';
 export default function HeroHeader() {
   return (
     <>
-      {/* Glow wrapper animates filter so we keep the pulse */}
       <motion.div
         initial={{ opacity: 0, y: -30 }}
         animate={{

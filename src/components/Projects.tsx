@@ -29,16 +29,13 @@ export default function Projects() {
     <motion.div
       id='projects'
       ref={wrapperRef}
-      className='
-        relative py-24 px-4 text-center max-w-6xl mx-auto
-        bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-brand/5 via-transparent to-bg
-        dark:from-brand/10 dark:to-bg
-      '
+      className='text-center section-pad section-divider'
       initial='hidden'
       whileInView='visible'
       transition={{ duration: 0.8 }}
       viewport={{ once: true }}
     >
+      {/* Section handles title layout and container spacing */}
       <Section title='Projects' align='center' size='wide' className='!py-0'>
         <Stack>
           <P className='mx-auto max-w-prose'>

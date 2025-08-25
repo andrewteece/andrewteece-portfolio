@@ -1,4 +1,3 @@
-// src/components/sections/Hero.tsx
 import { motion } from 'framer-motion';
 import { ChevronDown, ArrowUp } from 'lucide-react';
 import { useEffect } from 'react';
@@ -11,38 +10,26 @@ export default function Hero() {
   return (
     <section
       id='home'
-      // Make the background via CSS so it’s not LCP
-      className='relative min-h-[80vh] flex flex-col justify-center items-center text-center px-4 py-20 overflow-hidden
-                 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-brand/10 via-transparent to-bg
-                 dark:from-brand/20 dark:to-bg'
-      style={{
-        // Tailwind arbitrary value alt if you prefer: bg-[url('/images/bg-waves.webp')]
-        backgroundImage:
-          "url('/images/bg-waves.webp'), radial-gradient(ellipse at top, transparent 0%, transparent 100%)",
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        // mimic your previous opacity levels
-        opacity: 1,
-      }}
+      /* Less bottom space + slightly shorter hero on desktop
+         and center the content vertically for a tighter feel */
+      className='relative min-h-[88vh] md:min-h-[78vh] pt-24 md:pt-28 pb-8 flex flex-col items-center justify-center text-center px-4 overflow-hidden'
       aria-label='Intro section'
     >
-      {/* Content */}
-      <div className='relative z-10 flex flex-col items-center w-full max-w-4xl space-y-6'>
-        {/* Remove initial/animate on LCP elements so they can paint ASAP */}
-        <h1 className='text-4xl md:text-6xl font-bold text-[var(--color-brand)]'>
+      <div className='relative z-10 flex flex-col items-center w-full max-w-4xl gap-6'>
+        {/* Tighter, crisper heading on desktop */}
+        <h1 className='text-4xl md:text-6xl font-bold text-[var(--color-brand)] tracking-tight leading-tight'>
           Andrew Teece
         </h1>
 
-        <h2 className='text-xl md:text-2xl font-medium text-[var(--color-text)]'>
+        <h2 className='text-xl md:text-2xl font-medium text-[var(--color-text)] tracking-tight'>
           Front-End Web Developer focused on clean code and user-centric design.
         </h2>
 
-        {/* You can keep a tiny fade for the paragraph if you like */}
         <motion.p
           className='text-lg md:text-xl max-w-2xl text-[var(--color-text)]'
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.15, duration: 0.3 }}
+          transition={{ duration: 0.35, delay: 0.1 }}
         >
           Delivering responsive, performant, and accessible digital experiences
           using modern tools like <strong>React</strong>,{' '}
@@ -51,36 +38,30 @@ export default function Hero() {
         </motion.p>
 
         <motion.div
-          className='flex flex-wrap justify-center gap-4'
+          className='flex flex-wrap justify-center gap-4 mt-2'
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.25, duration: 0.35 }}
+          transition={{ duration: 0.35, delay: 0.2 }}
         >
-          <a
-            href='#projects'
-            className='px-6 py-2 bg-[var(--color-brand)] text-white rounded-xl hover:bg-opacity-90 transition-colors'
-          >
+          <a href='#projects' className='btn-primary'>
             View Work
           </a>
-          <a
-            href='#contact'
-            className='px-6 py-2 border border-[var(--color-brand)] text-[var(--color-brand)] rounded-xl hover:bg-[var(--color-accent)] hover:text-white transition-colors'
-          >
+          <a href='#contact' className='btn-outline'>
             Contact
           </a>
         </motion.div>
       </div>
 
-      {/* Scroll cue to next section */}
+      {/* Centered chevron, pinned to the bottom of the hero */}
       <a
         href='#techstack'
-        className='absolute bottom-6 text-[var(--color-brand)] dark:text-[var(--color-accent)] animate-bounce'
+        className='absolute bottom-8 left-1/2 -translate-x-1/2 text-[var(--color-brand)] dark:text-[var(--color-accent)] animate-bounce'
         aria-label='Scroll to tech stack'
       >
         <ChevronDown size={28} />
       </a>
 
-      {/* Back to top button */}
+      {/* Back to top (stays fixed) */}
       <a
         href='#home'
         className='fixed bottom-6 right-6 bg-[var(--color-brand)] text-white p-2 rounded-full shadow-lg hover:bg-opacity-80 transition-opacity'

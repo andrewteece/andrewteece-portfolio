@@ -1,7 +1,6 @@
 import { useEffect, useRef, useContext } from 'react';
 import { motion } from 'framer-motion';
 import { ActiveSectionContext } from '../../context/ActiveSectionContext';
-// ✅ correct path stays here
 import { Section, Stack, P } from '../shared/Section';
 
 export default function About() {
@@ -30,9 +29,9 @@ export default function About() {
       <Section id='about' title='About Me' align='center'>
         <Stack>
           <P>
-            I'm a seasoned Front-End Web Developer and IT Professional with 20+
-            years of hands-on experience delivering responsive, performant, and
-            accessible digital experiences.
+            I&apos;m a seasoned Front-End Web Developer and IT Professional with
+            20+ years of hands-on experience delivering responsive, performant,
+            and accessible digital experiences.
           </P>
           <P>
             I specialize in building scalable user interfaces using modern

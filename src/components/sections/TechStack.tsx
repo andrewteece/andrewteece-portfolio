@@ -1,4 +1,3 @@
-// src/components/Sections/TechStack.tsx
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { techGroups, type Tech } from '../shared/tech';
@@ -7,11 +6,10 @@ function Badge({ label, icon, color, glow, link, pulse }: Tech) {
   const badge = (
     <motion.span
       className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium
-                  border border-white/20 shadow-sm transition-transform duration-200
+                  border hairline shadow-sm transition-transform duration-200
                   hover:scale-105 hover:brightness-110 ${
                     color ?? 'bg-white/5 text-[var(--color-text)]'
-                  }
-                  ${glow ?? ''}`}
+                  } ${glow ?? ''}`}
       initial={{ opacity: 0, y: 12, scale: 0.98 }}
       animate={{
         opacity: 1,
@@ -67,37 +65,44 @@ export default function TechStack() {
   return (
     <motion.section
       id='techstack'
-      className='relative max-w-6xl px-4 py-24 mx-auto text-center'
+      className='relative text-center section-pad section-divider'
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
       viewport={{ once: true }}
     >
-      <h2 className='text-3xl md:text-4xl font-bold text-[var(--color-brand)] mb-4'>
-        My Tech Stack
-      </h2>
-      <p className='text-lg text-[var(--color-text)] max-w-2xl mx-auto mb-10'>
-        I use a variety of modern technologies to build performant, scalable,
-        and maintainable web applications. Here's a selection of tools I use
-        daily:
-      </p>
+      <div className='container-base'>
+        {/* Title */}
+        <h2 className='text-3xl md:text-4xl font-bold text-[var(--color-brand)] mb-4 tracking-tight leading-tight hyphens-none'>
+          My Tech Stack
+        </h2>
 
-      <div className='border-t border-[var(--color-border)] dark:border-[var(--color-border-dark)] mb-10 w-full' />
+        <p className='text-lg text-[var(--color-text)] max-w-2xl mx-auto mb-10'>
+          I use a variety of modern technologies to build performant, scalable,
+          and maintainable web applications. Here&apos;s a selection of tools I
+          use daily:
+        </p>
 
-      {Object.entries(techGroups).map(([category, items]) => (
-        <div key={category} className='mb-10 space-y-4'>
-          <h3 className='text-xl font-semibold'>{category}</h3>
-          <div className='flex flex-wrap justify-center gap-3 md:gap-4'>
-            {items.map((t) => (
-              <Badge key={t.label} {...t} />
-            ))}
+        <div className='w-full mb-10 border-t hairline' />
+
+        {Object.entries(techGroups).map(([category, items]) => (
+          <div key={category} className='mb-10 space-y-4'>
+            <h3 className='text-xl font-semibold leading-tight tracking-tight'>
+              {category}
+            </h3>
+            <div className='flex flex-wrap justify-center gap-3 md:gap-4'>
+              {items.map((t) => (
+                <Badge key={t.label} {...t} />
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
 
+      {/* Perfectly centered chevron pinned to the section bottom */}
       <a
         href='#projects'
-        className='absolute bottom-6 left-1/2 -translate-x-1/2 text-[var(--color-brand)] dark:text-[var(--color-accent)] animate-bounce'
+        className='absolute bottom-8 left-1/2 -translate-x-1/2 text-[var(--color-brand)] dark:text-[var(--color-accent)] animate-bounce'
         aria-label='Scroll to projects'
       >
         <ChevronDown size={28} />

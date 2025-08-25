@@ -1,120 +1,77 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
-
 @import 'tailwindcss';
 
+/* =========================
+   Base tokens (light / dark)
+   ========================= */
 @layer base {
   :root {
-    --color-bg: #ffffff;
-    --color-text: #1e293b; /* slate-800 */
-    --color-text-light: #475569; /* readable muted text in LIGHT */
-    --color-accent: #0f172a;
-    --color-brand: #2563eb;
-    --color-border: #cbd5e1;
-    --color-muted: #64748b;
-    --color-highlight: #facc15;
-    --bg-gradient: radial-gradient(
-      circle at top left,
-      #e0f2fe 0%,
-      #f9fafb 100%
-    );
+    /* Light */
+    --color-bg: #f8fafc; /* slate-50 */
+    --color-bg-alt: #ffffff;
+    --color-text: #0f172a; /* slate-900 */
+    --color-border: #e2e8f0; /* slate-200 */
 
-    /* RGB triplets for translucent backgrounds/borders/text */
-    --bg-rgb: 255 255 255;
-    --text-rgb: 30 41 59;
-    --brand-rgb: 37 99 235;
-    --accent-rgb: 15 23 42;
-    --border-rgb: 203 213 225;
+    --color-brand: #3b82f6; /* blue-500 */
+    --color-accent: #f59e0b; /* amber-500 */
+    --color-accent-alt: #22d3ee; /* cyan-400 */
 
-    /* cross-theme surface */
-    --surface-1: rgba(0, 0, 0, 0.04);
+    /* Surfaces & hairlines */
+    --surface-1: color-mix(in oklab, var(--color-bg), #000 4%);
+    --surface-2: color-mix(in oklab, var(--color-bg), #000 7%);
+    --hairline: color-mix(in oklab, var(--color-text), transparent 82%);
 
-    /* Sticky-header safe anchor scrolling */
-    --header-h: 64px; /* mobile header height */
-    --scroll-mt: calc(var(--header-h) + 16px);
+    --ring: var(--color-accent);
   }
 
-  .dark {
-    --color-bg: #0f172a;
-    --color-text: #f8fafc;
-    --color-text-light: #cbd5e1; /* readable muted text in DARK */
-    --color-accent: #facc15;
-    --color-brand: #3b82f6;
-    --color-border: #334155;
-    --color-muted: #94a3b8;
-    --color-highlight: #fde68a;
-    --bg-gradient: radial-gradient(
-      circle at bottom right,
-      #1e293b 0%,
-      #0f172a 100%
-    );
+  html.dark {
+    /* Dark */
+    --color-bg: #0f172a; /* slate-900 */
+    --color-bg-alt: #0b1220;
+    --color-text: #cbd5e1; /* slate-300 */
+    --color-border: #334155; /* slate-700 */
 
-    /* RGB triplets (dark) */
-    --bg-rgb: 15 23 42;
-    --text-rgb: 248 250 252;
-    --brand-rgb: 59 130 246;
-    --accent-rgb: 250 204 21;
-    --border-rgb: 51 65 85;
+    --color-brand: #60a5fa; /* blue-400 */
+    --color-accent: #fbbf24; /* amber-400 */
+    --color-accent-alt: #22d3ee;
 
-    --surface-1: rgba(255, 255, 255, 0.06);
+    --surface-1: color-mix(in oklab, var(--color-bg), #fff 5%);
+    --surface-2: color-mix(in oklab, var(--color-bg), #fff 8%);
+    --hairline: color-mix(in oklab, var(--color-text), transparent 78%);
   }
 
-  /* Bump header height for larger viewports if your header grows */
-  @media (min-width: 640px) {
-    :root {
-      --header-h: 72px;
-    }
-  }
-  @media (min-width: 1024px) {
-    :root {
-      --header-h: 80px;
-    }
-  }
-
-  html {
-    color-scheme: light dark;
-    scroll-behavior: smooth;
-  }
-
+  /* Page base */
+  html,
   body {
     background-color: var(--color-bg);
     color: var(--color-text);
-    /* was: theme(fontSize.base); use a fixed value to avoid parser issues */
-    font-size: 1rem;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    color-scheme: light dark;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Pretty selection + mobile tap highlight */
+  /* Focus ring */
+  :where(a, button, [role='button'], input, select, textarea):focus-visible {
+    outline: 2px solid color-mix(in oklab, var(--color-brand), transparent 55%);
+    outline-offset: 2px;
+    border-radius: 0.5rem;
+  }
+
+  /* Selection */
   ::selection {
-    background: rgba(var(--brand-rgb), 0.25);
+    background: color-mix(in oklab, var(--color-brand), transparent 70%);
     color: var(--color-text);
   }
-  :root {
-    -webkit-tap-highlight-color: rgba(var(--brand-rgb), 0.15);
-  }
 
-  .bg-radial-light {
-    background: radial-gradient(
-      ellipse at center,
-      rgba(255, 255, 255, 0.6),
-      transparent 70%
-    );
-  }
-
-  .bg-noise {
-    background-image: url('/noise.png');
-    background-size: 200px 200px;
-    background-repeat: repeat;
-  }
-
+  /* Typography */
   header,
   section,
   footer {
-    background-color: var(--color-bg);
+    background-color: transparent; /* solid page bg handles it */
     color: var(--color-text);
     transition: background-color 0.3s ease, color 0.3s ease;
     font-family: 'Space Grotesk', sans-serif;
   }
-
   h1 {
     font-size: clamp(2rem, 2.2vw + 1rem, 2.5rem);
     color: var(--color-brand);
@@ -128,17 +85,15 @@
     font-size: clamp(1.25rem, 1vw + 0.9rem, 1.5rem);
     color: var(--color-brand);
   }
-
   p,
   a,
   span {
     font-family: 'Inter', sans-serif;
   }
-
   a {
     color: var(--color-accent);
   }
-  /* Crisp hover without reducing contrast */
+
   @media (hover: hover) and (pointer: fine) {
     a:hover {
       text-decoration: underline;
@@ -152,6 +107,7 @@
     border-color: var(--color-border);
   }
 
+  /* Scrollbar */
   ::-webkit-scrollbar {
     width: 12px;
   }
@@ -164,17 +120,20 @@
     border: 3px solid var(--color-bg);
   }
 
-  /* Brand headings inside prose MDX */
+  /* MDX brand headings */
   .prose :where(h1, h2, h3) {
     color: var(--color-brand);
   }
 
-  /* Apply scroll margin to ALL anchorable sections & headings */
+  /* Anchor scroll margin */
   :where(section, h1, h2, h3, h4, h5, h6)[id] {
     scroll-margin-top: var(--scroll-mt);
   }
 }
 
+/* =========================
+   Components
+   ========================= */
 @layer components {
   .btn-primary {
     padding: 0.5rem 1.5rem;
@@ -192,15 +151,15 @@
   .btn-outline {
     padding: 0.5rem 1.5rem;
     color: var(--color-brand);
-    background-color: transparent;
+    background: transparent;
     border: 1px solid var(--color-brand);
     border-radius: 0.75rem;
     font-weight: 500;
     transition: all 0.2s;
   }
   .btn-outline:hover {
-    background-color: var(--color-brand);
-    color: white;
+    background: var(--color-brand);
+    color: #fff;
   }
 
   .btn-primary,
@@ -209,55 +168,81 @@
   }
   .btn-primary:focus,
   .btn-outline:focus {
-    outline: 2px solid var(--color-highlight);
+    outline: 2px solid color-mix(in oklab, var(--color-brand), transparent 45%);
     outline-offset: 2px;
   }
   .btn-primary:active,
   .btn-outline:active {
     transform: scale(0.98);
   }
+
+  /* Reusable card (projects, list items) */
+  .card {
+    background: var(--surface-1);
+    border: 1px solid var(--hairline);
+    border-radius: 1rem;
+    box-shadow: 0 4px 16px -8px rgba(0, 0, 0, 0.15);
+    transition: transform 160ms ease, box-shadow 160ms ease,
+      border-color 160ms ease;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in oklab, var(--color-brand), transparent 60%);
+    box-shadow: 0 10px 28px -12px rgba(0, 0, 0, 0.25);
+  }
 }
 
+/* =========================
+   Utilities (site-wide)
+   ========================= */
 @layer utilities {
-  /* readable muted text in both themes */
-  .text-muted {
-    color: rgba(var(--text-rgb), 0.65);
+  /* Spacing + container helpers */
+  .section-pad {
+    padding-block: 4.5rem;
   }
-  .text-muted-2 {
-    color: rgba(var(--text-rgb), 0.54);
+  @media (min-width: 768px) {
+    .section-pad {
+      padding-block: 6.5rem;
+    }
+  }
+  .container-base {
+    max-width: 72rem;
+    margin-inline: auto;
+    padding-inline: 1rem;
   }
 
-  /* neutral elevated surface */
-  .bg-surface {
+  /* Surfaces & hairlines */
+  .surface-1 {
     background-color: var(--surface-1);
   }
-
-  /* subtle border that works in both themes */
-  .border-subtle {
-    border-color: rgba(var(--border-rgb), 0.7);
+  .surface-2 {
+    background-color: var(--surface-2);
+  }
+  .hairline {
+    border-color: var(--hairline);
   }
 
-  /* glassy backgrounds, var-safe opacity */
+  /* Section divider */
+  .section-divider {
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  /* Muted text */
+  .text-muted {
+    color: color-mix(in oklab, var(--color-text), transparent 35%);
+  }
+  .text-muted-2 {
+    color: color-mix(in oklab, var(--color-text), transparent 46%);
+  }
+
+  /* Optional frosted helpers */
   .bg-glass-70 {
-    background-color: rgba(var(--bg-rgb), 0.7);
+    background-color: color-mix(in oklab, var(--color-bg), transparent 30%);
   }
   .bg-glass-90 {
-    background-color: rgba(var(--bg-rgb), 0.9);
+    background-color: color-mix(in oklab, var(--color-bg), transparent 10%);
   }
 
-  /* accent border with alpha */
-  .border-accent-40 {
-    border-color: rgba(var(--accent-rgb), 0.4);
-  }
-
-  /* tasteful focus-visible ring sitewide */
-  :where(a, button, [role='button'], input, select, textarea):focus-visible {
-    outline: 2px solid rgba(var(--brand-rgb), 0.45);
-    outline-offset: 2px;
-    border-radius: 0.5rem;
-  }
-
-  /* card hover helper */
   .hover-card {
     transition: transform 180ms ease, box-shadow 180ms ease;
   }
@@ -265,9 +250,17 @@
     transform: translateY(-2px);
     box-shadow: 0 10px 24px -12px rgba(0, 0, 0, 0.25);
   }
+
+  /* Below-the-fold perf helper */
+  .cv-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 1000px;
+  }
 }
 
-/* Respect reduced motion */
+/* =========================
+   Motion / Theme transitions
+   ========================= */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -279,7 +272,6 @@
   }
 }
 
-/* Smoothly tween core color props on theme change */
 @media (prefers-reduced-motion: no-preference) {
   :root,
   html,
@@ -288,10 +280,6 @@
       border-color 220ms ease, fill 220ms ease, stroke 220ms ease,
       outline-color 220ms ease;
   }
-}
-
-/* View Transitions: crossfade the whole page on theme swap (Chromium+) */
-@media (prefers-reduced-motion: no-preference) {
   :root {
     view-transition-name: page;
   }
@@ -299,5 +287,15 @@
   ::view-transition-new(page) {
     animation-duration: 220ms;
     animation-timing-function: ease;
+  }
+}
+
+/* Initial-load flash guard (use only if you add .disable-transitions on <html>) */
+@media (prefers-reduced-motion: no-preference) {
+  html.disable-transitions *,
+  html.disable-transitions *::before,
+  html.disable-transitions *::after {
+    transition: none !important;
+    animation: none !important;
   }
 }

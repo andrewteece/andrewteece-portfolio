@@ -20,7 +20,7 @@ export default function ProjectCard({
 }: ProjectProps) {
   return (
     <motion.div
-      className='flex flex-col overflow-hidden transition-all duration-300 border shadow-sm  group rounded-xl border-subtle bg-surface hover:-translate-y-1 hover:shadow-md'
+      className='flex flex-col overflow-hidden transition-all duration-300 card group'
       variants={{
         hidden: { opacity: 0, y: 20 },
         visible: { opacity: 1, y: 0 },
@@ -33,7 +33,7 @@ export default function ProjectCard({
           <img
             src={image}
             alt={title}
-            className='object-cover object-top w-full h-48 transition-transform duration-500 border-b rounded-t-xl border-subtle group-hover:scale-105'
+            className='object-cover object-top w-full h-48 transition-transform duration-500 border-b rounded-t-xl hairline group-hover:scale-105'
             loading='lazy'
             decoding='async'
             width={1280}
@@ -45,11 +45,11 @@ export default function ProjectCard({
 
       <div className='flex flex-col justify-between flex-1 p-6'>
         <div>
-          <h3 className='text-xl font-bold text-[var(--color-brand)] group-hover:underline underline-offset-4'>
+          <h3 className='text-xl font-bold text-[var(--color-brand)] underline-offset-4 group-hover:underline'>
             {title}
           </h3>
 
-          <p className='mt-2 text-[var(--color-text)] text-sm'>{description}</p>
+          <p className='mt-2 text-sm text-[var(--color-text)]'>{description}</p>
           <p className='mt-2 text-xs text-muted'>{tech}</p>
         </div>
 
@@ -59,7 +59,7 @@ export default function ProjectCard({
               href={github}
               target='_blank'
               rel='noopener noreferrer'
-              className='text-[var(--color-brand)] hover:text-[var(--color-accent)] transition-colors'
+              className='transition-colors text-[var(--color-brand)] hover:text-[var(--color-accent)]'
               aria-label={`View ${title} on GitHub`}
             >
               <FaGithub size={18} />
@@ -70,7 +70,7 @@ export default function ProjectCard({
               href={demo}
               target='_blank'
               rel='noopener noreferrer'
-              className='text-[var(--color-brand)] hover:text-[var(--color-accent)] transition-colors'
+              className='transition-colors text-[var(--color-brand)] hover:text-[var(--color-accent)]'
               aria-label={`View live demo of ${title}`}
             >
               <FaExternalLinkAlt size={18} />
