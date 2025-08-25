@@ -6,12 +6,28 @@ import NavLinks from './NavLinks';
 
 const THEME_KEY = 'theme';
 
-function applyTheme(next: 'light' | 'dark', suppressTransitions = false) {
-  const root = document.documentElement;
+/** Local type alias to avoid global re-declarations */
+type DocumentWithVT = Document & {
+  startViewTransition?: (cb: () => void | Promise<void>) => {
+    finished: Promise<void>;
+  };
+};
 
-  if (suppressTransitions) root.classList.add('disable-transitions');
+function getInitialDark(): boolean {
+  try {
+    const saved = localStorage.getItem(THEME_KEY);
+    if (saved === 'dark') return true;
+    if (saved === 'light') return false;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  } catch {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+}
 
-  requestAnimationFrame(() => {
+/** Smoothly apply theme; uses View Transitions when available */
+async function applyTheme(next: 'light' | 'dark') {
+  const run = () => {
+    const root = document.documentElement;
     root.classList.toggle('dark', next === 'dark');
     root.setAttribute('data-theme', next);
     root.style.colorScheme = next;
@@ -22,13 +38,13 @@ function applyTheme(next: 'light' | 'dark', suppressTransitions = false) {
       // Ignore write errors (e.g., private mode)
     }
 
-    // keep <meta name="theme-color"> in sync
+    // Keep <meta name="theme-color"> in sync
     const meta = document.querySelector<HTMLMetaElement>(
       'meta[name="theme-color"]'
     );
     if (meta) meta.content = next === 'dark' ? '#0f172a' : '#ffffff';
 
-    // optional dual favicon sync
+    // If dual favicons are present, keep them in sync
     const iconLight = document.querySelector<HTMLLinkElement>(
       'link[rel="icon"][data-theme="light"]'
     );
@@ -39,33 +55,34 @@ function applyTheme(next: 'light' | 'dark', suppressTransitions = false) {
       iconLight.media = next === 'dark' ? 'not all' : 'all';
       iconDark.media = next === 'dark' ? 'all' : 'not all';
     }
+  };
 
-    requestAnimationFrame(() => {
-      root.classList.remove('disable-transitions');
-    });
-  });
+  const motionOk = matchMedia(
+    '(prefers-reduced-motion: no-preference)'
+  ).matches;
+  const doc = document as DocumentWithVT;
+
+  if (doc.startViewTransition && motionOk) {
+    await doc.startViewTransition(run).finished;
+  } else {
+    run();
+  }
 }
 
 export default function Header() {
-  const [isDark, setIsDark] = useState(() => {
-    if (typeof window === 'undefined') return true;
-    const saved = localStorage.getItem(THEME_KEY);
-    if (saved === 'light' || saved === 'dark') return saved === 'dark';
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
-  });
-
+  const [isDark, setIsDark] = useState<boolean>(() => getInitialDark());
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  // Apply theme whenever isDark changes
+  // Apply theme on state change (void to satisfy no-floating-promises in effects)
   useEffect(() => {
-    applyTheme(isDark ? 'dark' : 'light', true);
+    void applyTheme(isDark ? 'dark' : 'light');
   }, [isDark]);
 
   // Scroll shadow handling
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -150,11 +167,7 @@ export default function Header() {
                 animate='visible'
                 variants={{
                   hidden: {},
-                  visible: {
-                    transition: {
-                      staggerChildren: 0.1,
-                    },
-                  },
+                  visible: { transition: { staggerChildren: 0.1 } },
                 }}
               >
                 <NavLinks onClick={() => setMenuOpen(false)} />

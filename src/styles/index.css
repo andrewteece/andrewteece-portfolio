@@ -279,12 +279,25 @@
   }
 }
 
-/* Prevent flashes while toggling theme */
+/* Smoothly tween core color props on theme change */
 @media (prefers-reduced-motion: no-preference) {
-  html.disable-transitions *,
-  html.disable-transitions *::before,
-  html.disable-transitions *::after {
-    transition: none !important;
-    animation: none !important;
+  :root,
+  html,
+  body {
+    transition: background-color 220ms ease, color 220ms ease,
+      border-color 220ms ease, fill 220ms ease, stroke 220ms ease,
+      outline-color 220ms ease;
+  }
+}
+
+/* View Transitions: crossfade the whole page on theme swap (Chromium+) */
+@media (prefers-reduced-motion: no-preference) {
+  :root {
+    view-transition-name: page;
+  }
+  ::view-transition-old(page),
+  ::view-transition-new(page) {
+    animation-duration: 220ms;
+    animation-timing-function: ease;
   }
 }
