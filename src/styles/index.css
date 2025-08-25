@@ -71,6 +71,7 @@
   }
 
   html {
+    color-scheme: light dark;
     scroll-behavior: smooth;
   }
 
@@ -275,5 +276,15 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* Prevent flashes while toggling theme */
+@media (prefers-reduced-motion: no-preference) {
+  html.disable-transitions *,
+  html.disable-transitions *::before,
+  html.disable-transitions *::after {
+    transition: none !important;
+    animation: none !important;
   }
 }

@@ -6,6 +6,44 @@
       name="viewport"
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
+    <script>
+      (() => {
+        try {
+          const KEY = 'theme'; // 'light' | 'dark'
+          const mql = window.matchMedia('(prefers-color-scheme: dark)');
+          let t = localStorage.getItem(KEY);
+          if (t !== 'light' && t !== 'dark') t = mql.matches ? 'dark' : 'light';
+
+          const root = document.documentElement;
+          root.classList.toggle('dark', t === 'dark');
+          root.setAttribute('data-theme', t);
+          root.style.colorScheme = t;
+
+          // theme-color + dual favicons to avoid tab/address bar flash
+          const ensureMeta = () => {
+            let el = document.querySelector('meta[name="theme-color"]');
+            if (!el) {
+              el = document.createElement('meta');
+              el.setAttribute('name', 'theme-color');
+              document.head.appendChild(el);
+            }
+            el.setAttribute('content', t === 'dark' ? '#0f172a' : '#ffffff');
+          };
+          ensureMeta();
+
+          const lightIco = document.querySelector(
+            'link[rel="icon"][data-theme="light"]'
+          );
+          const darkIco = document.querySelector(
+            'link[rel="icon"][data-theme="dark"]'
+          );
+          if (lightIco && darkIco) {
+            lightIco.media = t === 'dark' ? 'not all' : 'all';
+            darkIco.media = t === 'dark' ? 'all' : 'not all';
+          }
+        } catch {}
+      })();
+    </script>
 
     <!-- Primary (keep minimal; Helmet prerender will add page-specific SEO) -->
     <title>Andrew Teece | Front-end Web Developer</title>
@@ -40,6 +78,17 @@
 
     <!-- Icons -->
     <link rel="icon" href="/favicon.png" type="image/png" />
+
+    <link
+      rel="manifest"
+      href="/manifest.webmanifest"
+      crossorigin="use-credentials"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
 
     <!-- Display / theming -->
     <meta name="color-scheme" content="light dark" />

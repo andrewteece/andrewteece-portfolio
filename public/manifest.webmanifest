@@ -1,0 +1,31 @@
+{
+  "name": "Andrew Teece — Front‑End Web Developer",
+  "short_name": "ATeece",
+  "description": "Portfolio of Andrew Teece — modern React/Next.js, TypeScript, Tailwind, and UI engineering.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#E76F51",
+  "icons": [
+    {
+      "src": "/brand/favicon-32-light.png",
+      "sizes": "32x32",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/brand/apple-touch-icon-180.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/brand/app-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

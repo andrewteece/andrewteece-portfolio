@@ -50,7 +50,6 @@ export default function Footer() {
         id='contact'
         className='relative overflow-hidden py-14 px-4 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-brand/10 via-transparent to-bg dark:from-brand/20 dark:to-bg'
       >
-        {/* Background mesh gradient image */}
         <div className='absolute inset-0'>
           <img
             src='images/bg-waves.webp'
