@@ -33,7 +33,8 @@ function ItemLink({
       onClick={onClick}
       aria-current={active ? 'page' : undefined}
       className={cn(
-        'group relative inline-block px-1 py-2 text-base md:text-sm transition-colors duration-200',
+        // darker base color + larger type (up from base/md:sm)
+        'group relative inline-block px-1 py-2 text-[var(--color-text)] text-[17px] md:text-[18px] transition-colors duration-200',
         'hover:text-[var(--color-brand)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand)]/40 rounded',
         active ? 'text-[var(--color-brand)] font-semibold' : ''
       )}
@@ -63,7 +64,8 @@ export default function NavLinks({ onClick }: NavLinksProps) {
 
   return (
     <motion.ul
-      className='flex flex-col items-center gap-4 text-lg md:flex-row md:gap-6'
+      // remove inherited size; spacing a touch wider for larger text
+      className='flex flex-col items-center gap-4 md:flex-row md:gap-7 lg:gap-8'
       initial='hidden'
       animate='visible'
       exit='hidden'

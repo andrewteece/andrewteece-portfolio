@@ -1,4 +1,3 @@
-// src/components/layout/PostLayout.tsx
 import type { PropsWithChildren } from 'react';
 import SEO from '../shared/SEO';
 import type { BlogPost } from '../../types/blog';
@@ -84,13 +83,34 @@ export default function PostLayout({
         authorName='Andrew Teece'
       />
 
-      <main id='main' className='max-w-3xl px-4 py-16 mx-auto'>
-        <header className='mb-6'>
-          <h1 className='text-3xl md:text-4xl font-extrabold tracking-tight text-[var(--color-brand)]'>
-            {title}
+      {/* Width + small internal padding; page-level wrapper handles large spacing */}
+      <main id='main' className='max-w-3xl px-4 py-8 mx-auto md:py-10'>
+        {/* Centered header */}
+        <header className='mb-6 text-center'>
+          {/* Stacked gradient H1 with solid fallback */}
+          <h1 className='relative inline-block text-3xl font-extrabold leading-tight tracking-tight md:text-4xl'>
+            <span
+              className='relative z-10'
+              style={{
+                backgroundImage:
+                  'linear-gradient(90deg, var(--color-brand), var(--color-accent-alt), var(--color-accent))',
+                WebkitBackgroundClip: 'text',
+                backgroundClip: 'text',
+                color: 'transparent',
+              }}
+            >
+              {title}
+            </span>
+            <span
+              aria-hidden
+              className='absolute inset-0 pointer-events-none select-none'
+              style={{ color: 'var(--color-brand)' }}
+            >
+              {title}
+            </span>
           </h1>
 
-          <div className='mt-2 flex flex-wrap items-center gap-2 text-sm text-[var(--color-text)]/70'>
+          <div className='mt-2 flex flex-wrap items-center justify-center gap-2 text-sm text-[var(--color-text)]/70'>
             {human !== '—' ? (
               <time dateTime={iso} itemProp='datePublished'>
                 {human}
@@ -126,6 +146,7 @@ export default function PostLayout({
           </figure>
         )}
 
+        {/* Body stays left-aligned at a comfy reading width */}
         <article className='prose prose-neutral dark:prose-invert max-w-none'>
           {children}
         </article>
