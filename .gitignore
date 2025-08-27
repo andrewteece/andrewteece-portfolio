@@ -27,3 +27,8 @@ dist-ssr
 storybook-static
 .vercel
 stats.html
+
+# tooling caches & artifacts
+.eslintcache
+stats.html
+*.bk

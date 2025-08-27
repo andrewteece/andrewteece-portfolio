@@ -1,78 +1,87 @@
-// eslint.config.js — ESLint v9 (flat)
+// eslint.config.js — ESLint v9 flat config
 import js from '@eslint/js';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
-import storybook from 'eslint-plugin-storybook';
-import { globalIgnores } from 'eslint/config';
 
 export default [
-  // Ignore build outputs
-  globalIgnores(['dist', 'coverage', '.vercel', 'node_modules']),
+  // Ignore build outputs & vendor
+  { ignores: ['dist', 'coverage', '.vercel', 'node_modules'] },
 
-  // Base JS rules for all files
+  // Base JS rules (applies everywhere)
   js.configs.recommended,
 
-  // JS / MJS / CJS files — standard JS parser (no TS type info here)
+  // Plain JS/JSX — never run TS-typed rules here
   {
     files: ['**/*.{js,mjs,cjs,jsx}'],
     languageOptions: {
-      ecmaVersion: 'latest',
+      ecmaVersion: 2023,
       sourceType: 'module',
       globals: { ...globals.browser, ...globals.node },
     },
-    // Make sure TS-only rules never run on JS
+    plugins: { 'react-hooks': reactHooks, 'react-refresh': reactRefresh },
     rules: {
-      '@typescript-eslint/await-thenable': 'off',
-      '@typescript-eslint/no-floating-promises': 'off',
-      '@typescript-eslint/no-misused-promises': 'off',
-      '@typescript-eslint/no-unsafe-assignment': 'off',
-      '@typescript-eslint/no-unsafe-call': 'off',
-      '@typescript-eslint/no-unsafe-member-access': 'off',
-      '@typescript-eslint/no-unsafe-return': 'off',
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+      'react-refresh/only-export-components': 'off',
     },
   },
 
-  // Type-aware TypeScript rules — scope to app sources only
-  ...tseslint.configs.recommendedTypeChecked,
-  {
-    files: ['src/**/*.{ts,tsx}'],
+  // Type-aware TypeScript — ONLY on TS/TSX in app + tests
+  ...tseslint.configs.recommendedTypeChecked.map((cfg) => ({
+    ...cfg,
+    files: ['src/**/*.{ts,tsx}', '**/*.test.{ts,tsx}', '**/*.spec.{ts,tsx}'],
     languageOptions: {
-      ecmaVersion: 'latest',
-      sourceType: 'module',
+      ...cfg.languageOptions,
       parser: tseslint.parser,
       parserOptions: {
-        // Type-aware without listing every tsconfig; keeps perf & avoids “not found by project service” on non-TS files
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname,
+        // Dedicated project so ESLint has type info (incl. vitest/jest-dom)
+        project: ['./tsconfig.eslint.json'],
+        tsconfigRootDir: new URL('.', import.meta.url).pathname,
       },
       globals: { ...globals.browser, ...globals.node },
     },
     plugins: {
+      ...cfg.plugins,
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
-      storybook,
     },
     rules: {
-      // Hooks hygiene
+      ...cfg.rules,
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
-
-      // Dev-only rule (disable if noisy)
       'react-refresh/only-export-components': 'off',
-
-      // TS hygiene
-      '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-unused-vars': [
         'warn',
         { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
       ],
     },
+  })),
+
+  // Tests: if types ever hiccup, don't block CI on "unsafe" in tests
+  {
+    files: ['**/*.test.{ts,tsx}', '**/*.spec.{ts,tsx}'],
+    rules: {
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+    },
   },
 
   // Keep typed rules off config/build scripts explicitly
   {
-    ignores: ['eslint.config.js', 'vite.config.*', 'scripts/**/*.*'],
+    files: [
+      'eslint.config.*',
+      'postcss.config.*',
+      'tailwind.config.*',
+      'vite.config.*',
+      '*.config.*',
+      'scripts/**/*.*',
+    ],
+    rules: {
+      '@typescript-eslint/await-thenable': 'off',
+      '@typescript-eslint/no-floating-promises': 'off',
+      '@typescript-eslint/no-misused-promises': 'off',
+    },
   },
 ];

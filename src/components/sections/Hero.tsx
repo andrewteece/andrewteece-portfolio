@@ -1,23 +1,109 @@
-import { motion } from 'framer-motion';
+// src/components/sections/Hero.tsx
+import { motion, useReducedMotion } from 'framer-motion';
+import type { Transition } from 'framer-motion';
 import { ChevronDown, ArrowUp } from 'lucide-react';
 import { useEffect } from 'react';
 
 export default function Hero() {
+  const prefersReducedMotion = useReducedMotion();
+
   useEffect(() => {
     document.documentElement.style.scrollBehavior = 'smooth';
   }, []);
 
+  // BOLDER: slower + smoother motion
+  const driftTransition: Transition = {
+    duration: 26, // was 20
+    repeat: Infinity,
+    repeatType: 'mirror',
+    ease: 'easeInOut',
+  };
+
+  const driftPath = prefersReducedMotion
+    ? undefined
+    : { x: [0, 24, -8, 0], y: [0, -18, 12, 0] };
+
   return (
     <section
       id='home'
-      /* Mobile: more top space and a little more bottom padding
-         Desktop: centered and comfy */
-      className='relative min-h-[50svh] md:min-h-[76vh] pt-24 md:pt-28 pb-6 md:pb-10 flex flex-col items-center justify-start md:justify-center text-center px-4 overflow-hidden'
       aria-label='Intro section'
+      className='relative min-h-[55svh] md:min-h-[76vh] pt-24 md:pt-28 pb-8 md:pb-10 flex flex-col items-center justify-start md:justify-center text-center px-4 overflow-hidden'
     >
+      {/* Ambient background orbs (pure CSS, theme-aware) */}
+      <div className='absolute inset-0 z-0 pointer-events-none'>
+        {/* Top-left orb */}
+        <motion.div
+          aria-hidden
+          className='absolute w-64 h-64 rounded-full -top-28 -left-28 md:-top-32 md:-left-32 sm:h-72 sm:w-72 md:h-96 md:w-96 mix-blend-screen'
+          style={{
+            opacity: 0.5, // bolder
+            filter: 'blur(120px)',
+            willChange: 'transform, filter',
+            backgroundImage:
+              'radial-gradient(closest-side, var(--color-brand), transparent 65%)',
+          }}
+          animate={driftPath}
+          transition={prefersReducedMotion ? undefined : driftTransition}
+        />
+
+        {/* Bottom-right orb */}
+        <motion.div
+          aria-hidden
+          className='absolute -bottom-28 -right-28 md:-bottom-32 md:-right-32 h-72 w-72 sm:h-88 sm:w-88 md:h-[28rem] md:w-[28rem] rounded-full mix-blend-screen'
+          style={{
+            opacity: 0.48, // bolder
+            filter: 'blur(120px)',
+            willChange: 'transform, filter',
+            backgroundImage:
+              'radial-gradient(closest-side, var(--color-accent), transparent 65%)',
+          }}
+          animate={driftPath}
+          transition={
+            prefersReducedMotion ? undefined : { ...driftTransition, delay: 2 }
+          }
+        />
+
+        {/* Center glow */}
+        <motion.div
+          aria-hidden
+          className='absolute w-64 h-64 -translate-x-1/2 -translate-y-1/2 rounded-full left-1/2 top-1/2 sm:h-72 sm:w-72 md:h-80 md:w-80 mix-blend-screen'
+          style={{
+            opacity: 0.42, // bolder
+            filter: 'blur(120px)',
+            willChange: 'transform, filter',
+            backgroundImage:
+              'radial-gradient(closest-side, var(--color-accent-alt), transparent 65%)',
+          }}
+          animate={driftPath}
+          transition={
+            prefersReducedMotion ? undefined : { ...driftTransition, delay: 4 }
+          }
+        />
+      </div>
+
+      {/* Content */}
       <div className='relative z-10 flex flex-col items-center w-full max-w-4xl gap-4 md:gap-6'>
-        <h1 className='text-3xl sm:text-4xl md:text-6xl font-bold text-[var(--color-brand)] tracking-tight leading-tight'>
-          Andrew Teece
+        {/* Gradient headline with solid fallback behind it */}
+        <h1 className='relative text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl md:text-6xl'>
+          <span
+            className='relative z-10'
+            style={{
+              backgroundImage:
+                'linear-gradient(90deg, var(--color-brand), var(--color-accent-alt), var(--color-accent))',
+              WebkitBackgroundClip: 'text',
+              backgroundClip: 'text',
+              color: 'transparent',
+            }}
+          >
+            Andrew Teece
+          </span>
+          <span
+            aria-hidden
+            className='absolute inset-0 pointer-events-none select-none'
+            style={{ color: 'var(--color-brand)' }}
+          >
+            Andrew Teece
+          </span>
         </h1>
 
         <h2 className='text-base sm:text-lg md:text-2xl font-medium text-[var(--color-text)] tracking-tight max-w-2xl'>
@@ -37,7 +123,7 @@ export default function Hero() {
         </motion.p>
 
         <motion.div
-          className='flex flex-wrap justify-center gap-3 mt-1 md:gap-4 md:mt-2'
+          className='flex flex-wrap justify-center gap-3 mt-1 md:mt-2 md:gap-4'
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.35, delay: 0.2 }}
@@ -51,19 +137,19 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      {/* Chevron pinned & centered, lifted slightly so the gap reads cleaner */}
+      {/* Scroll cue */}
       <a
         href='#techstack'
-        className='absolute bottom-8 left-1/2 -translate-x-1/2 text-[var(--color-brand)] dark:text-[var(--color-accent)] animate-bounce'
+        className='absolute -translate-x-1/2 bottom-8 left-1/2 text-brand dark:text-accent animate-bounce'
         aria-label='Scroll to tech stack'
       >
         <ChevronDown size={28} />
       </a>
 
-      {/* Back to top (fixed) */}
+      {/* Back to top */}
       <a
         href='#home'
-        className='fixed bottom-6 right-6 bg-[var(--color-brand)] text-white p-2 rounded-full shadow-lg hover:bg-opacity-80 transition-opacity'
+        className='fixed p-2 text-white transition-opacity rounded-full shadow-lg bottom-6 right-6 bg-brand hover:bg-opacity-80'
         aria-label='Back to top'
       >
         <ArrowUp size={20} />

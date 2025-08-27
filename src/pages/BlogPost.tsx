@@ -15,8 +15,11 @@ import type { MDXComponents } from 'mdx/types';
 import type { BlogPost, BlogPostModule, BlogFrontmatter } from '../types/blog';
 import PostLayout from '../components/layout/PostLayout';
 import AuthorBlock from '../components/layout/AuthorBlock';
+import CodeBlock from '../components/ui/CodeBlock';
 
-// Strongly-typed absolute glob
+import { motion, useReducedMotion } from 'framer-motion';
+import type { Transition } from 'framer-motion';
+
 const postFiles: Record<string, () => Promise<BlogPostModule>> =
   import.meta.glob<BlogPostModule>('/src/content/blog/*.mdx');
 
@@ -24,14 +27,26 @@ type PostShape = BlogPost & { readingTime?: string };
 
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
+
+  // ✅ All hooks must be called before any early return
+  const prefersReducedMotion = useReducedMotion();
   const [post, setPost] = useState<PostShape | null>(null);
   const [Component, setComponent] = useState<React.LazyExoticComponent<
     ComponentType<Record<string, unknown>>
   > | null>(null);
   const [notFound, setNotFound] = useState(false);
-
-  // must be before any early return
   const skippedHeroRef = useRef(false);
+
+  // Ambient motion config (matches Blog/Hero)
+  const driftTransition: Transition = {
+    duration: 26,
+    repeat: Infinity,
+    repeatType: 'mirror',
+    ease: 'easeInOut',
+  };
+  const driftPath = prefersReducedMotion
+    ? undefined
+    : { x: [0, 20, -12, 0], y: [0, -14, 10, 0] };
 
   useEffect(() => {
     if (!slug) {
@@ -46,12 +61,10 @@ export default function BlogPost() {
       return;
     }
 
-    // Load module & normalize frontmatter
     void (async () => {
       const module = await postFiles[matchedPath]();
       const fm: Partial<BlogFrontmatter> = module.frontmatter ?? {};
 
-      // Naive reading time: prefer excerpt length; fallback to ~2 min
       const baseline = typeof fm.excerpt === 'string' ? fm.excerpt : '';
       const words = baseline.trim().split(/\s+/).filter(Boolean).length;
       const readingTime = `${Math.max(
@@ -71,7 +84,6 @@ export default function BlogPost() {
         readingTime,
       });
 
-      // lazy() loader without async/await to satisfy require-await
       const Lazy = lazy(() =>
         Promise.resolve({
           default: module.default as ComponentType<Record<string, unknown>>,
@@ -103,94 +115,7 @@ export default function BlogPost() {
     );
   }
 
-  /* ----------------------- CodeBlock with Copy button ----------------------- */
-  type CodeEl = React.ReactElement<ComponentProps<'code'>>;
-  const isCodeElement = (n: React.ReactNode): n is CodeEl =>
-    React.isValidElement(n) && n.type === 'code';
-
-  type WithChildren = { children?: React.ReactNode; className?: string };
-  const isElementWithChildren = (
-    n: React.ReactNode
-  ): n is React.ReactElement<WithChildren> =>
-    React.isValidElement<WithChildren>(n);
-
-  const getText = (n: React.ReactNode): string => {
-    if (typeof n === 'string' || typeof n === 'number') return String(n);
-    if (Array.isArray(n)) return n.map(getText).join('');
-    if (isElementWithChildren(n)) return getText(n.props.children);
-    return '';
-  };
-
-  const languageFromClass = (cls?: string): string => {
-    const m = /language-([a-z0-9+-]+)$/i.exec(cls ?? '');
-    return (m?.[1] ?? 'text').toUpperCase();
-  };
-
-  function CodeBlock(preProps: ComponentProps<'pre'>) {
-    // ✅ hooks must be unconditionally called at the top
-    const [copied, setCopied] = useState(false);
-
-    const child = React.Children.only(preProps.children);
-    if (!isCodeElement(child)) {
-      return <pre {...preProps} />;
-    }
-
-    const codeClass = child.props.className ?? '';
-    const lang = languageFromClass(codeClass);
-    const raw = getText(child.props.children);
-
-    // ✅ do not pass an async function directly to onClick
-    const onCopy = async () => {
-      try {
-        if (typeof navigator !== 'undefined' && navigator.clipboard) {
-          await navigator.clipboard.writeText(raw);
-        } else {
-          const ta = document.createElement('textarea');
-          ta.value = raw;
-          document.body.appendChild(ta);
-          ta.select();
-          document.execCommand('copy');
-          document.body.removeChild(ta);
-        }
-        setCopied(true);
-        setTimeout(() => setCopied(false), 1500);
-      } catch {
-        /* noop */
-      }
-    };
-
-    return (
-      <figure className='my-6 overflow-hidden border not-prose rounded-xl border-subtle bg-surface'>
-        <div className='flex items-center justify-between px-3 py-2 text-xs border-b border-subtle text-muted'>
-          <span
-            aria-label={`Language: ${lang}`}
-            className='font-medium tracking-wide'
-          >
-            {lang}
-          </span>
-          <button
-            type='button'
-            onClick={() => {
-              void onCopy();
-            }}
-            className='rounded-md px-2 py-1 text-[var(--color-brand)] hover:underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--brand-rgb)/0.45)]'
-            aria-live='polite'
-          >
-            {copied ? 'Copied!' : 'Copy'}
-          </button>
-        </div>
-        <pre className='max-h-[60vh] overflow-auto p-4 text-sm leading-relaxed'>
-          {/* re-render original code so any highlighter still works */}
-          <code className={codeClass}>{raw}</code>
-        </pre>
-      </figure>
-    );
-  }
-
-  // MDX overrides:
-  // - Demote any body <h1> to <h2> so layout H1 stays unique
-  // - Skip the first <img> if it matches the frontmatter hero
-  // - Code: Copy UI for fenced blocks; subtle styling for inline code
+  // MDX overrides
   const components: MDXComponents = {
     h1: (props: ComponentProps<'h1'>) => <h2 {...props} />,
     img: (props: ComponentProps<'img'>) => {
@@ -209,12 +134,10 @@ export default function BlogPost() {
         />
       );
     },
-    // Fenced code blocks
     pre: (props: ComponentProps<'pre'>) => <CodeBlock {...props} />,
-    // Inline code
     code: (props: ComponentProps<'code'>) => {
       const cls = props.className ?? '';
-      if (/language-/.test(cls)) return <code {...props} />; // let <pre> handle blocks
+      if (/language-/.test(cls)) return <code {...props} />; // fenced handled by <pre>
       return (
         <code
           {...props}
@@ -230,39 +153,93 @@ export default function BlogPost() {
   };
 
   return (
-    <PostLayout frontmatter={post}>
-      {/* Body only; layout renders title/meta/hero */}
-      <article className='prose prose-neutral dark:prose-invert max-w-none'>
-        <MDXProvider components={components}>
-          <Suspense fallback={<p>Loading content...</p>}>
-            <Component />
-          </Suspense>
-        </MDXProvider>
-
-        {post.tags.length > 0 && (
-          <div className='flex flex-wrap gap-2 mt-10 text-sm not-prose'>
-            {post.tags.map((tag) => (
-              <span
-                key={tag}
-                className='rounded-full border border-[var(--color-border)] px-2 py-0.5 text-[var(--color-text)]/75'
-              >
-                #{tag}
-              </span>
-            ))}
-          </div>
-        )}
-
-        <AuthorBlock />
-
-        <div className='mt-10 not-prose'>
-          <Link
-            to='/blog'
-            className='inline-block text-sm font-medium text-[var(--color-brand)] hover:underline underline-offset-4'
-          >
-            ← Back to Blog
-          </Link>
+    <main className='relative overflow-hidden'>
+      <section className='relative pt-32 pb-12 md:pt-36'>
+        {/* Ambient background glows */}
+        <div className='absolute inset-0 z-0 pointer-events-none'>
+          <motion.div
+            aria-hidden
+            className='absolute w-64 h-64 rounded-full -top-28 -left-28 md:h-80 md:w-80 mix-blend-screen'
+            style={{
+              opacity: 0.42,
+              filter: 'blur(120px)',
+              backgroundImage:
+                'radial-gradient(closest-side, var(--color-brand), transparent 65%)',
+            }}
+            animate={driftPath}
+            transition={prefersReducedMotion ? undefined : driftTransition}
+          />
+          <motion.div
+            aria-hidden
+            className='absolute top-1/2 -right-32 h-72 w-72 md:h-[26rem] md:w-[26rem] rounded-full mix-blend-screen'
+            style={{
+              opacity: 0.34,
+              filter: 'blur(120px)',
+              backgroundImage:
+                'radial-gradient(closest-side, var(--color-accent), transparent 65%)',
+            }}
+            animate={driftPath}
+            transition={
+              prefersReducedMotion
+                ? undefined
+                : { ...driftTransition, delay: 2 }
+            }
+          />
+          <motion.div
+            aria-hidden
+            className='absolute -translate-x-1/2 rounded-full left-1/2 top-24 h-60 w-60 md:h-72 md:w-72 mix-blend-screen'
+            style={{
+              opacity: 0.32,
+              filter: 'blur(120px)',
+              backgroundImage:
+                'radial-gradient(closest-side, var(--color-accent-alt), transparent 65%)',
+            }}
+            animate={driftPath}
+            transition={
+              prefersReducedMotion
+                ? undefined
+                : { ...driftTransition, delay: 4 }
+            }
+          />
         </div>
-      </article>
-    </PostLayout>
+
+        {/* Content rendered by PostLayout */}
+        <div className='relative z-10'>
+          <PostLayout frontmatter={post}>
+            <article className='max-w-3xl px-4 mx-auto prose prose-neutral dark:prose-invert md:px-0'>
+              <MDXProvider components={components}>
+                <Suspense fallback={<p>Loading content...</p>}>
+                  <Component />
+                </Suspense>
+              </MDXProvider>
+
+              {post.tags.length > 0 && (
+                <div className='flex flex-wrap gap-2 mt-10 text-sm not-prose'>
+                  {post.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className='rounded-full border border-[var(--color-border)] px-2 py-0.5 text-[var(--color-text)]/75'
+                    >
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              <AuthorBlock />
+
+              <div className='mt-10 not-prose'>
+                <Link
+                  to='/blog'
+                  className='inline-block text-sm font-medium text-[var(--color-brand)] hover:underline underline-offset-4'
+                >
+                  ← Back to Blog
+                </Link>
+              </div>
+            </article>
+          </PostLayout>
+        </div>
+      </section>
+    </main>
   );
 }
