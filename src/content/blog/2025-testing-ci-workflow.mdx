@@ -1,0 +1,117 @@
+---
+title: "Ship With Confidence: Minimal Testing & CI for Vite + React"
+excerpt: "The tiny set of guardrails I add on day one —typed lint, a fast smoke build, Vitest, and branch protection—so every PR is safe to merge."
+date: "2025-08-27"
+image: "/images/blog/testing-ci-hero.v3.svg"
+
+tags:
+  - React
+  - Vite
+  - Vitest
+  - ESLint
+  - CI
+  - GitHub Actions
+  - Vercel
+---
+**Live CI:** [GitHub Actions](https://github.com/andrewteece/andrewteece-portfolio/actions)  
+**Source Code:** [GitHub Repo](https://github.com/andrewteece/andrewteece-portfolio)
+
+---
+
+## Why this setup?
+
+I prefer **boring, reliable pipelines**. This is the *minimum* I add on day one so every PR is safe to merge without slowing me down:
+
+- A fast **smoke** check (`typecheck → lint → build`)
+- **Vitest** + Testing Library for realistic component tests
+- Two tiny **GitHub Actions** (smoke + tests/coverage)
+- **Vercel** previews and production deploys
+- Simple **branch protection** for `main`
+
+It’s small, cheap, and scales as the repo grows.
+
+---
+
+## Goals
+
+- **Fast feedback:** catch “does it compile?” in seconds  
+- **Typed safety:** strict TypeScript linting in `src/**`  
+- **Stable main:** green status checks + up-to-date branches  
+- **Low ceremony:** clear, repeatable PR flow  
+- **Production confidence:** preview every PR, auto-deploy on merge
+
+---
+
+## Tech Stack
+
+**React + Vite**, **TypeScript**, **Vitest** + Testing Library, **ESLint (Flat Config)** with `@typescript-eslint`, **GitHub Actions**, **Codecov** (optional), **Vercel** (Preview + Production), tiny **Web Vitals** logger.
+
+---
+
+## Takeaways
+
+Guardrails don’t need to be heavy. A single `smoke` script plus two small CI jobs keeps PRs safe to merge, and Vercel handles deploys. The setup below is minimal, consistent, and easy to adopt on any new project.
+
+---
+
+## Information Architecture
+
+This section shows the actual structure I use: **scripts**, **CI**, and the one realistic **test**.
+
+### Project Scripts
+
+```json
+{
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.test.json --noEmit",
+    "lint": "eslint --cache --no-error-on-unmatched-pattern --ext .ts,.tsx src \"**/*.test.ts\" \"**/*.test.tsx\" \"**/*.spec.ts\" \"**/*.spec.tsx\"",
+    "build": "tsc -p tsconfig.app.json && vite build && node scripts/prerender.mjs && tsx scripts/generate-rss.ts",
+    "smoke": "npm run typecheck && npm run lint && npm run build",
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
+  }
+}
+```
+
+> **Why:** `smoke` answers _“does this even compile?”_ quickly; tests run separately for coverage and clearer signals.
+
+---
+
+## Workflows
+
+1. **Smoke (typecheck → lint → build)** — [view file](https://github.com/andrewteece/andrewteece-portfolio/blob/main/.github/workflows/ci.yml)  
+2. **Tests + coverage (Codecov optional)** — [view file](https://github.com/andrewteece/andrewteece-portfolio/blob/main/.github/workflows/test.yml)
+
+---
+
+## Example Component Testing
+
+**Hero.test.tsx** — [view file](https://github.com/andrewteece/andrewteece-portfolio/blob/main/src/__tests__/Hero.test.tsx)
+
+---
+
+## Branch Protection
+
+GitHub → **Settings → Branches → Add classic rule for `main`:**
+
+- ✅ Require a pull request before merging  
+- ✅ Require status checks to pass → select:  
+  - `CI (Smoke) / Smoke`  
+  - `Run Vitest / test`  
+- ✅ Require branches to be up to date  
+- ✅ Require conversation resolution  
+
+With those in place, **`main` stays green by construction.**  
+Vercel builds a Preview for every PR and Production on merge.
+
+---
+
+## Day-to-Day Flow
+
+1. Run `git switch -c feat/my-change`  
+2. Run `npm run smoke`  
+3. Run `npm run test`  
+4. **Push → open PR**  
+5. **Wait for Smoke + Tests ✅**  
+6. **Review Vercel Preview → Squash & merge**  
+7. **Production deploy auto-launches**
