@@ -1,0 +1,81 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient (blue -> purple) -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1600" y2="900" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3B82F6"/>
+      <stop offset="1" stop-color="#8B5CF6"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
+      gradientTransform="translate(1180 430) rotate(45) scale(520 380)">
+      <stop stop-color="#0B1022" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#0B1022" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#111827"/>
+      <stop offset="1" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="stroke" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#EAF3FF"/>
+      <stop offset="1" stop-color="#FFF2CC"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Base -->
+  <rect width="1600" height="900" fill="url(#bg)"/>
+
+  <!-- Soft glow behind the right card -->
+  <ellipse cx="1180" cy="430" rx="560" ry="420" fill="url(#glow)" opacity="0.35"/>
+
+  <!-- Left title block -->
+  <g font-family="Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue'" fill="#FFFFFF">
+    <text x="80" y="260" font-size="160" font-weight="800" letter-spacing="0.5">Testing &amp; CI</text>
+    <text x="80" y="390" font-size="160" font-weight="800" letter-spacing="0.5">Workflow</text>
+    <!-- Wrapped subtitle so it never collides with the card -->
+    <text x="80" y="500" font-size="50" fill="#E9F2FF" opacity="0.95">
+      <tspan x="80" dy="0">Vite + React • Vitest • ESLint</tspan>
+      <tspan x="80" dy="54">GitHub Actions • Vercel</tspan>
+    </text>
+  </g>
+
+  <!-- Right “dashboard” card (shifted right more so text stays clear) -->
+  <g transform="translate(240,0)">
+    <rect x="880" y="160" rx="36" ry="36" width="540" height="520" fill="url(#panel)" opacity="0.95"/>
+    <!-- top-left badge -->
+    <g transform="translate(980,220)">
+      <rect width="236" height="120" rx="16" fill="#111B34"/>
+      <circle cx="56" cy="60" r="28" fill="none" stroke="url(#stroke)" stroke-width="6"/>
+      <path d="M46 60 l10 10 l20 -24" fill="none" stroke="url(#stroke)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="104" y="44" width="112" height="12" rx="6" fill="#2A3761"/>
+      <rect x="104" y="68" width="94"  height="12" rx="6" fill="#2A3761"/>
+    </g>
+    <!-- top-right chart -->
+    <g transform="translate(1244,220)">
+      <rect width="168" height="120" rx="16" fill="#111B34"/>
+      <path d="M16 90 C52 10, 104 140, 152 30" fill="none" stroke="url(#stroke)" stroke-width="8" stroke-linecap="round"/>
+    </g>
+    <!-- middle long row -->
+    <g transform="translate(980,366)">
+      <rect width="420" height="18" rx="9" fill="#1E2A4B"/>
+      <rect y="34" width="364" height="18" rx="9" fill="#1E2A4B"/>
+    </g>
+    <!-- bottom-left panel -->
+    <g transform="translate(980,430)">
+      <rect width="270" height="150" rx="16" fill="#111B34"/>
+      <rect x="22" y="44" width="198" height="14" rx="7" fill="#2A3761"/>
+      <rect x="22" y="72" width="230" height="14" rx="7" fill="#2A3761"/>
+      <rect x="22" y="100" width="160" height="14" rx="7" fill="#2A3761"/>
+    </g>
+    <!-- bottom-right panel -->
+    <g transform="translate(1270,430)">
+      <rect width="134" height="150" rx="16" fill="#111B34"/>
+      <circle cx="40" cy="76" r="14" fill="none" stroke="url(#stroke)" stroke-width="4"/>
+      <path d="M34 76 l5 6 l9 -11" fill="none" stroke="url(#stroke)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="18" y="110" width="98" height="10" rx="5" fill="#2A3761"/>
+    </g>
+  </g>
+
+  <!-- Footer caption -->
+  <text x="80" y="820" font-family="Inter, ui-sans-serif, system-ui" font-size="24" fill="#E9F2FF" opacity="0.9">
+    Smoke (typecheck → lint → build) • Vitest • Branch Protection • Vercel Deploys
+  </text>
+</svg>
