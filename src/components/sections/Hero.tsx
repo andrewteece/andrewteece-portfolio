@@ -1,7 +1,6 @@
-// src/components/sections/Hero.tsx
-import { motion, useReducedMotion } from 'framer-motion';
 import type { Transition } from 'framer-motion';
-import { ChevronDown, ArrowUp } from 'lucide-react';
+import { motion, useReducedMotion } from 'framer-motion';
+import { ArrowUp, ChevronDown } from 'lucide-react';
 import { useEffect } from 'react';
 
 export default function Hero() {
@@ -11,9 +10,9 @@ export default function Hero() {
     document.documentElement.style.scrollBehavior = 'smooth';
   }, []);
 
-  // BOLDER: slower + smoother motion
+  // Slower + smoother motion
   const driftTransition: Transition = {
-    duration: 26, // was 20
+    duration: 26,
     repeat: Infinity,
     repeatType: 'mirror',
     ease: 'easeInOut',
@@ -29,14 +28,14 @@ export default function Hero() {
       aria-label='Intro section'
       className='relative min-h-[55svh] md:min-h-[76vh] pt-24 md:pt-28 pb-8 md:pb-10 flex flex-col items-center justify-start md:justify-center text-center px-4 overflow-hidden'
     >
-      {/* Ambient background orbs (pure CSS, theme-aware) */}
+      {/* Ambient background orbs (theme-aware) */}
       <div className='absolute inset-0 z-0 pointer-events-none'>
         {/* Top-left orb */}
         <motion.div
           aria-hidden
           className='absolute w-64 h-64 rounded-full -top-28 -left-28 md:-top-32 md:-left-32 sm:h-72 sm:w-72 md:h-96 md:w-96 mix-blend-screen'
           style={{
-            opacity: 0.5, // bolder
+            opacity: 0.5,
             filter: 'blur(120px)',
             willChange: 'transform, filter',
             backgroundImage:
@@ -46,16 +45,16 @@ export default function Hero() {
           transition={prefersReducedMotion ? undefined : driftTransition}
         />
 
-        {/* Bottom-right orb */}
+        {/* Bottom-right orb (changed to accent-alt) */}
         <motion.div
           aria-hidden
           className='absolute -bottom-28 -right-28 md:-bottom-32 md:-right-32 h-72 w-72 sm:h-88 sm:w-88 md:h-[28rem] md:w-[28rem] rounded-full mix-blend-screen'
           style={{
-            opacity: 0.48, // bolder
+            opacity: 0.42,
             filter: 'blur(120px)',
             willChange: 'transform, filter',
             backgroundImage:
-              'radial-gradient(closest-side, var(--color-accent), transparent 65%)',
+              'radial-gradient(closest-side, var(--color-accent-alt), transparent 65%)',
           }}
           animate={driftPath}
           transition={
@@ -68,7 +67,7 @@ export default function Hero() {
           aria-hidden
           className='absolute w-64 h-64 -translate-x-1/2 -translate-y-1/2 rounded-full left-1/2 top-1/2 sm:h-72 sm:w-72 md:h-80 md:w-80 mix-blend-screen'
           style={{
-            opacity: 0.42, // bolder
+            opacity: 0.42,
             filter: 'blur(120px)',
             willChange: 'transform, filter',
             backgroundImage:
@@ -83,7 +82,6 @@ export default function Hero() {
 
       {/* Content */}
       <div className='relative z-10 flex flex-col items-center w-full max-w-4xl gap-4 md:gap-6'>
-        {/* Gradient headline with solid fallback behind it */}
         <h1 className='relative text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl md:text-6xl'>
           <span
             className='relative z-10'
