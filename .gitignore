@@ -32,3 +32,6 @@ stats.html
 .eslintcache
 stats.html
 *.bk
+
+# Test coverage
+coverage/
