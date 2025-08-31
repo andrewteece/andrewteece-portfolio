@@ -1,0 +1,66 @@
+---
+title: 'Why Every Developer Needs a Project Template'
+excerpt: 'Kick off a new series exploring how a green-by-construction template saves time, prevents bugs, and enforces professional quality from the very first commit.'
+date: '2025-09-01'
+image: '/images/blog/why-template.webp'
+tags: ['NextJS', 'TypeScript', 'Tailwind', 'Vitest', 'ESLint', 'CI/CD']
+---
+
+# Why Every Developer Needs a Project Template
+
+Starting a new project should be exciting. But too often, it begins with hours of repetitive setup: configuring ESLint, wiring Prettier, adding CI, setting up Husky hooks, and installing testing libraries. Before you’ve even written a single line of app code, you’re already bogged down in boilerplate.
+
+That’s where a **project template** comes in.
+
+---
+
+## What is this series?
+
+This post is the first in a multi-part series where I break down the **Project Template repo** I use to kickstart professional web apps. Each post will focus on a specific piece of the setup, showing you exactly how it fits together and why it matters.
+
+📂 **Source code:** [andrewteece/project-template](https://github.com/andrewteece/project-template)
+
+Upcoming parts:
+
+- **CI/CD & Green by Construction**
+- **Flat ESLint Config + Prettier + Husky**
+- **Testing with Vitest & Providers Helper**
+- **Path Aliases with vite-tsconfig-paths**
+- **Tailwind v4 Zero-Config Mode**
+- **Branch Protection & Best Practices**
+
+By the end, you’ll see how each piece contributes to a template that’s _green by construction_ — meaning `main` always passes checks before merge.
+
+---
+
+## Why bother with a template?
+
+A solid project template:
+
+- **Removes repetition** — no more copy/pasting configs from old repos.
+- **Prevents mistakes** — linting, typechecking, and tests are built in.
+- **Speeds onboarding** — new teammates clone, install, and ship within minutes.
+- **Standardizes quality** — every project starts at the same professional baseline.
+
+Think of it as your **personal framework**: curated tools, scripts, and workflows that let you focus on _building features_ instead of _configuring tooling_.
+
+---
+
+## What’s inside this template?
+
+Here’s what I’ve included:
+
+- **Next.js 15** + **TypeScript**
+- **Tailwind v4** (config-less mode)
+- **ESLint flat config** + Prettier
+- **Vitest + Testing Library** with `renderWithProviders` helper
+- **Husky + lint-staged** pre-commit checks
+- **GitHub Actions CI** (Prettier → Lint → Typecheck → Tests → Coverage)
+
+Everything is designed to work together, so you can trust that every commit to `main` is production-ready.
+
+---
+
+## Up Next
+
+In **Part 2**, I’ll show how the CI pipeline is built: caching pnpm, installing Node, running checks, and using branch protections to keep your repo green by construction.
