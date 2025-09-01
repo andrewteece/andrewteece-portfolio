@@ -36,3 +36,10 @@ stats.html
 
 # Test coverage
 coverage/
+
+# --- Lighthouse / perf artifacts ---
+lh/
+lhci/
+.lighthouseci/
+*.report.html
+*.report.json
