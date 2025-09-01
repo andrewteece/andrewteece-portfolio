@@ -1,0 +1,86 @@
+---
+title: 'Project Template Series Part 2: CI/CD & Green by Construction'
+excerpt: 'Part 2 of the Project Template series covers how a GitHub Actions pipeline enforces quality from the first commit—keeping main green by construction.'
+date: '2025-09-05'
+image: '/images/blog/ci-workflow.webp'
+tags:
+  [
+    'NextJS',
+    'TypeScript',
+    'Tailwind',
+    'Vitest',
+    'ESLint',
+    'CI/CD',
+    'GitHub Actions',
+  ]
+---
+
+# Project Template Series Part 2: CI/CD & Green by Construction
+
+In **Part 1** of this series, I explained why every developer benefits from starting with a project template.
+Now in **Part 2**, we’ll look at the **CI/CD pipeline** that makes this template _green by construction_.
+
+📂 **Source code:** [andrewteece/project-template](https://github.com/andrewteece/project-template)
+
+---
+
+## What does “green by construction” mean?
+
+It means that **every change is verified before merging into `main`**. If the code doesn’t meet standards—formatting, linting, type checks, tests, coverage—it never lands. This keeps `main` deployable 100% of the time.
+
+---
+
+## GitHub Actions Workflow
+
+The CI pipeline lives in `.github/workflows/ci.yml` and runs on every push and pull request:
+
+1. **Checkout** code
+2. **Install dependencies** with pnpm (using `packageManager` pin)
+3. **Prettier check** for formatting issues
+4. **ESLint check** with zero warnings allowed
+5. **TypeScript typecheck**
+6. **Vitest run with coverage**
+
+Only if _all_ pass does a branch qualify to merge.
+
+```yaml
+- name: Prettier
+  run: pnpm prettier --check .
+
+- name: Lint
+  run: pnpm eslint . --max-warnings=0
+
+- name: Typecheck
+  run: pnpm run typecheck
+
+- name: Tests (coverage)
+  run: pnpm run test:coverage
+```
+
+## Branch protection
+
+To enforce this pipeline, `main` has GitHub branch protection enabled:
+
+- ✅ Require pull requests
+- ✅ Require status checks to pass
+- ✅ Require branches to be up-to-date
+- ✅ Require conversation resolution
+
+This guarantees that no unreviewed or failing code ever reaches production.
+
+---
+
+## Why this matters
+
+Without CI/CD guardrails, bugs, style issues, and broken builds slip into `main`.
+By contrast, with a **green-by-construction template**, every project starts with:
+
+- Confidence that `main` is always deployable
+- Faster PR reviews (checks catch issues before humans do)
+- Cleaner history and fewer firefights
+
+---
+
+## Up Next
+
+In **Part 3**, we’ll dive into **Flat ESLint config + Prettier + Husky hooks**, showing how local and staged checks complement CI to enforce code quality before commits even leave your machine.
