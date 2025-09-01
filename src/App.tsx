@@ -1,16 +1,15 @@
 // src/App.tsx
-import { lazy, Suspense, useEffect, useState, startTransition } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
-import { SpeedInsights } from '@vercel/speed-insights/react';
+import { lazy, startTransition, Suspense, useEffect, useState } from 'react';
+import { Route, Routes, useLocation } from 'react-router-dom';
 
-import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
-import ScrollToAnchor from './components/ui/ScrollToAnchor';
+import Header from './components/layout/Header';
 import SEO from './components/shared/SEO';
+import ScrollToAnchor from './components/ui/ScrollToAnchor';
 
 import Hero from './components/sections/Hero';
 
-// Route-level lazy chunks (Vite will split these automatically)
+// Route-level lazy chunks (Vite splits automatically)
 const Blog = lazy(() => import('./pages/Blog'));
 const BlogPost = lazy(() => import('./pages/BlogPost'));
 const StyleGuide = lazy(() => import('./pages/StyleGuide'));
@@ -19,6 +18,13 @@ const StyleGuide = lazy(() => import('./pages/StyleGuide'));
 const TechStack = lazy(() => import('./components/sections/TechStack'));
 const About = lazy(() => import('./components/sections/About'));
 const Projects = lazy(() => import('./components/Projects'));
+
+// Lazy-load Speed Insights so it’s not in the main chunk
+const SpeedInsightsLazy = lazy(() =>
+  import('@vercel/speed-insights/react').then((m) => ({
+    default: m.SpeedInsights,
+  }))
+);
 
 // Minimal, non-janky fallback (keeps layout stable)
 function Fallback() {
@@ -57,7 +63,7 @@ function useDynamicThemeColor() {
   }, []);
 }
 
-// Helper: send GA page_view on route changes (GA is configured with send_page_view: false)
+// Helper: send GA page_view on route changes (GA configured with send_page_view: false)
 function useGAPageViews(pathname: string) {
   useEffect(() => {
     type GTagWindow = Window & { gtag?: (...args: unknown[]) => void };
@@ -97,7 +103,7 @@ export default function App() {
     return () => clearTimeout(t);
   }, []);
 
-  // Hook up dynamic theme color + GA page_view
+  // Dynamic theme color + GA page_view
   useDynamicThemeColor();
   useGAPageViews(pathname);
 
@@ -141,7 +147,7 @@ export default function App() {
             path='/'
             element={
               // No entry animations on first paint — keep hero fast
-              <main id='main'>
+              <main id='main' tabIndex={-1}>
                 <Hero />
 
                 {showSections && (
@@ -210,7 +216,13 @@ export default function App() {
         </Routes>
 
         <Footer />
-        <SpeedInsights />
+
+        {/* Render Speed Insights lazily so it doesn't impact LCP */}
+        {import.meta.env.PROD && (
+          <Suspense fallback={null}>
+            <SpeedInsightsLazy />
+          </Suspense>
+        )}
       </div>
     </>
   );

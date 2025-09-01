@@ -1,49 +1,20 @@
-import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { techGroups, type Tech } from '../shared/tech';
 
-function Badge({ label, icon, color, glow, link, pulse }: Tech) {
+function Badge({ label, icon, color, glow, link }: Tech) {
   const badge = (
-    <motion.span
+    <span
       className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium
                   border hairline shadow-sm transition-transform duration-200
                   hover:scale-105 hover:brightness-110 ${
                     color ?? 'bg-white/5 text-[var(--color-text)]'
                   } ${glow ?? ''}`}
-      initial={{ opacity: 0, y: 12, scale: 0.98 }}
-      animate={{
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        ...(pulse
-          ? {
-              boxShadow: [
-                '0 0 8px var(--color-brand)',
-                '0 0 16px var(--color-brand)',
-                '0 0 8px var(--color-brand)',
-              ],
-            }
-          : {}),
-      }}
-      transition={{
-        type: 'spring',
-        stiffness: 250,
-        damping: 20,
-        ...(pulse
-          ? {
-              boxShadow: {
-                repeat: Infinity,
-                repeatType: 'mirror',
-                duration: 3,
-                ease: 'easeInOut',
-              },
-            }
-          : {}),
-      }}
     >
-      <span className='grid w-4 h-4 text-base place-items-center'>{icon}</span>
+      <span className='grid w-4 h-4 text-base place-items-center' aria-hidden>
+        {icon}
+      </span>
       {label}
-    </motion.span>
+    </span>
   );
 
   return link ? (
@@ -63,17 +34,17 @@ function Badge({ label, icon, color, glow, link, pulse }: Tech) {
 
 export default function TechStack() {
   return (
-    <motion.section
+    <section
       id='techstack'
-      /* More top padding on mobile to re-open the space after the hero */
-      className='relative pb-16 text-center pt-14 md:pt-24 md:pb-24 section-divider'
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      transition={{ duration: 0.8 }}
-      viewport={{ once: true }}
+      className='
+        relative text-center section-divider
+        pt-14 md:pt-24 pb-16 md:pb-24
+        [content-visibility:auto]
+        [contain-intrinsic-size:800px]
+      '
     >
       <div className='container-base'>
-        <h2 className='text-3xl md:text-4xl font-bold text-[var(--color-brand)] mb-4 tracking-tight leading-tight hyphens-none'>
+        <h2 className='text-3xl md:text-4xl font-bold text-[var(--color-brand)] mb-4 tracking-tight'>
           My Tech Stack
         </h2>
 
@@ -99,14 +70,13 @@ export default function TechStack() {
         ))}
       </div>
 
-      {/* Centered chevron pinned to this section's bottom */}
       <a
         href='#projects'
-        className='absolute bottom-6 left-1/2 -translate-x-1/2 text-[var(--color-brand)] dark:text-[var(--color-accent)] animate-bounce'
+        className='absolute bottom-6 left-1/2 -translate-x-1/2 text-[var(--color-brand)] dark:text-[var(--color-accent)]'
         aria-label='Scroll to projects'
       >
         <ChevronDown size={28} />
       </a>
-    </motion.section>
+    </section>
   );
 }

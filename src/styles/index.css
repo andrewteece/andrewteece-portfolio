@@ -1,5 +1,31 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
 @import 'tailwindcss';
+
+/* =========================
+   Self-hosted variable fonts
+   ========================= */
+@font-face {
+  font-family: 'InterVar';
+  src: url('/fonts/Inter-Variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap; /* paint text immediately, swap when ready */
+  size-adjust: 100%; /* keep visual size close to fallback */
+  ascent-override: 90%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'SpaceGroteskVar';
+  src: url('/fonts/SpaceGrotesk-Variable.woff2') format('woff2'); /* or SpaceGrotesk[wght].woff2 */
+  font-weight: 300 800;
+  font-style: normal;
+  font-display: swap;
+  size-adjust: 100%;
+  ascent-override: 88%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+}
 
 /* =========================
    Base tokens (light / dark)
@@ -22,6 +48,12 @@
     --hairline: color-mix(in oklab, var(--color-text), transparent 82%);
 
     --ring: var(--color-accent);
+
+    /* Fonts */
+    --font-sans: 'InterVar', ui-sans-serif, system-ui, -apple-system, 'Segoe UI',
+      Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji',
+      'Segoe UI Emoji', 'Segoe UI Symbol';
+    --font-heading: 'SpaceGroteskVar', var(--font-sans);
   }
 
   html.dark {
@@ -48,6 +80,7 @@
     color-scheme: light dark;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-family: var(--font-sans);
   }
 
   /* Focus ring */
@@ -67,33 +100,46 @@
   header,
   section,
   footer {
-    background-color: transparent; /* solid page bg handles it */
+    background-color: transparent;
     color: var(--color-text);
     transition: background-color 0.3s ease, color 0.3s ease;
-    font-family: 'Space Grotesk', sans-serif;
   }
-  h1 {
-    font-size: clamp(2rem, 2.2vw + 1rem, 2.5rem);
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-heading);
     color: var(--color-brand);
-    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  /* Make H1 “win” LCP by area (bigger than paragraph) */
+  h1 {
+    font-size: clamp(2.75rem, 5.5vw + 0.5rem, 4.25rem);
+    line-height: 1.05;
+    font-weight: 800;
   }
   h2 {
     font-size: clamp(1.5rem, 1.4vw + 1rem, 2rem);
-    color: var(--color-brand);
+    font-weight: 700;
   }
   h3 {
     font-size: clamp(1.25rem, 1vw + 0.9rem, 1.5rem);
-    color: var(--color-brand);
+    font-weight: 700;
   }
+
   p,
   a,
-  span {
-    font-family: 'Inter', sans-serif;
+  span,
+  li,
+  button,
+  input,
+  textarea {
+    font-family: var(--font-sans);
   }
+
   a {
     color: var(--color-accent);
   }
-
   @media (hover: hover) and (pointer: fine) {
     a:hover {
       text-decoration: underline;
@@ -196,7 +242,6 @@
    Utilities (site-wide)
    ========================= */
 @layer utilities {
-  /* Spacing + container helpers */
   .section-pad {
     padding-block: 4.5rem;
   }
@@ -205,13 +250,13 @@
       padding-block: 6.5rem;
     }
   }
+
   .container-base {
     max-width: 72rem;
     margin-inline: auto;
     padding-inline: 1rem;
   }
 
-  /* Surfaces & hairlines */
   .surface-1 {
     background-color: var(--surface-1);
   }
@@ -222,12 +267,10 @@
     border-color: var(--hairline);
   }
 
-  /* Section divider */
   .section-divider {
     border-bottom: 1px solid var(--hairline);
   }
 
-  /* Muted text */
   .text-muted {
     color: color-mix(in oklab, var(--color-text), transparent 35%);
   }
@@ -235,7 +278,6 @@
     color: color-mix(in oklab, var(--color-text), transparent 46%);
   }
 
-  /* Optional frosted helpers */
   .bg-glass-70 {
     background-color: color-mix(in oklab, var(--color-bg), transparent 30%);
   }
