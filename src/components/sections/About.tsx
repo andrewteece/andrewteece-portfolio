@@ -1,7 +1,7 @@
-import { useEffect, useRef, useContext } from 'react';
 import { motion } from 'framer-motion';
+import { useContext, useEffect, useRef } from 'react';
 import { ActiveSectionContext } from '../../context/ActiveSectionContext';
-import { Section, Stack, P } from '../shared/Section';
+import { P, Section, Stack } from '../shared/Section';
 
 export default function About() {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
@@ -27,7 +27,8 @@ export default function About() {
       viewport={{ once: true }}
     >
       <Section id='about' title='About Me' align='center'>
-        <Stack>
+        {/* Bump paragraph sizing for all <P> children here */}
+        <Stack className='[&>p]:text-lg [&>p]:md:text-xl [&>p]:leading-relaxed'>
           <P>
             I&apos;m a seasoned Front-End Web Developer and IT Professional with
             20+ years of hands-on experience delivering responsive, performant,
