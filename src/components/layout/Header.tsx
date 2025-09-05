@@ -1,105 +1,108 @@
+import { AnimatePresence, motion } from 'framer-motion';
+import { Menu, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { IconMenu, IconX } from '../icons';
+import { useTheme } from '../../context/ThemeProvider';
 import NavLinks from './NavLinks';
 import ThemeToggle from './ThemeToggle';
 
 export default function Header() {
-  const [isDark, setIsDark] = useState(
-    () => window.matchMedia('(prefers-color-scheme: dark)').matches
-  );
+  const { isDark, toggleTheme } = useTheme(); // <-- use provider
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    document.documentElement.classList.toggle('dark', isDark);
-  }, [isDark]);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener('scroll', onScroll);
+    const handleScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-shadow ${
-        scrolled ? 'shadow-sm' : ''
+      className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
+        scrolled
+          ? 'shadow-lg border-b border-[var(--color-accent)/40] backdrop-blur-md bg-[var(--color-bg)/90]'
+          : 'border-transparent backdrop-blur-md bg-[var(--color-bg)/70]'
       }`}
     >
-      <div
-        className={[
-          'container-base flex items-center justify-between py-4',
-          scrolled
-            ? 'bg-[var(--color-bg)]/95 border-b hairline backdrop-blur-md'
-            : 'bg-[var(--color-bg)]/70',
-        ].join(' ')}
-      >
-        <div className='text-xl font-extrabold tracking-tight text-[var(--color-brand)] font-[Outfit,sans-serif]'>
+      <div className='max-w-7xl mx-auto px-4 py-4 flex justify-between items-center'>
+        <motion.div
+          className='text-xl font-extrabold tracking-tight text-[var(--color-brand)] font-[Outfit,sans-serif]'
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
           Andrew <span className='opacity-80'>Teece</span>
-        </div>
+        </motion.div>
 
-        {/* Desktop nav */}
         <nav className='hidden md:flex items-center gap-6 text-sm'>
           <NavLinks onClick={() => setMenuOpen(false)} />
-          <ThemeToggle isDark={isDark} toggle={() => setIsDark(!isDark)} />
+          <ThemeToggle isDark={isDark} toggle={toggleTheme} />{' '}
+          {/* use provider */}
         </nav>
 
-        {/* Mobile controls */}
         <div className='md:hidden flex items-center gap-3'>
-          <ThemeToggle isDark={isDark} toggle={() => setIsDark(!isDark)} />
+          <ThemeToggle isDark={isDark} toggle={toggleTheme} />
           <button
-            onClick={() => setMenuOpen((v) => !v)}
-            aria-expanded={menuOpen}
-            aria-controls='mobile-menu'
+            onClick={() => setMenuOpen(!menuOpen)}
             aria-label='Toggle menu'
             className='p-1'
           >
-            {menuOpen ? (
-              <IconX width={24} height={24} />
-            ) : (
-              <IconMenu width={24} height={24} />
-            )}
+            {menuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </div>
 
-      {/* Mobile overlay */}
-      <div
-        className={[
-          'fixed inset-0 z-40 bg-black/50 transition-opacity duration-300',
-          menuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none',
-        ].join(' ')}
-        onClick={() => setMenuOpen(false)}
-      />
+      <AnimatePresence>
+        {menuOpen && (
+          <>
+            <motion.div
+              className='fixed inset-0 bg-black/50 z-30'
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              onClick={() => setMenuOpen(false)}
+            />
 
-      {/* Mobile sheet */}
-      <aside
-        id='mobile-menu'
-        className={[
-          'fixed inset-x-4 top-[72px] mx-auto w-[90%] max-w-md',
-          'surface-1 border hairline rounded-lg p-6 z-50',
-          'bg-[var(--color-bg)]/95',
-          'transition-all duration-300',
-          menuOpen
-            ? 'opacity-100 translate-y-0'
-            : 'opacity-0 -translate-y-2 pointer-events-none',
-        ].join(' ')}
-      >
-        <div className='flex justify-end w-full'>
-          <button
-            onClick={() => setMenuOpen(false)}
-            aria-label='Close menu'
-            className='p-1 text-[var(--color-accent)]'
-          >
-            <IconX width={24} height={24} />
-          </button>
-        </div>
+            <motion.aside
+              className='fixed inset-x-4 top-[72px] mx-auto w-[90%] max-w-md bg-[var(--color-bg)]/95 backdrop-blur-md shadow-xl z-40 p-6 flex flex-col gap-6 items-center text-center rounded-lg'
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ type: 'spring', stiffness: 160, damping: 22 }}
+            >
+              <motion.div
+                className='flex justify-end w-full'
+                initial={{ opacity: 0, rotate: -90 }}
+                animate={{ opacity: 1, rotate: 0 }}
+                exit={{ opacity: 0, rotate: 90 }}
+                transition={{ duration: 0.3 }}
+              >
+                <button
+                  onClick={() => setMenuOpen(false)}
+                  aria-label='Close menu'
+                  className='p-1 text-[var(--color-accent)]'
+                >
+                  <X size={24} />
+                </button>
+              </motion.div>
 
-        <div className='flex flex-col gap-4 mt-2 items-center text-center'>
-          <NavLinks onClick={() => setMenuOpen(false)} />
-        </div>
-      </aside>
+              <motion.div
+                className='flex flex-col gap-4 mt-2'
+                initial='hidden'
+                animate='visible'
+                variants={{
+                  hidden: {},
+                  visible: { transition: { staggerChildren: 0.1 } },
+                }}
+              >
+                <NavLinks onClick={() => setMenuOpen(false)} />
+              </motion.div>
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
