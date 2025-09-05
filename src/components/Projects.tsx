@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion';
-import { useContext, useEffect, useRef } from 'react';
-import { projects } from '../content/projects';
+import { useEffect, useRef, useContext } from 'react';
 import { ActiveSectionContext } from '../context/ActiveSectionContext';
+import { projects } from '../content/projects';
 import ProjectCard from './ProjectCard';
-import { P, Section, Stack } from './shared/Section';
+import { Section, Stack, P } from './shared/Section';
 
 export default function Projects() {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
@@ -35,10 +35,10 @@ export default function Projects() {
       transition={{ duration: 0.8 }}
       viewport={{ once: true }}
     >
+      {/* Section handles title layout and container spacing */}
       <Section title='Projects' align='center' size='wide' className='!py-0'>
         <Stack>
-          {/* Bump intro paragraph size here */}
-          <P className='mx-auto max-w-prose text-lg md:text-xl leading-relaxed text-[var(--color-text)]'>
+          <P className='mx-auto max-w-prose'>
             Projects from intuitive frontend interfaces to full-stack
             platforms—built with performance, accessibility, and clean design in
             mind.

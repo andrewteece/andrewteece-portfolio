@@ -48,8 +48,7 @@ export default function TechStack() {
           My Tech Stack
         </h2>
 
-        {/* Bumped paragraph sizing + relaxed leading */}
-        <p className='text-lg md:text-xl text-[var(--color-text)] max-w-2xl mx-auto mb-10 leading-relaxed'>
+        <p className='text-lg text-[var(--color-text)] max-w-2xl mx-auto mb-10'>
           I use a variety of modern technologies to build performant, scalable,
           and maintainable web applications. Here&apos;s a selection of tools I
           use daily:

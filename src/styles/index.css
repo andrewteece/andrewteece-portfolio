@@ -137,28 +137,6 @@
     font-family: var(--font-sans);
   }
 
-  /* Global text sizing */
-  p,
-  li {
-    font-size: 1.125rem; /* 18px */
-    line-height: 1.65;
-  }
-
-  @media (min-width: 768px) {
-    p,
-    li {
-      font-size: 1.25rem; /* 20px */
-      line-height: 1.7;
-    }
-  }
-
-  small,
-  .text-muted,
-  .text-muted-2 {
-    font-size: 0.9rem;
-    line-height: 1.4;
-  }
-
   a {
     color: var(--color-accent);
   }
