@@ -332,12 +332,13 @@
   }
 }
 
-/* Initial-load flash guard (use only if you add .disable-transitions on <html>) */
+/* Prevent jank on theme flip but keep color/opacity transitions */
 @media (prefers-reduced-motion: no-preference) {
-  html.disable-transitions *,
-  html.disable-transitions *::before,
-  html.disable-transitions *::after {
-    transition: none !important;
-    animation: none !important;
+  html.reduce-heavy-transitions *,
+  html.reduce-heavy-transitions *::before,
+  html.reduce-heavy-transitions *::after {
+    /* Only block expensive properties */
+    transition-property: backdrop-filter, filter, box-shadow, transform !important;
+    transition-duration: 0ms !important;
   }
 }
