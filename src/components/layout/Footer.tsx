@@ -1,6 +1,6 @@
-import { motion, useReducedMotion } from 'framer-motion';
 import type { Transition } from 'framer-motion';
-import { Mail, ArrowUp, Download } from 'lucide-react';
+import { motion, useReducedMotion } from 'framer-motion';
+import { ArrowUp, Download, Mail } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 // If you already have SocialLinks, keep it. Otherwise comment this out.
 /* import SocialLinks from '../SocialLinks'; */
@@ -119,7 +119,7 @@ export default function Footer() {
               </svg>
             </a>
             <a
-              href='https://www.linkedin.com/in/andrewteece/'
+              href='https://www.linkedin.com/in/andrew-teece/'
               aria-label='LinkedIn'
               className='hover:opacity-80'
             >
