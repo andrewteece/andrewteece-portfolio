@@ -6,7 +6,7 @@ import NavLinks from './NavLinks';
 import ThemeToggle from './ThemeToggle';
 
 export default function Header() {
-  const { isDark, toggleTheme } = useTheme(); // <-- use provider
+  const { isDark, toggleTheme } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -25,31 +25,33 @@ export default function Header() {
           : 'border-transparent backdrop-blur-md bg-[var(--color-bg)/70]'
       }`}
     >
-      <div className='max-w-7xl mx-auto px-4 py-4 flex justify-between items-center'>
-        <motion.div
-          className='text-xl font-extrabold tracking-tight text-[var(--color-brand)] font-[Outfit,sans-serif]'
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          Andrew <span className='opacity-80'>Teece</span>
-        </motion.div>
-
-        <nav className='hidden md:flex items-center gap-6 text-sm'>
-          <NavLinks onClick={() => setMenuOpen(false)} />
-          <ThemeToggle isDark={isDark} toggle={toggleTheme} />{' '}
-          {/* use provider */}
-        </nav>
-
-        <div className='md:hidden flex items-center gap-3'>
-          <ThemeToggle isDark={isDark} toggle={toggleTheme} />
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label='Toggle menu'
-            className='p-1'
+      {/* Reserve height to avoid layout shift */}
+      <div className='h-16'>
+        <div className='max-w-7xl mx-auto px-4 h-full flex justify-between items-center'>
+          <motion.div
+            className='text-xl font-extrabold tracking-tight text-[var(--color-brand)] font-[Outfit,sans-serif]'
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.35 }}
           >
-            {menuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+            Andrew <span className='opacity-80'>Teece</span>
+          </motion.div>
+
+          <nav className='hidden md:flex items-center gap-6 text-sm'>
+            <NavLinks onClick={() => setMenuOpen(false)} />
+            <ThemeToggle isDark={isDark} toggle={toggleTheme} />
+          </nav>
+
+          <div className='md:hidden flex items-center gap-3'>
+            <ThemeToggle isDark={isDark} toggle={toggleTheme} />
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label='Toggle menu'
+              className='p-1'
+            >
+              {menuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -61,10 +63,9 @@ export default function Header() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
+              transition={{ duration: 0.3 }}
               onClick={() => setMenuOpen(false)}
             />
-
             <motion.aside
               className='fixed inset-x-4 top-[72px] mx-auto w-[90%] max-w-md bg-[var(--color-bg)]/95 backdrop-blur-md shadow-xl z-40 p-6 flex flex-col gap-6 items-center text-center rounded-lg'
               initial={{ opacity: 0, y: -20 }}
@@ -72,13 +73,7 @@ export default function Header() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ type: 'spring', stiffness: 160, damping: 22 }}
             >
-              <motion.div
-                className='flex justify-end w-full'
-                initial={{ opacity: 0, rotate: -90 }}
-                animate={{ opacity: 1, rotate: 0 }}
-                exit={{ opacity: 0, rotate: 90 }}
-                transition={{ duration: 0.3 }}
-              >
+              <div className='flex justify-end w-full'>
                 <button
                   onClick={() => setMenuOpen(false)}
                   aria-label='Close menu'
@@ -86,7 +81,7 @@ export default function Header() {
                 >
                   <X size={24} />
                 </button>
-              </motion.div>
+              </div>
 
               <motion.div
                 className='flex flex-col gap-4 mt-2'

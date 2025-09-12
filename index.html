@@ -6,10 +6,12 @@
       name="viewport"
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
+
+    <!-- Pre-paint theme (prevents CLS) -->
     <script>
       (() => {
         try {
-          const KEY = 'theme'; // 'light' | 'dark'
+          const KEY = 'theme';
           const mql = window.matchMedia('(prefers-color-scheme: dark)');
           let t = localStorage.getItem(KEY);
           if (t !== 'light' && t !== 'dark') t = mql.matches ? 'dark' : 'light';
@@ -19,18 +21,16 @@
           root.setAttribute('data-theme', t);
           root.style.colorScheme = t;
 
-          // theme-color + dual favicons to avoid tab/address bar flash
-          const ensureMeta = () => {
-            let el = document.querySelector('meta[name="theme-color"]');
-            if (!el) {
-              el = document.createElement('meta');
-              el.setAttribute('name', 'theme-color');
-              document.head.appendChild(el);
-            }
-            el.setAttribute('content', t === 'dark' ? '#0f172a' : '#ffffff');
-          };
-          ensureMeta();
+          // keep theme-color in sync to avoid address bar flash
+          let el = document.querySelector('meta[name="theme-color"]');
+          if (!el) {
+            el = document.createElement('meta');
+            el.setAttribute('name', 'theme-color');
+            document.head.appendChild(el);
+          }
+          el.setAttribute('content', t === 'dark' ? '#0f172a' : '#ffffff');
 
+          // dual favicons (optional; no-op if not present)
           const lightIco = document.querySelector(
             'link[rel="icon"][data-theme="light"]'
           );
@@ -45,30 +45,17 @@
       })();
     </script>
 
-    <!-- Primary (keep minimal; Helmet prerender will add page-specific SEO) -->
     <title>Andrew Teece | Front-end Web Developer</title>
 
-    <!-- Preconnects for fonts (faster first paint) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-    <!-- Optional site-wide description (per-page SEO handled by SEO component) -->
-    <!--
-    <meta
-      name="description"
-      content="Andrew Teece builds responsive, performant, and accessible web experiences with React, TypeScript, and Tailwind CSS."
-    />
-    -->
-
-    <!-- Optional site-wide RSS link -->
     <link
       rel="alternate"
       type="application/rss+xml"
       title="Andrew Teece - RSS Feed"
       href="/feed.xml"
     />
-
-    <!-- Icons -->
     <link rel="icon" href="/favicon.png" type="image/png" />
 
     <link
@@ -82,9 +69,7 @@
       content="black-translucent"
     />
 
-    <!-- Display / theming -->
     <meta name="color-scheme" content="light dark" />
-    <!-- Static theme-color fallbacks (overridden at runtime by App.tsx dynamic meta) -->
     <meta
       name="theme-color"
       media="(prefers-color-scheme: light)"
@@ -96,7 +81,6 @@
       content="#0f172a"
     />
 
-    <!-- Google tag (GA4) -->
     <link rel="preconnect" href="https://www.googletagmanager.com" />
     <script
       async
@@ -108,11 +92,9 @@
         dataLayer.push(arguments);
       }
       gtag('js', new Date());
-      // NOTE: send_page_view is disabled; App.tsx sends page_view on route changes.
       gtag('config', 'G-HRXLND5LVK', { send_page_view: false });
     </script>
 
-    <!-- Person JSON-LD (homepage identity) -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
