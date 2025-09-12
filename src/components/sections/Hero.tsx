@@ -7,7 +7,6 @@ export default function Hero() {
   const [showUi, setShowUi] = useState(false);
   const prefersReducedMotion = useReducedMotion();
 
-  // Same ambient drift config used on Blog/BlogPost
   const driftTransition: Transition = {
     duration: 26,
     repeat: Infinity,
@@ -47,9 +46,8 @@ export default function Hero() {
         px-4 pt-32 pb-16 md:pt-40 md:pb-24
       '
     >
-      {/* Ambient background glows (match Blog) */}
+      {/* Ambient background glows */}
       <div className='absolute inset-0 z-0 pointer-events-none'>
-        {/* Top-left brand glow */}
         <motion.div
           aria-hidden
           className='absolute w-64 h-64 rounded-full -top-28 -left-28 md:h-80 md:w-80 mix-blend-screen'
@@ -62,7 +60,6 @@ export default function Hero() {
           animate={driftPath}
           transition={prefersReducedMotion ? undefined : driftTransition}
         />
-        {/* Right warm glow */}
         <motion.div
           aria-hidden
           className='absolute top-1/2 -right-32 h-72 w-72 md:h-[26rem] md:w-[26rem] rounded-full mix-blend-screen'
@@ -77,7 +74,6 @@ export default function Hero() {
             prefersReducedMotion ? undefined : { ...driftTransition, delay: 2 }
           }
         />
-        {/* Center cool glow */}
         <motion.div
           aria-hidden
           className='absolute -translate-x-1/2 rounded-full left-1/2 top-24 h-60 w-60 md:h-72 md:w-72 mix-blend-screen'
@@ -94,9 +90,7 @@ export default function Hero() {
         />
       </div>
 
-      {/* Content */}
       <div className='relative z-10 max-w-4xl w-full flex flex-col items-center space-y-8 md:space-y-10'>
-        {/* Gradient headline (matches Blog heading treatment) */}
         <h1
           id='home-heading'
           className='relative inline-block text-5xl md:text-7xl font-extrabold leading-[1.05] tracking-tight'
@@ -126,7 +120,6 @@ export default function Hero() {
           Front-End Web Developer focused on clean code and user-centric design.
         </h2>
 
-        {/* Keep body narrower so it doesn't become LCP */}
         <p className='text-base md:text-lg max-w-xl text-[rgb(var(--text-rgb)/0.80)]'>
           Delivering responsive, performant, and accessible digital experiences
           using modern tools like <strong>React</strong>,{' '}
@@ -144,7 +137,7 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Defer non-critical icons to idle */}
+      {/* Non-critical UI deferred to idle */}
       {showUi && (
         <>
           <a
@@ -154,7 +147,6 @@ export default function Hero() {
           >
             <IconChevronDown width={28} height={28} aria-hidden />
           </a>
-
           <a
             href='#home'
             className='fixed bottom-6 right-6 bg-[var(--color-brand)] text-white p-2 rounded-full shadow-lg hover:bg-opacity-80 transition-opacity'
