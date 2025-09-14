@@ -48,11 +48,10 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
-    "@storybook/addon-a11y": "^8.6.14",
     "@storybook/addon-docs": "^8.6.14",
     "@storybook/addon-essentials": "^8.6.14",
     "@storybook/addon-interactions": "^8.6.14",
-    "@storybook/addon-vitest": "^8.6.14",
+    "@storybook/addon-links": "^8.6.14",
     "@storybook/react-vite": "^8.6.14",
     "@storybook/test": "^8.6.14",
     "@tailwindcss/aspect-ratio": "^0.4.2",

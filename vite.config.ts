@@ -62,6 +62,6 @@ export default defineConfig({
         'scripts/**',
         'src/content/**',
       ],
-    }
-  }
+    },
+  },
 });
