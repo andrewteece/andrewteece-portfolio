@@ -37,6 +37,10 @@ stats.html
 # Test coverage
 coverage/
 
+# Example Storybook files
+src/stories/
+vitest.shims.d.ts
+
 # --- Lighthouse / perf artifacts ---
 lh/
 lhci/
