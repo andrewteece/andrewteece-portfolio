@@ -1,0 +1,169 @@
+---
+title: 'Project Template Part 4: Testing with Providers Helper'
+description: 'Clean up component tests in our Vite + React + TypeScript + Tailwind project by introducing a providers helper for Vitest + Testing Library.'
+date: 2025-09-22
+image: /images/blog/project-template-part4.webp
+tags:
+  - react
+  - vite
+  - typescript
+  - tailwind
+  - vitest
+  - testing-library
+---
+
+import CodeBlock from '../../components/blog/CodeBlock';
+
+In [Part 3](/blog/project-template-part3), we wired up **Vitest** and **Testing Library** to test our React components. That gave us a solid foundation, but as the project grows we’ll quickly run into a problem: many of our components rely on **context providers**.
+
+Think about it:
+
+- The app theme is managed by `ThemeProvider`.
+- SEO metadata comes from `HelmetProvider`.
+- Routing often requires a `Router` wrapper.
+
+Without a helper, every test would have to repeat this boilerplate. Let’s fix that with a clean, reusable utility.
+
+---
+
+## The Problem: Repeated Providers
+
+Here’s what a test might look like if we wrapped everything manually:
+
+<CodeBlock lang="tsx">
+
+```tsx
+import { render, screen } from '@testing-library/react';
+import { ThemeProvider } from '@/context/ThemeProvider';
+import { HelmetProvider } from 'react-helmet-async';
+import Header from '@/components/Header/Header';
+
+test('renders site title', () => {
+  render(
+    <ThemeProvider>
+      <HelmetProvider>
+        <Header />
+      </HelmetProvider>
+    </ThemeProvider>
+  );
+
+  expect(screen.getByText(/Andrew Teece/i)).toBeInTheDocument();
+});
+```
+
+</CodeBlock>
+
+That works, but it’s noisy. Every test duplicates the same provider stack.
+
+---
+
+## Step 1: A Minimal Helper
+
+Let’s start small and create a helper that wraps just the `ThemeProvider`.
+
+Create a new file: **`src/test/utils.tsx`**
+
+<CodeBlock lang="tsx">
+
+```tsx
+import { ReactNode } from 'react';
+import { render } from '@testing-library/react';
+import { ThemeProvider } from '@/context/ThemeProvider';
+
+export function renderWithTheme(ui: ReactNode, options = {}) {
+  return render(<ThemeProvider>{ui}</ThemeProvider>, options);
+}
+```
+
+</CodeBlock>
+
+Now tests that only need theme context become:
+
+<CodeBlock lang="tsx">
+
+```tsx
+import { screen } from '@testing-library/react';
+import { renderWithTheme } from '@/test/utils';
+import Header from '@/components/Header/Header';
+
+test('renders site title', () => {
+  renderWithTheme(<Header />);
+  expect(screen.getByText(/Andrew Teece/i)).toBeInTheDocument();
+});
+```
+
+</CodeBlock>
+
+Much cleaner!
+
+---
+
+## Step 2: Scale to Real Providers
+
+Our actual app uses both `ThemeProvider` and `HelmetProvider`. Let’s make a full helper.
+
+Update **`src/test/utils.tsx`**:
+
+<CodeBlock lang="tsx">
+
+```tsx
+import { ReactNode } from 'react';
+import { render } from '@testing-library/react';
+import { ThemeProvider } from '@/context/ThemeProvider';
+import { HelmetProvider } from 'react-helmet-async';
+
+export function renderWithProviders(ui: ReactNode, options = {}) {
+  return render(
+    <ThemeProvider>
+      <HelmetProvider>{ui}</HelmetProvider>
+    </ThemeProvider>,
+    options
+  );
+}
+```
+
+</CodeBlock>
+
+> 💡 If your components rely on routing, you could also wrap with `MemoryRouter` from `react-router-dom` here.
+
+---
+
+## Step 3: Cleaner Tests
+
+Now a test with multiple providers looks just as simple:
+
+<CodeBlock lang="tsx">
+
+```tsx
+import { screen } from '@testing-library/react';
+import { renderWithProviders } from '@/test/utils';
+import Header from '@/components/Header/Header';
+
+test('renders site title', () => {
+  renderWithProviders(<Header />);
+  expect(screen.getByText(/Andrew Teece/i)).toBeInTheDocument();
+});
+```
+
+</CodeBlock>
+
+We’ve eliminated boilerplate, making tests easier to read and maintain.
+
+---
+
+## Wrap-up
+
+In this part, we:
+
+- Identified the problem of repeated providers in tests.
+- Built a minimal `renderWithTheme` helper.
+- Scaled it to `renderWithProviders` for our real app stack.
+- Simplified tests down to a single, reusable render call.
+
+With this in place, your test suite stays **clean, consistent, and easy to extend** as your app grows.
+
+---
+
+👉 Next up, we’ll continue evolving the **project-template** into a professional starter by exploring advanced testing techniques and maybe even mocking APIs with tools like [MSW](https://mswjs.io/).
+
+📖 See the code on GitHub: [andrewteece/project-template](https://github.com/andrewteece/project-template)

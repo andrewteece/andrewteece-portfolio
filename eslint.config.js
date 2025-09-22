@@ -1,18 +1,14 @@
 // eslint.config.js — ESLint v9 flat config
 import js from '@eslint/js';
-import globals from 'globals';
-import tseslint from 'typescript-eslint';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
 
 export default [
   // Ignore build outputs & vendor
-  { ignores: ['dist', 'coverage', '.vercel', 'node_modules'] },
-
-  // Base JS rules (applies everywhere)
-  js.configs.recommended,
-
-  // Plain JS/JSX — never run TS-typed rules here
+  { ignores: ['dist', 'coverage', '.vercel', 'node_modules'] }, // Base JS rules (applies everywhere)
+  js.configs.recommended, // Plain JS/JSX — never run TS-typed rules here
   {
     files: ['**/*.{js,mjs,cjs,jsx}'],
     languageOptions: {
@@ -26,9 +22,7 @@ export default [
       'react-hooks/exhaustive-deps': 'warn',
       'react-refresh/only-export-components': 'off',
     },
-  },
-
-  // Type-aware TypeScript — ONLY on TS/TSX in app + tests
+  }, // Type-aware TypeScript — ONLY on TS/TSX in app + tests
   ...tseslint.configs.recommendedTypeChecked.map((cfg) => ({
     ...cfg,
     files: ['src/**/*.{ts,tsx}', '**/*.test.{ts,tsx}', '**/*.spec.{ts,tsx}'],
@@ -57,18 +51,14 @@ export default [
         { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
       ],
     },
-  })),
-
-  // Tests: if types ever hiccup, don't block CI on "unsafe" in tests
+  })), // Tests: if types ever hiccup, don't block CI on "unsafe" in tests
   {
     files: ['**/*.test.{ts,tsx}', '**/*.spec.{ts,tsx}'],
     rules: {
       '@typescript-eslint/no-unsafe-call': 'off',
       '@typescript-eslint/no-unsafe-member-access': 'off',
     },
-  },
-
-  // Keep typed rules off config/build scripts explicitly
+  }, // Keep typed rules off config/build scripts explicitly
   {
     files: [
       'eslint.config.*',
