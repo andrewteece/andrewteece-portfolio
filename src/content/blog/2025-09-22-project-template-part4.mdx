@@ -14,6 +14,12 @@ tags:
 
 import CodeBlock from '../../components/blog/CodeBlock';
 
+> **Project Template Series** ·
+> [Part 1](/blog/project-template-part1) ·
+> [Part 2](/blog/project-template-part2) ·
+> [Part 3](/blog/project-template-part3) ·
+> **Part 4**
+
 In [Part 3](/blog/project-template-part3), we wired up **Vitest** and **Testing Library** to test our React components. That gave us a solid foundation, but as the project grows we’ll quickly run into a problem: many of our components rely on **context providers**.
 
 Think about it:
@@ -30,7 +36,7 @@ Without a helper, every test would have to repeat this boilerplate. Let’s fix 
 
 Here’s what a test might look like if we wrapped everything manually:
 
-<CodeBlock lang="tsx">
+<CodeBlock lang="tsx" title="Verbose test without a helper">
 
 ```tsx
 import { render, screen } from '@testing-library/react';
@@ -61,9 +67,9 @@ That works, but it’s noisy. Every test duplicates the same provider stack.
 
 Let’s start small and create a helper that wraps just the `ThemeProvider`.
 
-Create a new file: **`src/test/utils.tsx`**
+**Create** `src/test/utils.tsx`
 
-<CodeBlock lang="tsx">
+<CodeBlock lang="tsx" title="src/test/utils.tsx — minimal helper">
 
 ```tsx
 import { ReactNode } from 'react';
@@ -79,7 +85,7 @@ export function renderWithTheme(ui: ReactNode, options = {}) {
 
 Now tests that only need theme context become:
 
-<CodeBlock lang="tsx">
+<CodeBlock lang="tsx" title="Using the minimal helper">
 
 ```tsx
 import { screen } from '@testing-library/react';
@@ -102,9 +108,9 @@ Much cleaner!
 
 Our actual app uses both `ThemeProvider` and `HelmetProvider`. Let’s make a full helper.
 
-Update **`src/test/utils.tsx`**:
+**Update** `src/test/utils.tsx`
 
-<CodeBlock lang="tsx">
+<CodeBlock lang="tsx" title="src/test/utils.tsx — full helper">
 
 ```tsx
 import { ReactNode } from 'react';
@@ -124,7 +130,22 @@ export function renderWithProviders(ui: ReactNode, options = {}) {
 
 </CodeBlock>
 
-> 💡 If your components rely on routing, you could also wrap with `MemoryRouter` from `react-router-dom` here.
+> 💡 If your components rely on routing, you can add `MemoryRouter` from `react-router-dom`:
+>
+> ```tsx
+> import { MemoryRouter } from 'react-router-dom';
+>
+> export function renderWithProviders(ui: ReactNode, options = {}) {
+>   return render(
+>     <ThemeProvider>
+>       <HelmetProvider>
+>         <MemoryRouter initialEntries={['/']}>{ui}</MemoryRouter>
+>       </HelmetProvider>
+>     </ThemeProvider>,
+>     options
+>   );
+> }
+> ```
 
 ---
 
@@ -132,7 +153,7 @@ export function renderWithProviders(ui: ReactNode, options = {}) {
 
 Now a test with multiple providers looks just as simple:
 
-<CodeBlock lang="tsx">
+<CodeBlock lang="tsx" title="Using the full helper">
 
 ```tsx
 import { screen } from '@testing-library/react';
