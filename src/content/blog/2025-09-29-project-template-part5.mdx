@@ -1,0 +1,179 @@
+---
+title: 'Project Template Part 5: Mocking APIs with MSW'
+description: 'Add realistic API mocks to our Vite + React + TypeScript + Tailwind project using Mock Service Worker (MSW) for both tests and local development.'
+date: 2025-09-29
+image: /images/blog/project-template-part5.webp
+tags:
+  - react
+  - vite
+  - typescript
+  - tailwind
+  - vitest
+  - testing-library
+  - msw
+---
+
+import CodeBlock from '../../components/blog/CodeBlock';
+
+> **Project Template Series** ·
+> [Part 1](/blog/project-template-part1) ·
+> [Part 2](/blog/project-template-part2) ·
+> [Part 3](/blog/project-template-part3) ·
+> [Part 4](/blog/project-template-part4) ·
+> **Part 5**
+
+In [Part 4](/blog/project-template-part4), we built a `renderWithProviders` helper to keep our component tests clean.
+That solved repeated context boilerplate, but most apps also need to talk to APIs.
+
+👉 Hitting real APIs during tests is **slow, brittle, and often impossible**.
+👉 We need **mocked responses** that behave like the real thing.
+
+That’s where **Mock Service Worker (MSW)** comes in. It intercepts `fetch` calls and serves back fake responses, both in **tests** and **local dev**.
+
+---
+
+## Step 1: Install MSW
+
+<CodeBlock lang="bash" title="Install dependencies">
+
+```bash
+npm install msw --save-dev
+```
+
+</CodeBlock>
+
+---
+
+## Step 2: Create API handlers
+
+Add a new file: **`src/mocks/handlers.ts`**
+
+<CodeBlock lang="tsx" title="src/mocks/handlers.ts">
+
+```tsx
+import { http, HttpResponse } from 'msw';
+
+export const handlers = [
+  // Example: mock a GET /api/projects endpoint
+  http.get('/api/projects', () => {
+    return HttpResponse.json([
+      { id: 1, name: 'Portfolio Site', tech: ['React', 'Tailwind'] },
+      { id: 2, name: 'Course Builder App', tech: ['Next.js', 'DrizzleORM'] },
+    ]);
+  }),
+];
+```
+
+</CodeBlock>
+
+---
+
+## Step 3: Set up MSW in tests
+
+Update **`vitest.setup.ts`** to register the server.
+
+<CodeBlock lang="tsx" title="vitest.setup.ts">
+
+```tsx
+import { setupServer } from 'msw/node';
+import { handlers } from './src/mocks/handlers';
+
+// Create an MSW server with our handlers
+const server = setupServer(...handlers);
+
+// Start server before all tests, close after
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
+```
+
+</CodeBlock>
+
+Now every test that fetches `/api/projects` will get back our mock data.
+
+---
+
+## Step 4: Example test with MSW
+
+<CodeBlock lang="tsx" title="src/components/Projects.test.tsx">
+
+```tsx
+import { screen } from '@testing-library/react';
+import { renderWithProviders } from '@/test/utils';
+import Projects from '@/components/Projects';
+
+test('renders projects from API', async () => {
+  renderWithProviders(<Projects />);
+
+  // Mocked responses appear just like real data
+  expect(await screen.findByText(/Portfolio Site/)).toBeInTheDocument();
+  expect(await screen.findByText(/Course Builder App/)).toBeInTheDocument();
+});
+```
+
+</CodeBlock>
+
+No network calls, no fragile test setups — just fast, realistic tests.
+
+---
+
+## Step 5: Use MSW in dev
+
+MSW also works in the browser.
+Generate a worker file and start it in dev mode.
+
+<CodeBlock lang="bash" title="Generate worker">
+
+```bash
+npx msw init public/
+```
+
+</CodeBlock>
+
+This creates `public/mockServiceWorker.js`.
+
+Then in **`src/mocks/browser.ts`**:
+
+<CodeBlock lang="tsx" title="src/mocks/browser.ts">
+
+```tsx
+import { setupWorker } from 'msw';
+import { handlers } from './handlers';
+
+export const worker = setupWorker(...handlers);
+```
+
+</CodeBlock>
+
+Finally, start the worker when running locally. In **`main.tsx`**:
+
+<CodeBlock lang="tsx" title="main.tsx (dev only)">
+
+```tsx
+if (process.env.NODE_ENV === 'development') {
+  const { worker } = await import('./mocks/browser');
+  worker.start();
+}
+```
+
+</CodeBlock>
+
+Now your app will use mocked endpoints when you run `npm run dev`, while production builds ignore them.
+
+---
+
+## Wrap-up
+
+In this part, we:
+
+- Installed MSW and defined API handlers.
+- Integrated it with **Vitest** for fast, realistic API tests.
+- Set up MSW in **local dev** so components can work against mocks without a backend.
+
+With MSW, your project template now supports **realistic API flows** across dev and test — all without relying on external services.
+
+---
+
+👉 Next up, we’ll continue leveling up the template with **end-to-end (E2E) testing using Playwright**, so we can cover the full stack of confidence from lint → unit → integration → E2E.
+
+📖 See the code on GitHub: [andrewteece/project-template](https://github.com/andrewteece/project-template)
