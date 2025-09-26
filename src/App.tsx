@@ -2,8 +2,11 @@
 import { lazy, startTransition, Suspense, useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 
+import { SimpleAccessibilityPanel } from './components/accessibility/SimpleAccessibility';
 import Footer from './components/layout/Footer';
 import Header from './components/layout/Header';
+import PerformanceBadge from './components/PerformanceBadge';
+import ScrollProgress from './components/ScrollProgress';
 import SEO from './components/shared/SEO';
 import ScrollToAnchor from './components/ui/ScrollToAnchor';
 
@@ -131,15 +134,11 @@ export default function App() {
       )}
 
       <div className='min-h-screen font-sans transition-colors duration-300 bg-bg text-text dark:bg-bg dark:text-text'>
-        {/* Accessible skip link */}
-        <a
-          href='#main'
-          className='sr-only focus:not-sr-only fixed top-2 left-2 z-[9999] rounded bg-[var(--color-brand)] text-white px-3 py-2'
-        >
-          Skip to content
-        </a>
+        {/* Simple Accessibility Panel */}
+        <SimpleAccessibilityPanel />
 
         <Header />
+        <ScrollProgress />
         <ScrollToAnchor />
 
         <Routes>
@@ -216,6 +215,9 @@ export default function App() {
         </Routes>
 
         <Footer />
+
+        {/* Performance Badge - Senior Developer Showcase */}
+        {isHome && <PerformanceBadge />}
 
         {/* Render Speed Insights lazily so it doesn't impact LCP */}
         {import.meta.env.PROD && (

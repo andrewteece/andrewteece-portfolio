@@ -1,5 +1,5 @@
-import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
 import { motion } from 'framer-motion';
+import { FaExternalLinkAlt, FaGithub } from 'react-icons/fa';
 
 type ProjectProps = {
   title: string;
@@ -20,13 +20,20 @@ export default function ProjectCard({
 }: ProjectProps) {
   return (
     <motion.div
-      className='flex flex-col overflow-hidden transition-all duration-300 card group'
+      className='flex flex-col overflow-hidden transition-all duration-300 card group cursor-pointer'
       variants={{
         hidden: { opacity: 0, y: 20 },
         visible: { opacity: 1, y: 0 },
       }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
       viewport={{ once: true }}
+      whileHover={{
+        y: -8,
+        scale: 1.02,
+        boxShadow: '0 20px 40px -12px rgba(0, 0, 0, 0.15)',
+        transition: { duration: 0.2, ease: 'easeOut' },
+      }}
+      whileTap={{ scale: 0.98 }}
     >
       {image && (
         <div className='overflow-hidden'>
@@ -55,26 +62,32 @@ export default function ProjectCard({
 
         <div className='flex gap-4 mt-4'>
           {github && (
-            <a
+            <motion.a
               href={github}
               target='_blank'
               rel='noopener noreferrer'
-              className='transition-colors text-[var(--color-brand)] hover:text-[var(--color-accent)]'
+              className='flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-all text-[var(--color-brand)] border border-[var(--color-brand)]/20 hover:border-[var(--color-brand)]/40 hover:bg-[var(--color-brand)]/5'
               aria-label={`View ${title} on GitHub`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <FaGithub size={18} />
-            </a>
+              <FaGithub size={16} />
+              <span>Code</span>
+            </motion.a>
           )}
           {demo && (
-            <a
+            <motion.a
               href={demo}
               target='_blank'
               rel='noopener noreferrer'
-              className='transition-colors text-[var(--color-brand)] hover:text-[var(--color-accent)]'
+              className='flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-all text-[var(--color-accent)] border border-[var(--color-accent)]/20 hover:border-[var(--color-accent)]/40 hover:bg-[var(--color-accent)]/5'
               aria-label={`View live demo of ${title}`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <FaExternalLinkAlt size={18} />
-            </a>
+              <FaExternalLinkAlt size={14} />
+              <span>Live Demo</span>
+            </motion.a>
           )}
         </div>
       </div>
