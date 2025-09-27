@@ -95,7 +95,7 @@ describe('Icons', () => {
 
       expect(svg).toBeInTheDocument();
       expect(path).toHaveAttribute('d', 'M6 9l6 6 6-6');
-      expect(path).toHaveAttribute('strokeLinecap', 'round');
+      expect(path).toHaveAttribute('stroke-linecap', 'round');
     });
   });
 
@@ -107,14 +107,14 @@ describe('Icons', () => {
 
       expect(svg).toBeInTheDocument();
       expect(path).toHaveAttribute('d', 'M12 19V5M5 12l7-7 7 7');
-      expect(path).toHaveAttribute('strokeLinecap', 'round');
+      expect(path).toHaveAttribute('stroke-linecap', 'round');
     });
 
     it('applies custom styling', () => {
       const { container } = render(<IconArrowUp style={{ color: 'red' }} />);
       const svg = container.querySelector('svg');
 
-      expect(svg).toHaveStyle({ color: 'red' });
+      expect(svg).toHaveStyle({ color: 'rgb(255, 0, 0)' });
     });
   });
 
