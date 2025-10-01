@@ -1,26 +1,39 @@
 import { motion } from 'framer-motion';
-import { FaExternalLinkAlt, FaGithub } from 'react-icons/fa';
+import { FaExternalLinkAlt, FaGithub, FaStar } from 'react-icons/fa';
 
 type ProjectProps = {
   title: string;
   description: string;
-  tech: string;
+  tech?: string;
   github?: string;
   demo?: string;
   image?: string;
+  category?: 'frontend' | 'fullstack' | 'tools' | 'api';
+  featured?: boolean;
+  techStack?: string[];
+  metrics?: {
+    performance?: string;
+    accessibility?: string;
+    bundle?: string;
+  };
 };
 
 export default function ProjectCard({
   title,
   description,
-  tech,
   github,
   demo,
   image,
+  category,
+  featured,
+  techStack,
+  metrics,
 }: ProjectProps) {
   return (
     <motion.div
-      className='flex flex-col overflow-hidden transition-all duration-300 card group cursor-pointer'
+      className={`flex flex-col overflow-hidden transition-all duration-300 card group cursor-pointer relative ${
+        featured ? 'ring-2 ring-[var(--color-accent)]/30' : ''
+      }`}
       variants={{
         hidden: { opacity: 0, y: 20 },
         visible: { opacity: 1, y: 0 },
@@ -35,6 +48,15 @@ export default function ProjectCard({
       }}
       whileTap={{ scale: 0.98 }}
     >
+      {featured && (
+        <div className='absolute top-4 right-4 z-10'>
+          <span className='inline-flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-full bg-[var(--color-accent)] text-white'>
+            <FaStar size={10} />
+            Featured
+          </span>
+        </div>
+      )}
+
       {image && (
         <div className='overflow-hidden'>
           <img
@@ -52,12 +74,57 @@ export default function ProjectCard({
 
       <div className='flex flex-col justify-between flex-1 p-6'>
         <div>
-          <h3 className='text-xl font-bold text-[var(--color-brand)] underline-offset-4 group-hover:underline'>
-            {title}
-          </h3>
+          <div className='flex items-start justify-between gap-2 mb-2'>
+            <h3 className='text-xl font-bold text-[var(--color-brand)] underline-offset-4 group-hover:underline'>
+              {title}
+            </h3>
+            {category && (
+              <span className='px-2 py-1 text-xs font-medium rounded-md bg-[var(--color-brand)]/10 text-[var(--color-brand)] capitalize'>
+                {category}
+              </span>
+            )}
+          </div>
 
-          <p className='mt-2 text-sm text-[var(--color-text)]'>{description}</p>
-          <p className='mt-2 text-xs text-muted'>{tech}</p>
+          <p className='mt-2 text-sm leading-relaxed text-[var(--color-text)]'>
+            {description}
+          </p>
+
+          {/* Tech Stack Pills */}
+          {techStack && (
+            <div className='flex flex-wrap gap-1 mt-3'>
+              {techStack.slice(0, 4).map((tech, index) => (
+                <span
+                  key={index}
+                  className='px-2 py-1 text-xs font-medium rounded-md bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'
+                >
+                  {tech}
+                </span>
+              ))}
+              {techStack.length > 4 && (
+                <span className='px-2 py-1 text-xs font-medium text-gray-500'>
+                  +{techStack.length - 4} more
+                </span>
+              )}
+            </div>
+          )}
+
+          {/* Performance Metrics */}
+          {metrics && (
+            <div className='grid grid-cols-2 gap-2 mt-3 text-xs'>
+              {metrics.performance && (
+                <div className='flex items-center gap-1 text-green-600 dark:text-green-400'>
+                  <span>⚡</span>
+                  <span>{metrics.performance}</span>
+                </div>
+              )}
+              {metrics.accessibility && (
+                <div className='flex items-center gap-1 text-blue-600 dark:text-blue-400'>
+                  <span>♿</span>
+                  <span>{metrics.accessibility}</span>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         <div className='flex gap-4 mt-4'>
