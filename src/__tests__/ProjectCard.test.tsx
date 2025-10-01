@@ -17,10 +17,17 @@ vi.mock('framer-motion', () => ({
 const mockProps = {
   title: 'Test Project',
   description: 'A test project description',
-  tech: 'React, TypeScript, Tailwind',
   github: 'https://github.com/test/repo',
   demo: 'https://test-demo.com',
   image: '/test-image.jpg',
+  category: 'frontend' as const,
+  featured: true,
+  techStack: ['React', 'TypeScript', 'Tailwind', 'Vite'],
+  metrics: {
+    performance: '98/100 Lighthouse',
+    accessibility: 'WCAG 2.1 AA',
+    bundle: '234kb gzipped'
+  }
 };
 
 test('renders project card with all information', () => {
@@ -28,7 +35,10 @@ test('renders project card with all information', () => {
 
   expect(screen.getByText('Test Project')).toBeInTheDocument();
   expect(screen.getByText('A test project description')).toBeInTheDocument();
-  expect(screen.getByText('React, TypeScript, Tailwind')).toBeInTheDocument();
+  expect(screen.getByText('React')).toBeInTheDocument();
+  expect(screen.getByText('TypeScript')).toBeInTheDocument();
+  expect(screen.getByText('Featured')).toBeInTheDocument();
+  expect(screen.getByText('frontend')).toBeInTheDocument();
 });
 
 test('renders github and demo links when provided', () => {
@@ -56,7 +66,6 @@ test('works without optional props', () => {
   const minimalProps = {
     title: 'Minimal Project',
     description: 'Basic project',
-    tech: 'HTML, CSS',
   };
 
   render(<ProjectCard {...minimalProps} />);
@@ -64,4 +73,5 @@ test('works without optional props', () => {
   expect(screen.getByText('Minimal Project')).toBeInTheDocument();
   expect(screen.getByText('Basic project')).toBeInTheDocument();
   expect(screen.queryByRole('img')).not.toBeInTheDocument();
+  expect(screen.queryByText('Featured')).not.toBeInTheDocument();
 });

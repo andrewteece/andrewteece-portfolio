@@ -9,6 +9,9 @@ vi.mock('framer-motion', () => ({
     div: ({ children, ...props }: React.ComponentProps<'div'>) => (
       <div {...props}>{children}</div>
     ),
+    button: ({ children, ...props }: React.ComponentProps<'button'>) => (
+      <button {...props}>{children}</button>
+    ),
   },
 }));
 
@@ -74,7 +77,7 @@ describe('Projects', () => {
 
     expect(screen.getByText('Projects')).toBeInTheDocument();
     expect(
-      screen.getByText(/Projects from intuitive frontend interfaces/)
+      screen.getByText(/A curated collection of projects showcasing modern web development/)
     ).toBeInTheDocument();
   });
 
