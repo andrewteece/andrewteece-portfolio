@@ -26,8 +26,8 @@ const mockProps = {
   metrics: {
     performance: '98/100 Lighthouse',
     accessibility: 'WCAG 2.1 AA',
-    bundle: '234kb gzipped'
-  }
+    bundle: '234kb gzipped',
+  },
 };
 
 test('renders project card with all information', () => {

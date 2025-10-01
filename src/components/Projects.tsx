@@ -8,7 +8,9 @@ import { P, Section, Stack } from './shared/Section';
 export default function Projects() {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const { setActiveSection } = useContext(ActiveSectionContext);
-  const [activeFilter, setActiveFilter] = useState<'all' | 'frontend' | 'fullstack' | 'tools' | 'api'>('all');
+  const [activeFilter, setActiveFilter] = useState<
+    'all' | 'frontend' | 'fullstack' | 'tools' | 'api'
+  >('all');
 
   useEffect(() => {
     const node = wrapperRef.current;
@@ -26,15 +28,28 @@ export default function Projects() {
     visible: { transition: { staggerChildren: 0.15 } },
   };
 
-  const filteredProjects = activeFilter === 'all' 
-    ? projects 
-    : projects.filter(project => project.category === activeFilter);
+  const filteredProjects =
+    activeFilter === 'all'
+      ? projects
+      : projects.filter((project) => project.category === activeFilter);
 
   const filters = [
     { key: 'all', label: 'All Projects', count: projects.length },
-    { key: 'frontend', label: 'Frontend', count: projects.filter(p => p.category === 'frontend').length },
-    { key: 'fullstack', label: 'Full Stack', count: projects.filter(p => p.category === 'fullstack').length },
-    { key: 'tools', label: 'Tools', count: projects.filter(p => p.category === 'tools').length },
+    {
+      key: 'frontend',
+      label: 'Frontend',
+      count: projects.filter((p) => p.category === 'frontend').length,
+    },
+    {
+      key: 'fullstack',
+      label: 'Full Stack',
+      count: projects.filter((p) => p.category === 'fullstack').length,
+    },
+    {
+      key: 'tools',
+      label: 'Tools',
+      count: projects.filter((p) => p.category === 'tools').length,
+    },
   ] as const;
 
   return (
@@ -52,13 +67,14 @@ export default function Projects() {
           {/* Enhanced intro paragraph */}
           <P className='mx-auto max-w-prose text-lg md:text-xl leading-relaxed text-[var(--color-text)]'>
             A curated collection of projects showcasing modern web development
-            expertise—from complex data visualizations to full-stack applications,
-            each built with performance, accessibility, and scalability as core principles.
+            expertise—from complex data visualizations to full-stack
+            applications, each built with performance, accessibility, and
+            scalability as core principles.
           </P>
 
           {/* Project Filter Tabs */}
           <div className='flex flex-wrap justify-center gap-3 mb-8'>
-            {filters.map(filter => (
+            {filters.map((filter) => (
               <motion.button
                 key={filter.key}
                 onClick={() => setActiveFilter(filter.key)}
@@ -87,7 +103,9 @@ export default function Projects() {
 
           {filteredProjects.length === 0 && (
             <div className='text-center py-8'>
-              <p className='text-gray-500'>No projects found in this category.</p>
+              <p className='text-gray-500'>
+                No projects found in this category.
+              </p>
             </div>
           )}
         </Stack>

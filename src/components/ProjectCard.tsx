@@ -85,8 +85,10 @@ export default function ProjectCard({
             )}
           </div>
 
-          <p className='mt-2 text-sm leading-relaxed text-[var(--color-text)]'>{description}</p>
-          
+          <p className='mt-2 text-sm leading-relaxed text-[var(--color-text)]'>
+            {description}
+          </p>
+
           {/* Tech Stack Pills */}
           {techStack && (
             <div className='flex flex-wrap gap-1 mt-3'>

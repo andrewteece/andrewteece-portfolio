@@ -77,7 +77,9 @@ describe('Projects', () => {
 
     expect(screen.getByText('Projects')).toBeInTheDocument();
     expect(
-      screen.getByText(/A curated collection of projects showcasing modern web development/)
+      screen.getByText(
+        /A curated collection of projects showcasing modern web development/
+      )
     ).toBeInTheDocument();
   });
 
