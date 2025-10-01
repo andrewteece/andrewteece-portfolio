@@ -23,7 +23,7 @@ export const projects: Project[] = [
       'Modern AI-powered dashboard with draggable widgets, real-time data visualization, and intelligent assistant integration. Features advanced drag-and-drop functionality using dnd-kit, persistent state management with Zustand, and comprehensive testing with accessibility validation.',
     github: 'https://github.com/andrewteece/ai-dashboard',
     demo: 'https://ai-dashboard-sigma-jet.vercel.app/',
-    image: undefined,
+    image: 'images/ai-dashboard.webp',
     category: 'fullstack',
     featured: true,
     techStack: [
@@ -71,7 +71,7 @@ export const projects: Project[] = [
       'Professional social networking platform clone featuring responsive design, user authentication, post interactions, and real-time social feed. Built with modern React patterns, comprehensive state management, and optimized for performance and accessibility.',
     github: 'https://github.com/andrewteece/linkedin-clone',
     demo: 'https://linkedin-clone-demo.vercel.app/',
-    image: undefined,
+    image: 'images/linkedin-clone.webp',
     category: 'frontend',
     techStack: ['React', 'TypeScript', 'Vite', 'Zustand', 'Tailwind CSS'],
     metrics: {
