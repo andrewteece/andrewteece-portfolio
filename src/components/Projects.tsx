@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { projects } from '../content/projects';
 import { ActiveSectionContext } from '../context/ActiveSectionContext';
 import ProjectCard from './ProjectCard';
@@ -28,29 +28,35 @@ export default function Projects() {
     visible: { transition: { staggerChildren: 0.15 } },
   };
 
-  const filteredProjects =
-    activeFilter === 'all'
-      ? projects
-      : projects.filter((project) => project.category === activeFilter);
+  const filteredProjects = useMemo(() => {
+    if (activeFilter === 'all') {
+      return projects;
+    }
+    return projects.filter((project) => project.category === activeFilter);
+  }, [activeFilter]);
+
+
 
   const filters = [
-    { key: 'all', label: 'All Projects', count: projects.length },
+    { key: 'all' as const, label: 'All Projects', count: projects.length },
     {
-      key: 'frontend',
+      key: 'frontend' as const,
       label: 'Frontend',
       count: projects.filter((p) => p.category === 'frontend').length,
     },
     {
-      key: 'fullstack',
+      key: 'fullstack' as const,
       label: 'Full Stack',
       count: projects.filter((p) => p.category === 'fullstack').length,
     },
     {
-      key: 'tools',
+      key: 'tools' as const,
       label: 'Tools',
       count: projects.filter((p) => p.category === 'tools').length,
     },
-  ] as const;
+  ];
+
+
 
   return (
     <motion.div
@@ -91,7 +97,12 @@ export default function Projects() {
             ))}
           </div>
 
+
+
+
+
           <motion.div
+            key={`filter-${activeFilter}`}
             className='grid gap-10 px-2 md:grid-cols-2 xl:grid-cols-3'
             variants={containerVariants}
             layout
