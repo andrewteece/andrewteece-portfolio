@@ -35,8 +35,6 @@ export default function Projects() {
     return projects.filter((project) => project.category === activeFilter);
   }, [activeFilter]);
 
-
-
   const filters = [
     { key: 'all' as const, label: 'All Projects', count: projects.length },
     {
@@ -55,8 +53,6 @@ export default function Projects() {
       count: projects.filter((p) => p.category === 'tools').length,
     },
   ];
-
-
 
   return (
     <motion.div
@@ -96,10 +92,6 @@ export default function Projects() {
               </motion.button>
             ))}
           </div>
-
-
-
-
 
           <motion.div
             key={`filter-${activeFilter}`}
