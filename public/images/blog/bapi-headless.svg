@@ -1,0 +1,65 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <!-- Simple SOLID blue background - no gradients -->
+  <rect width="1200" height="630" fill="#3b82f6"/>
+
+  <!-- Lighter blue overlay section -->
+  <rect x="600" y="0" width="600" height="630" fill="#60a5fa" opacity="0.5"/>
+
+  <!-- Top accent bar -->
+  <rect x="0" y="0" width="1200" height="8" fill="#22d3ee"/>
+
+  <!-- WordPress Logo -->
+  <g transform="translate(150, 120)">
+    <circle cx="50" cy="50" r="60" fill="#ffffff"/>
+    <circle cx="50" cy="50" r="54" fill="#21759b"/>
+    <text x="50" y="135" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle">WordPress</text>
+  </g>
+
+  <!-- Arrow - using filled shapes for better PNG rendering -->
+  <g>
+    <rect x="300" y="165" width="145" height="10" fill="#ffffff"/>
+    <polygon points="445,155 470,170 445,185" fill="#ffffff"/>
+  </g>
+
+  <!-- Next.js Logo -->
+  <g transform="translate(500, 120)">
+    <circle cx="50" cy="50" r="60" fill="#ffffff"/>
+    <circle cx="50" cy="50" r="54" fill="#000000"/>
+    <text x="50" y="66" font-family="system-ui, sans-serif" font-size="42" font-weight="900" fill="#ffffff" text-anchor="middle">N</text>
+    <text x="50" y="135" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle">Next.js</text>
+  </g>
+
+  <!-- Main Title -->
+  <text x="80" y="330" font-family="system-ui, sans-serif" font-size="56" font-weight="900" fill="#ffffff" letter-spacing="-0.01em">
+    <tspan x="80" dy="0">Migrating a 16-Year-Old</tspan>
+    <tspan x="80" dy="75">WordPress Site to</tspan>
+    <tspan x="80" dy="75">Headless Architecture</tspan>
+  </text>
+
+  <!-- Metrics Bar -->
+  <rect x="80" y="550" width="1040" height="4" fill="#ffffff" opacity="0.5"/>
+
+  <!-- Metrics -->
+  <g font-family="system-ui, sans-serif" font-weight="600" fill="#ffffff">
+    <text x="80" y="595" font-size="34" font-weight="900">95%</text>
+    <text x="150" y="595" font-size="20">Faster</text>
+
+    <rect x="290" y="572" width="3" height="30" fill="#ffffff" opacity="0.4"/>
+
+    <text x="330" y="595" font-size="34" font-weight="900">608</text>
+    <text x="410" y="595" font-size="20">Products</text>
+
+    <rect x="550" y="572" width="3" height="30" fill="#ffffff" opacity="0.4"/>
+
+    <text x="590" y="595" font-size="34" font-weight="900">11</text>
+    <text x="650" y="595" font-size="20">Languages</text>
+
+    <rect x="810" y="572" width="3" height="30" fill="#ffffff" opacity="0.4"/>
+
+    <text x="850" y="595" font-size="34" font-weight="900">4</text>
+    <text x="910" y="595" font-size="20">Months</text>
+  </g>
+
+  <!-- Branding -->
+  <text x="1120" y="45" font-family="system-ui, sans-serif" font-size="16" font-weight="600" fill="#ffffff" text-anchor="end" opacity="0.8">andrewteece.com</text>
+</svg>
