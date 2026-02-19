@@ -17,7 +17,7 @@ export default function Projects() {
     if (!node) return;
     const io = new IntersectionObserver(
       ([entry]) => entry.isIntersecting && setActiveSection('projects'),
-      { threshold: 0.6 }
+      { threshold: 0.6 },
     );
     io.observe(node);
     return () => io.disconnect();
@@ -94,13 +94,13 @@ export default function Projects() {
           </div>
 
           <motion.div
-            key={`filter-${activeFilter}`}
             className='grid gap-10 px-2 md:grid-cols-2 xl:grid-cols-3'
             variants={containerVariants}
-            layout
+            initial='hidden'
+            animate='visible'
           >
             {filteredProjects.map((project, idx) => (
-              <ProjectCard key={`${project.title}-${idx}`} {...project} />
+              <ProjectCard key={project.title} {...project} />
             ))}
           </motion.div>
 

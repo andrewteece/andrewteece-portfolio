@@ -17,6 +17,31 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    title: 'BAPI Headless WordPress Migration',
+    tech: 'Next.js 16, WordPress/WooCommerce, WPGraphQL, TypeScript',
+    description:
+      'Enterprise headless CMS migration transforming a 16-year-old WordPress/WooCommerce site into modern architecture. Serving 608 products across 11 languages and 12 regions with 95% performance improvement, full type safety, and comprehensive e-commerce integration. Launching April 10, 2026.',
+    demo: 'https://bapi-headless.vercel.app/en',
+    image: 'images/blog/bapi-headless.png',
+    category: 'fullstack',
+    featured: true,
+    techStack: [
+      'Next.js 16',
+      'WordPress 6.8',
+      'WooCommerce',
+      'WPGraphQL',
+      'TypeScript',
+      'GraphQL Codegen',
+      'Stripe',
+      'Zustand',
+    ],
+    metrics: {
+      performance: '95+ Lighthouse (staging)',
+      accessibility: 'WCAG 2.1 AA',
+      bundle: '248kb gzipped',
+    },
+  },
+  {
     title: 'AI-Assisted Analytics Dashboard',
     tech: 'Next.js 15, TypeScript, Tailwind v4, Zustand',
     description:
