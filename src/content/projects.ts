@@ -21,6 +21,7 @@ export const projects: Project[] = [
     tech: 'Next.js 16, WordPress/WooCommerce, WPGraphQL, TypeScript',
     description:
       'Enterprise headless CMS migration transforming a 16-year-old WordPress/WooCommerce site into modern architecture. Serving 608 products across 11 languages and 12 regions with 95% performance improvement, full type safety, and comprehensive e-commerce integration. Launching April 10, 2026.',
+    github: 'https://github.com/ateece-bapi/bapi-headless',
     demo: 'https://bapi-headless.vercel.app/en',
     image: 'images/blog/bapi-headless.png',
     category: 'fullstack',
