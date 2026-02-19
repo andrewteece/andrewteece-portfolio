@@ -1,6 +1,6 @@
 ---
 title: 'Migrating a 16-Year-Old WordPress Site to Headless Architecture: The Journey Begins'
-excerpt: "How I'm transforming BAPI's legacy WordPress/WooCommerce site into a modern headless CMS architecture with Next.js, TypeScript, and GraphQL—while preserving 600+ products and 16 years of content."
+excerpt: "How I'm transforming BAPI's legacy WordPress/WooCommerce site into a modern headless CMS architecture with Next.js, TypeScript, and GraphQL—while preserving 600+ products and 16 years of content. Launching April 10, 2026."
 date: '2026-02-19'
 image: '/images/blog/bapi-headless.png'
 tags:
@@ -14,9 +14,9 @@ tags:
   ]
 ---
 
-> **Live Site:** [bapi-headless.vercel.app](https://bapi-headless.vercel.app/en)
+> **Development Site:** [bapi-headless.vercel.app](https://bapi-headless.vercel.app/en)
 > **Tech Stack:** Next.js 16 + WordPress/WooCommerce + WPGraphQL + TypeScript
-> **Timeline:** October 2025 → Present (4+ months)
+> **Timeline:** October 2025 → April 10, 2026 Launch
 > **Scope:** 608 products, 11 languages, 12 regions, full e-commerce
 
 ---
@@ -137,9 +137,11 @@ Let me give you a sense of what this migration actually entailed:
 
 ## Early Wins
 
-Four months in, here's what we've achieved:
+## Early Progress & Results
 
-**Performance:**
+Four months in, with 50 days until the April 10th launch, here's what we've achieved:
+
+**Performance (Staging Environment):**
 
 - 95% faster page loads (2-3s → &lt;100ms cached)
 - 96% improvement in GraphQL query times (6.7s → 258ms)
@@ -152,22 +154,22 @@ Four months in, here's what we've achieved:
 - Component library with Storybook documentation
 - CI/CD pipeline with automated deployments
 
-**Production Results:**
+**Development Milestones:**
 
 - 3 successful test orders placed (100% success rate)
 - WooCommerce integration working end-to-end
 - Real customer data syncing correctly
-- All product pages rendering properly
+- All 608 product pages rendering properly
 
 ---
 
-## Key Lessons Learned
+## Key Lessons Learned So Far
 
 **1. Don't Fight the Monolith**
-WordPress has been around for 20+ years for a reason. Instead of replacing it entirely, I leveraged its strengths (content management, WooCommerce) and built a modern frontend on top.
+WordPress has been around for 20+ years for a reason. Instead of replacing it entirely, I'm leveraging its strengths (content management, WooCommerce) and building a modern frontend on top.
 
 **2. Type Safety is Non-Negotiable**
-With 600+ products and complex data structures, TypeScript caught countless bugs before they reached production. The GraphQL Code Generator was a game-changer.
+With 600+ products and complex data structures, TypeScript is catching countless bugs before they reach production. The GraphQL Code Generator has been a game-changer.
 
 **3. Performance Requires Multiple Layers**
 It's not just frontend optimization—you need caching at every level:
@@ -177,7 +179,7 @@ It's not just frontend optimization—you need caching at every level:
 - Vercel: Edge caching + CDN
 
 **4. Start Simple, Add Complexity**
-I began with basic product pages, then added filtering, then search, then checkout. Each layer built on the previous foundation.
+I started with basic product pages, then added filtering, then search, then checkout. Each layer built on the previous foundation.
 
 ---
 
@@ -215,7 +217,9 @@ Migrating a 16-year-old WordPress site to headless architecture is ambitious. It
 
 Every decision has tradeoffs. Every optimization has context. Every feature requires balancing user needs, business requirements, and technical constraints.
 
-But when you see those Lighthouse scores hit 95+, when customers successfully check out, when the marketing team can update content without calling IT—**that's** when you know it was worth it.
+With 50 days until launch, the pressure is on. But when you see those Lighthouse scores hit 95+ in staging, when test orders successfully complete, when the marketing team can preview content updates without calling IT—that's when you know you're on the right track.
+
+**April 10th, 2026.** That's the launch date. I'll be documenting the entire journey.
 
 ---
 
