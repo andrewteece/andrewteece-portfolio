@@ -1,0 +1,224 @@
+---
+title: 'Migrating a 16-Year-Old WordPress Site to Headless Architecture: The Journey Begins'
+excerpt: "How I'm transforming BAPI's legacy WordPress/WooCommerce site into a modern headless CMS architecture with Next.js, TypeScript, and GraphQL—while preserving 600+ products and 16 years of content."
+date: '2026-02-19'
+image: '/images/blog/bapi-headless.png'
+tags:
+  [
+    'WordPress',
+    'NextJS',
+    'TypeScript',
+    'GraphQL',
+    'WooCommerce',
+    'Headless CMS',
+  ]
+---
+
+> **Live Site:** [bapi-headless.vercel.app](https://bapi-headless.vercel.app/en)
+> **Tech Stack:** Next.js 16 + WordPress/WooCommerce + WPGraphQL + TypeScript
+> **Timeline:** October 2025 → Present (4+ months)
+> **Scope:** 608 products, 11 languages, 12 regions, full e-commerce
+
+---
+
+## The Challenge
+
+In October 2025, I joined **BAPI** (Building Automation Products, Inc.) as a web developer with a clear mission: migrate their **16-year-old WordPress site** to a modern headless architecture.
+
+This wasn't just a "nice to have" refresh. The existing site was:
+
+- Slow (2-3 second page loads)
+- Difficult to maintain (legacy plugins, inline styles everywhere)
+- Limited in scalability (couldn't easily expand to new markets)
+- Held back by outdated UX patterns
+
+But here's the catch: we couldn't just rebuild from scratch. We had **608 products**, years of technical documentation, established SEO rankings, and existing customers relying on the site daily.
+
+---
+
+## Why Headless?
+
+**Headless CMS** means separating the content management layer (WordPress) from the presentation layer (Next.js). Think of it like this:
+
+```
+Traditional WordPress
+┌──────────────────────┐
+│   WordPress          │
+│   ├── Content        │
+│   ├── Presentation   │ ← Everything tightly coupled
+│   └── Business Logic │
+└──────────────────────┘
+
+Headless Architecture
+┌──────────────────────┐      ┌──────────────────────┐
+│   WordPress          │      │   Next.js            │
+│   ├── Content ─────────────→│   ├── Presentation   │
+│   └── API (GraphQL)  │      │   └── Business Logic │
+└──────────────────────┘      └──────────────────────┘
+```
+
+**The benefits for BAPI:**
+
+- **Performance**: Pre-rendered pages, optimized images, edge caching
+- **Developer Experience**: Modern tooling, TypeScript, component-based architecture
+- **Flexibility**: Same content, multiple frontends (web, mobile app, etc.)
+- **Security**: WordPress admin isolated from public site
+- **Scalability**: Handle traffic spikes, expand to new markets easily
+
+---
+
+## The Architecture
+
+Here's the tech stack I landed on:
+
+**Backend (Content Management):**
+
+- **WordPress 6.8.2** - Content editing interface
+- **WooCommerce 10.3.5** - Product catalog & order management
+- **WPGraphQL** - Modern GraphQL API for WordPress
+- **Kinsta** - Managed WordPress hosting with Redis
+
+**Frontend (Presentation Layer):**
+
+- **Next.js 16** - React framework with App Router
+- **TypeScript** - Type safety across the entire codebase
+- **Tailwind CSS** - Utility-first styling
+- **GraphQL Code Generator** - Auto-generated TypeScript types
+- **Vercel** - Edge deployment with global CDN
+
+**Key Features Built:**
+
+- Multi-step checkout with Stripe integration
+- Real-time product search across 600+ items
+- 11-language internationalization with next-intl
+- 12 regions with automatic currency conversion
+- WordPress JWT authentication (no third-party service needed)
+- Complete user dashboard with order history
+
+---
+
+## The Scope of Work
+
+Let me give you a sense of what this migration actually entailed:
+
+**Product Catalog:**
+
+- 608 WooCommerce products
+- 15 product taxonomies (categories, attributes, specifications)
+- Hierarchical category structure (6 levels deep)
+- Variable products with multiple variations
+- Custom B2B pricing fields
+
+**Content:**
+
+- 112 pages migrated from Visual Composer
+- 61 application notes (custom post type)
+- Service bulletins, datasheets, technical documentation
+- Blog posts, case studies, and resources
+
+**Infrastructure:**
+
+- 11 languages (EN, DE, FR, ES, JA, ZH, VI, AR, TH, PL, HI)
+- 12 regions with currency support
+- 1,100+ translation keys
+- Dynamic sitemap generation
+- SEO metadata for every page
+
+**E-commerce Features:**
+
+- Shopping cart with real-time updates
+- Multi-step checkout wizard
+- Stripe payment processing
+- Order confirmation emails
+- Account dashboard with order history
+- Quote request system with file uploads
+
+---
+
+## Early Wins
+
+Four months in, here's what we've achieved:
+
+**Performance:**
+
+- 95% faster page loads (2-3s → &lt;100ms cached)
+- 96% improvement in GraphQL query times (6.7s → 258ms)
+- Lighthouse scores: 95+ across all metrics
+
+**Developer Experience:**
+
+- Full TypeScript coverage with auto-generated types
+- 648 passing tests with 80%+ code coverage
+- Component library with Storybook documentation
+- CI/CD pipeline with automated deployments
+
+**Production Results:**
+
+- 3 successful test orders placed (100% success rate)
+- WooCommerce integration working end-to-end
+- Real customer data syncing correctly
+- All product pages rendering properly
+
+---
+
+## Key Lessons Learned
+
+**1. Don't Fight the Monolith**
+WordPress has been around for 20+ years for a reason. Instead of replacing it entirely, I leveraged its strengths (content management, WooCommerce) and built a modern frontend on top.
+
+**2. Type Safety is Non-Negotiable**
+With 600+ products and complex data structures, TypeScript caught countless bugs before they reached production. The GraphQL Code Generator was a game-changer.
+
+**3. Performance Requires Multiple Layers**
+It's not just frontend optimization—you need caching at every level:
+
+- WordPress: Redis object cache + WPGraphQL Smart Cache
+- Next.js: ISR (Incremental Static Regeneration) + React cache()
+- Vercel: Edge caching + CDN
+
+**4. Start Simple, Add Complexity**
+I began with basic product pages, then added filtering, then search, then checkout. Each layer built on the previous foundation.
+
+---
+
+## What's Next
+
+This is just the beginning. In upcoming posts, I'll dive deep into:
+
+- **GraphQL Performance Optimization** - How I achieved 96% faster queries
+- **Building a Type-Safe Cart with Zustand** - Local-first architecture with Stripe
+- **Internationalization at Scale** - 11 languages, 12 regions, AI-powered translations
+- **Authentication Without Third-Party Services** - WordPress JWT implementation
+- **Storybook for Headless WordPress** - Component-driven development
+
+---
+
+## The Reality of Migration Work
+
+Here's what they don't tell you about migrating legacy systems:
+
+**You'll spend 40% of your time** understanding existing data structures, legacy code patterns, and business requirements.
+
+**You'll spend 30% of your time** on performance optimization, caching strategies, and database queries.
+
+**You'll spend 20% of your time** on the "exciting" new features.
+
+**You'll spend 10% of your time** documenting everything so the next developer doesn't have to reverse-engineer your work.
+
+And you know what? **That's exactly how it should be.** Professional development isn't about greenfield projects—it's about making smart technical decisions in the context of real business constraints.
+
+---
+
+## Closing Thoughts
+
+Migrating a 16-year-old WordPress site to headless architecture is ambitious. It's messy. It's challenging. And it's **exactly** the kind of work that makes you a better developer.
+
+Every decision has tradeoffs. Every optimization has context. Every feature requires balancing user needs, business requirements, and technical constraints.
+
+But when you see those Lighthouse scores hit 95+, when customers successfully check out, when the marketing team can update content without calling IT—**that's** when you know it was worth it.
+
+---
+
+**Next in this series:** _Type-Safe GraphQL Integration: How I Eliminated Runtime Errors with Auto-Generated TypeScript Types_
+
+Want to dive deeper? Check out the [full documentation](https://github.com/ateece-bapi/bapi-headless) or connect with me on [LinkedIn](https://www.linkedin.com/in/andrewteece).
