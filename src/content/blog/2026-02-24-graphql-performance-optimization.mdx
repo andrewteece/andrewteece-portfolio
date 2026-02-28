@@ -1,0 +1,593 @@
+---
+title: 'GraphQL Performance Optimization: From 6.7s to 258ms'
+excerpt: "How I achieved a 96% performance improvement in GraphQL query times for BAPI's headless WordPress migration using WPGraphQL, Redis caching, query optimization, and smart architecture decisions."
+date: '2026-02-24'
+image: '/images/blog/bapi-headless.png'
+tags:
+  ['GraphQL', 'WPGraphQL', 'WordPress', 'Performance', 'Redis', 'Optimization']
+---
+
+> **Part 2 of the BAPI Headless Migration Series**
+> [← Part 1: The Journey Begins](/blog/2026-02-19-bapi-headless-journey-begins)
+
+When I started the BAPI headless migration, our initial GraphQL queries were taking an average of **6.7 seconds**. That's not a typo. Nearly 7 seconds to fetch product data.
+
+After four months of optimization, we're now averaging **258ms** per query—a **96% improvement**.
+
+Here's exactly how we did it.
+
+---
+
+## The Problem: Death by Over-Fetching
+
+The first iteration of our product queries looked like this:
+
+```graphql
+query ProductBySlug($slug: ID!) {
+  product(id: $slug, idType: SLUG) {
+    id
+    databaseId
+    name
+    slug
+    description
+    shortDescription
+    image {
+      id
+      sourceUrl
+      altText
+      mediaDetails {
+        width
+        height
+        sizes {
+          sourceUrl
+          width
+          height
+        }
+      }
+    }
+    galleryImages {
+      nodes {
+        id
+        sourceUrl
+        altText
+        mediaDetails {
+          width
+          height
+        }
+      }
+    }
+    ... on SimpleProduct {
+      price
+      regularPrice
+      salePrice
+      stockQuantity
+      stockStatus
+    }
+    productCategories {
+      nodes {
+        id
+        name
+        slug
+        ancestors {
+          nodes {
+            id
+            name
+            slug
+          }
+        }
+      }
+    }
+    productTags {
+      nodes {
+        id
+        name
+        slug
+      }
+    }
+    attributes {
+      nodes {
+        id
+        name
+        options
+      }
+    }
+    related {
+      nodes {
+        id
+        name
+        slug
+        image {
+          sourceUrl
+        }
+      }
+    }
+    seo {
+      title
+      metaDesc
+      canonical
+      opengraphTitle
+      opengraphDescription
+    }
+  }
+}
+```
+
+**Problems:**
+
+- Fetching **entire image metadata** for every image
+- Loading **all related products** with nested data
+- Requesting **SEO data** even when not needed
+- Deep nesting in **category ancestors**
+- No field filtering
+
+**Result:** 6.7 seconds average query time for a single product.
+
+---
+
+## Solution 1: Field-Level Optimization
+
+The first rule of GraphQL performance: **Only fetch what you need, when you need it.**
+
+### The Optimized Query
+
+```graphql
+query ProductBySlug($slug: ID!) {
+  product(id: $slug, idType: SLUG) {
+    id
+    name
+    slug
+    shortDescription
+    image {
+      sourceUrl(size: LARGE)
+      altText
+    }
+    ... on SimpleProduct {
+      price
+      regularPrice
+      stockStatus
+    }
+    productCategories(first: 1) {
+      nodes {
+        id
+        name
+        slug
+      }
+    }
+  }
+}
+```
+
+**Changes:**
+
+- ✂️ Removed unused fields (databaseId, full description)
+- 🎯 Limited image data to essentials (sourceUrl + altText only)
+- 📦 Used `first: 1` to limit category fetching
+- ❌ Removed related products, tags, and SEO from initial load
+- 🖼️ Specified image size directly: `sourceUrl(size: LARGE)`
+
+**Impact:** Query time dropped from **6.7s → 1.2s** (82% improvement)
+
+But we weren't done.
+
+---
+
+## Solution 2: GraphQL Fragments for Reusability
+
+Instead of duplicating fields across queries, we created reusable fragments:
+
+```graphql
+# fragments/ProductCard.fragment.graphql
+fragment ProductCardFields on Product {
+  id
+  name
+  slug
+  shortDescription
+  image {
+    sourceUrl(size: MEDIUM)
+    altText
+  }
+  ... on SimpleProduct {
+    price
+    regularPrice
+    stockStatus
+  }
+}
+
+# fragments/ProductFull.fragment.graphql
+fragment ProductFullFields on Product {
+  id
+  name
+  slug
+  description
+  shortDescription
+  image {
+    sourceUrl(size: LARGE)
+    altText
+  }
+  ... on SimpleProduct {
+    price
+    regularPrice
+    salePrice
+    stockQuantity
+    stockStatus
+    sku
+  }
+  productCategories(first: 3) {
+    nodes {
+      id
+      name
+      slug
+    }
+  }
+}
+```
+
+**Usage in Components:**
+
+```typescript
+// For product cards (listing page)
+query AllProducts($first: Int!) {
+  products(first: $first) {
+    nodes {
+      ...ProductCardFields
+    }
+  }
+}
+
+// For product detail page
+query ProductBySlug($slug: ID!) {
+  product(id: $slug, idType: SLUG) {
+    ...ProductFullFields
+  }
+}
+```
+
+**Benefits:**
+
+- ✅ Consistent data fetching
+- ✅ Easy to update globally
+- ✅ Smaller bundle size (fragment reuse)
+- ✅ Better code organization
+
+---
+
+## Solution 3: WPGraphQL Smart Cache
+
+WPGraphQL Smart Cache is a **game-changer**. It provides object-level caching with automatic invalidation.
+
+### Setup
+
+```php
+// wp-config.php or functions.php
+define('WPGRAPHQL_SMART_CACHE_ENABLED', true);
+define('WPGRAPHQL_SMART_CACHE_TTL', 3600); // 1 hour
+```
+
+**How it Works:**
+
+1. GraphQL query executes
+2. Result stored in object cache (Redis)
+3. WordPress monitors changes to products, categories, etc.
+4. **Automatic cache invalidation** when content updates
+5. Next query gets fresh data
+
+**Impact:** Subsequent identical queries: **1.2s → 15ms** (99% improvement for cached hits)
+
+---
+
+## Solution 4: Redis Object Cache
+
+WordPress default object cache is **in-memory only** (lost on every request). Redis provides **persistent caching** across requests.
+
+### Installation (Kinsta)
+
+Kinsta provides Redis out-of-the-box. We enabled it via their dashboard.
+
+```php
+// wp-content/object-cache.php (Kinsta provides this)
+// Connects WordPress to Redis automatically
+```
+
+**Verification:**
+
+```php
+function check_redis_status() {
+  global $wp_object_cache;
+  if (isset($wp_object_cache->redis_status)) {
+    return $wp_object_cache->redis_status;
+  }
+  return 'Not Connected';
+}
+```
+
+**Cache Layers:**
+
+```
+Request → WPGraphQL Smart Cache → Redis → WordPress Database
+           ↑ 15ms (hit)              ↑ 258ms (miss)   ↑ 6.7s (cold)
+```
+
+---
+
+## Solution 5: Query Complexity Analysis
+
+WPGraphQL includes **query complexity limits** to prevent expensive queries from overwhelming the server.
+
+```php
+// functions.php
+add_filter('graphql_query_complexity_max_depth', function() {
+  return 10; // Limit query depth to 10 levels
+});
+
+add_filter('graphql_query_complexity_max_query_amount', function() {
+  return 500; // Limit total query complexity to 500
+});
+```
+
+**Example: Blocked Query**
+
+```graphql
+# This query is TOO deep (exceeds max depth)
+query {
+  products {
+    nodes {
+      productCategories {
+        nodes {
+          ancestors {
+            nodes {
+              ancestors {
+                # Too many levels!
+                nodes {
+                  ancestors {
+                    nodes {
+                      name
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+**Response:**
+
+```json
+{
+  "errors": [
+    {
+      "message": "Max query depth exceeded: 10"
+    }
+  ]
+}
+```
+
+This forces developers to **think carefully** about query structure and prevents accidental performance disasters.
+
+---
+
+## Solution 6: Custom Resolvers for Computed Fields
+
+Some data doesn't need to come from the database—it can be **computed on the fly**.
+
+### Example: Product Availability
+
+```php
+// functions.php
+add_action('graphql_register_types', function() {
+  register_graphql_field('Product', 'isAvailable', [
+    'type' => 'Boolean',
+    'description' => 'Whether product is in stock and purchasable',
+    'resolve' => function($product) {
+      // Computed field - no database query
+      $stock_status = $product->get_stock_status();
+      $purchasable = $product->is_purchasable();
+      return $stock_status === 'instock' && $purchasable;
+    }
+  ]);
+});
+```
+
+**Usage:**
+
+```graphql
+query ProductAvailability($slug: ID!) {
+  product(id: $slug, idType: SLUG) {
+    name
+    isAvailable # Custom computed field
+  }
+}
+```
+
+**Benefits:**
+
+- No extra database queries
+- Business logic encapsulated in backend
+- Frontend gets simple boolean
+
+---
+
+## Solution 7: Batching & DataLoader Pattern
+
+When fetching **multiple products**, naive implementation makes **N+1 queries**:
+
+```typescript
+// ❌ BAD: N+1 queries
+const products = await Promise.all(slugs.map((slug) => fetchProduct(slug)));
+// Results in 1 query per product (100 products = 100 queries)
+```
+
+**Better: Batch Query**
+
+```graphql
+query ProductsByIds($ids: [ID!]!) {
+  products(where: { in: $ids }) {
+    nodes {
+      ...ProductCardFields
+    }
+  }
+}
+```
+
+```typescript
+// ✅ GOOD: Single batched query
+const products = await fetchProducts(slugs);
+// Results in 1 query total (100 products = 1 query)
+```
+
+**Impact:** 100 product cards: **12s → 350ms** (97% improvement)
+
+---
+
+## Solution 8: Selective Data Loading (On-Demand)
+
+Not all data is needed immediately. Load expensive fields **only when needed**.
+
+### Example: Product Description
+
+```tsx
+// ProductCard.tsx - No description needed
+const ProductCard = ({ slug }: Props) => {
+  const { data } = useProductCardQuery({ slug });
+  return (
+    <div>
+      <h3>{data.product.name}</h3>
+      <p>{data.product.shortDescription}</p>
+      <button>View Details</button>
+    </div>
+  );
+};
+
+// ProductDetailPage.tsx - Load full description here
+const ProductDetailPage = ({ slug }: Props) => {
+  const { data } = useProductFullQuery({ slug });
+  return (
+    <div>
+      <h1>{data.product.name}</h1>
+      <div dangerouslySetInnerHTML={{ __html: data.product.description }} />
+      {/* Full content loaded on-demand */}
+    </div>
+  );
+};
+```
+
+**Strategy:**
+
+- **Product cards:** Minimal data (name, image, price)
+- **Product pages:** Full data (description, specifications, reviews)
+- **Search results:** Even lighter (name, image only)
+
+---
+
+## Solution 9: Monitoring & Profiling
+
+You can't optimize what you don't measure.
+
+### GraphQL Query Monitor
+
+```typescript
+// middleware/graphql-logger.ts
+export function logGraphQLQuery(
+  query: string,
+  variables: any,
+  duration: number,
+) {
+  if (duration > 500) {
+    console.warn('⚠️ Slow GraphQL query detected:', {
+      query: query.substring(0, 100),
+      duration: `${duration}ms`,
+      variables,
+    });
+  }
+}
+```
+
+### Performance Tracking
+
+```typescript
+const start = performance.now();
+const data = await fetchGraphQL(query, variables);
+const duration = performance.now() - start;
+
+logGraphQLQuery(query, variables, duration);
+```
+
+**Dashboard Metrics:**
+
+- Average query time: **258ms**
+- 95th percentile: **420ms**
+- 99th percentile: **850ms**
+- Cache hit rate: **87%**
+
+---
+
+## The Results: Before vs After
+
+| Metric                         | Before       | After       | Improvement |
+| ------------------------------ | ------------ | ----------- | ----------- |
+| **Average Query Time**         | 6.7s         | 258ms       | 96% ↓       |
+| **Product Page Load**          | 8.2s         | 340ms       | 96% ↓       |
+| **Listing Page (20 products)** | 12.4s        | 380ms       | 97% ↓       |
+| **Category Page**              | 9.1s         | 290ms       | 97% ↓       |
+| **Cache Hit Rate**             | 0%           | 87%         | ∞           |
+| **Database Queries**           | ~45 per page | ~3 per page | 93% ↓       |
+
+---
+
+## Key Lessons Learned
+
+### 1. **GraphQL Isn't Automatically Fast**
+
+Just because you _can_ fetch everything doesn't mean you _should_. Field-level optimization is critical.
+
+### 2. **Caching is Non-Negotiable**
+
+Without Redis + WPGraphQL Smart Cache, we'd still be at 1.2s queries. The cache layer provided the final 80% improvement.
+
+### 3. **Measure Everything**
+
+We only achieved these improvements because we **measured constantly**. Add performance logging from day one.
+
+### 4. **Fragments = Consistency**
+
+Reusable fragments prevent query bloat and ensure every component fetches data efficiently.
+
+### 5. **Server-Side Matters**
+
+WordPress configuration (Redis, query complexity limits, custom resolvers) was just as important as frontend optimization.
+
+---
+
+## Real-World Impact
+
+These optimizations directly impacted user experience:
+
+- **Lighthouse Performance:** 95+ (up from 45)
+- **Time to Interactive:** &lt;1.2s (down from 9s)
+- **Bounce Rate:** Expected to decrease significantly on launch
+- **SEO Rankings:** Faster pages = better rankings
+
+With 608 products across 11 languages, these optimizations **scale**. A 6.7s query time would've been unusable in production.
+
+---
+
+## What's Next
+
+In the next post, I'll cover **Type-Safe GraphQL with Code Generation**—how we eliminated runtime type errors entirely using GraphQL Code Generator and TypeScript.
+
+**Topics:**
+
+- Auto-generating types from GraphQL schema
+- End-to-end type safety
+- IDE autocomplete for GraphQL
+- Catching bugs at compile time
+
+---
+
+**Next in this series:** [Type-Safe GraphQL Integration →](/blog/type-safe-graphql) _(coming soon)_
+
+**Previous:** [← The Journey Begins](/blog/2026-02-19-bapi-headless-journey-begins)
