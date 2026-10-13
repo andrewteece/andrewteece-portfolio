@@ -3,6 +3,11 @@ import { HelmetProvider } from '@dr.pogodin/react-helmet';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import Restaurants from '../pages/Restaurants';
 
+type AuditFetch = (
+  input: RequestInfo | URL,
+  init?: RequestInit
+) => Promise<Response>;
+
 describe('Restaurants page', () => {
   afterEach(() => {
     vi.unstubAllGlobals();
@@ -29,15 +34,22 @@ describe('Restaurants page', () => {
     expect(screen.getByText('$36,000')).toBeInTheDocument();
   });
 
-  it('asks for restaurant, city, and monthly sales for the audit request', () => {
-    render(
+  it('asks for contact and restaurant details for the audit request', () => {
+    const { container } = render(
       <HelmetProvider>
         <Restaurants />
       </HelmetProvider>
     );
 
+    expect(screen.getByLabelText('Your name')).toBeRequired();
+    expect(screen.getByLabelText('Email')).toBeRequired();
+    expect(screen.getByLabelText('Phone (optional)')).not.toBeRequired();
     expect(screen.getByLabelText('Restaurant name')).toBeRequired();
     expect(screen.getByLabelText('City')).toBeRequired();
+    expect(container.querySelector('input[name="_gotcha"]')).toHaveAttribute(
+      'tabindex',
+      '-1'
+    );
     expect(
       screen.getByLabelText('Approximate monthly delivery sales', {
         selector: 'input',
@@ -48,7 +60,13 @@ describe('Restaurants page', () => {
   it('sends the audit form and tracks a lead only after Formspree accepts it', async () => {
     const gtag = vi.fn();
     window.gtag = gtag;
-    const fetchMock = vi.fn().mockResolvedValue({ ok: true });
+    let submittedForm: FormData | undefined;
+    const fetchMock = vi.fn<AuditFetch>((_input, init) => {
+      if (init?.body instanceof FormData) {
+        submittedForm = init.body;
+      }
+      return Promise.resolve(new Response(null, { status: 200 }));
+    });
     vi.stubGlobal('fetch', fetchMock);
     render(
       <HelmetProvider>
@@ -59,6 +77,15 @@ describe('Restaurants page', () => {
     fireEvent.change(screen.getByLabelText('Restaurant name'), {
       target: { value: 'Test Bistro' },
     });
+    fireEvent.change(screen.getByLabelText('Your name'), {
+      target: { value: 'Alex Example' },
+    });
+    fireEvent.change(screen.getByLabelText('Email'), {
+      target: { value: 'alex@example.com' },
+    });
+    fireEvent.change(screen.getByLabelText('Phone (optional)'), {
+      target: { value: '555-0100' },
+    });
     fireEvent.change(screen.getByLabelText('City'), {
       target: { value: 'Naples' },
     });
@@ -68,7 +95,9 @@ describe('Restaurants page', () => {
       }),
       { target: { value: '$10,000' } }
     );
-    fireEvent.submit(screen.getByRole('button', { name: 'Request my free audit' }).closest('form')!);
+    fireEvent.submit(
+      screen.getByRole('button', { name: 'Request my free audit' }).closest('form')!
+    );
 
     expect(
       await screen.findByText(
@@ -77,8 +106,20 @@ describe('Restaurants page', () => {
     ).toBeInTheDocument();
     expect(fetchMock).toHaveBeenCalledWith(
       'https://formspree.io/f/xqpeydjk',
-      expect.objectContaining({ method: 'POST' })
+      expect.objectContaining({
+        method: 'POST',
+      })
     );
+    if (!submittedForm) {
+      throw new Error('Expected audit request to include FormData');
+    }
+    expect(submittedForm.get('_subject')).toBe(
+      'New Delivery Margin Audit request'
+    );
+    expect(submittedForm.get('_gotcha')).toBe('');
+    expect(submittedForm.get('name')).toBe('Alex Example');
+    expect(submittedForm.get('email')).toBe('alex@example.com');
+    expect(submittedForm.get('phone')).toBe('555-0100');
     expect(gtag).toHaveBeenCalledWith('event', 'generate_lead', {
       lead_type: 'delivery_margin_audit',
     });
@@ -87,7 +128,12 @@ describe('Restaurants page', () => {
   it('does not track a lead when the form service rejects a request', async () => {
     const gtag = vi.fn();
     window.gtag = gtag;
-    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: false }));
+    vi.stubGlobal(
+      'fetch',
+      vi
+        .fn<AuditFetch>()
+        .mockResolvedValue(new Response(null, { status: 400 }))
+    );
     render(
       <HelmetProvider>
         <Restaurants />
