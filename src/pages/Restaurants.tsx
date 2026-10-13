@@ -210,6 +210,48 @@ export default function Restaurants() {
             onSubmit={(event) => void handleSubmit(event)}
             className='mt-6 grid gap-4'
           >
+            <input
+              type='hidden'
+              name='_subject'
+              value='New Delivery Margin Audit request'
+            />
+            <div
+              aria-hidden='true'
+              className='absolute -left-[10000px] h-px w-px overflow-hidden'
+            >
+              <label>
+                Leave this field empty
+                <input name='_gotcha' tabIndex={-1} autoComplete='off' />
+              </label>
+            </div>
+            <label className='grid gap-2 font-medium'>
+              Your name
+              <input
+                className='rounded-md border border-[var(--color-border)] bg-transparent px-3 py-2'
+                name='name'
+                autoComplete='name'
+                required
+              />
+            </label>
+            <label className='grid gap-2 font-medium'>
+              Email
+              <input
+                className='rounded-md border border-[var(--color-border)] bg-transparent px-3 py-2'
+                type='email'
+                name='email'
+                autoComplete='email'
+                required
+              />
+            </label>
+            <label className='grid gap-2 font-medium'>
+              Phone (optional)
+              <input
+                className='rounded-md border border-[var(--color-border)] bg-transparent px-3 py-2'
+                type='tel'
+                name='phone'
+                autoComplete='tel'
+              />
+            </label>
             <label className='grid gap-2 font-medium'>
               Restaurant name
               <input
