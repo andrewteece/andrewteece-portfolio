@@ -331,7 +331,7 @@ function blogIndexHeadTags() {
       contentTitle: 'Stop paying 15–30% to DoorDash on your regulars.',
       description:
         'Explore direct online ordering and estimate marketplace commissions with a free delivery margin audit from a former restaurant owner.',
-      body: `<h2>Stop paying 15–30% to DoorDash on your regulars.</h2><p>Estimate annual commissions from monthly delivery sales and your selected commission rate.</p><p>21 years running a multi-brand restaurant group. Implemented Heartland POS online ordering that grew to 40% of sales.</p><h2>Get a free Delivery Margin Audit</h2><p>Share your restaurant name, city, and approximate monthly delivery sales.</p><form action="https://formspree.io/f/xqpeydjk" method="POST"><label>Restaurant name <input name="restaurant" required></label><label>City <input name="city" required></label><label>Approximate monthly delivery sales <input name="monthly-sales" required></label><button type="submit">Request my free audit</button></form><h2>Frequently asked questions</h2><h3>Do I have to leave DoorDash?</h3><p>No. Direct ordering can complement the delivery channels your guests already use.</p><h3>What about POS?</h3><p>Compatibility depends on your POS and ordering systems and is confirmed before implementation.</p>`,
+      body: `<h2>Stop paying 15–30% to DoorDash on your regulars.</h2><p>Estimate annual commissions from monthly delivery sales and your selected commission rate.</p><p>21 years running a multi-brand restaurant group. Implemented Heartland POS online ordering that grew to 40% of sales.</p><h2>Get a free Delivery Margin Audit</h2><p>Share your restaurant name, city, and approximate monthly delivery sales.</p><form id="audit-request" action="https://formspree.io/f/xqpeydjk" method="POST"><label>Restaurant name <input name="restaurant" required></label><label>City <input name="city" required></label><label>Approximate monthly delivery sales <input name="monthly-sales" required></label><button type="submit">Request my free audit</button></form><h2>Frequently asked questions</h2><h3>Do I have to leave DoorDash?</h3><p>No. Direct ordering can complement the delivery channels your guests already use.</p><h3>What about POS?</h3><p>Compatibility depends on your POS and ordering systems and is confirmed before implementation.</p>`,
     },
     {
       path: 'labs',
@@ -347,7 +347,7 @@ function blogIndexHeadTags() {
         path: pathName,
         title: `${label} | Andrew Teece`,
         description: `${label} for restaurant owners, hospitality teams, and agencies. ${price}.`,
-        body: `<h2>${label}</h2><p>Practical support shaped by restaurant operating experience and 20+ years building for the web.</p><p>${price}</p><p><a href="https://calendar.app.google/yutEwKP28gypqc9G6" target="_blank" rel="noopener noreferrer">Book a 20-minute call</a></p>`,
+        body: `<h2>${label}</h2><p>Practical support shaped by restaurant operating experience and 20+ years building for the web.</p><p>${price}</p>`,
       };
     }),
   ];
