@@ -55,6 +55,11 @@ describe('Restaurants page', () => {
         selector: 'input',
       })
     ).toBeRequired();
+    expect(
+      screen.getByText(
+        "Your details are only used to prepare your audit. I'll reply within one business day."
+      )
+    ).toBeInTheDocument();
   });
 
   it('sends the audit form and tracks a lead only after Formspree accepts it', async () => {
