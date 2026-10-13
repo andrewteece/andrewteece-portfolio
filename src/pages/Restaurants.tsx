@@ -292,8 +292,8 @@ export default function Restaurants() {
             </p>
           </form>
           <p className='mt-3 text-center text-xs text-muted'>
-            Your details are sent securely through Formspree. A GA4 lead event
-            is recorded only after Formspree accepts the request.
+            Your details are only used to prepare your audit. I&apos;ll reply
+            within one business day.
           </p>
         </section>
       </Section>
