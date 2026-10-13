@@ -60,6 +60,11 @@ describe('Restaurants page', () => {
         "Your details are only used to prepare your audit. I'll reply within one business day."
       )
     ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        /Keep it\. You don't need to switch systems\. I work with Toast, Square, Clover, SpotOn, and Heartland/
+      )
+    ).toBeInTheDocument();
   });
 
   it('sends the audit form and tracks a lead only after Formspree accepts it', async () => {

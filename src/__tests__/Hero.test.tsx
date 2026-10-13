@@ -18,4 +18,9 @@ test('renders Hero section with intro', () => {
   expect(
     screen.getByText(/websites and marketing to help restaurants/i)
   ).toBeInTheDocument();
+  expect(
+    screen.getByText(
+      /Our direct online ordering grew to 40% of sales, and I can set it up on the POS you already use/i
+    )
+  ).toBeInTheDocument();
 });
