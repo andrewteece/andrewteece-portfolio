@@ -300,10 +300,10 @@ function blogIndexHeadTags() {
   }
 
   const serviceSummaries = [
-    ['Restaurant Direct Ordering & Growth', '/services/restaurant-direct-ordering'],
-    ['Fractional Marketing Director, Hospitality', '/services/fractional-marketing-director'],
-    ['Monthly Local Marketing', '/services/monthly-local-marketing'],
-    ['Website Audits & Builds', '/services/website-audits-and-builds'],
+    ['Restaurant Direct Ordering & Growth', '/services/restaurant-direct-ordering', 'Starting at $3,500 setup + $400/month'],
+    ['Fractional Marketing Director, Hospitality', '/services/fractional-marketing-director', 'Starting at $2,000/month'],
+    ['Monthly Local Marketing', '/services/monthly-local-marketing', 'Starting at $600/month'],
+    ['Website Audits & Builds', '/services/website-audits-and-builds', 'Audits from $750 · Builds from $5,000'],
   ];
   const serviceLinks = serviceSummaries
     .map(([label, href]) => `<li><a href="${href}">${label}</a></li>`)
@@ -315,7 +315,7 @@ function blogIndexHeadTags() {
       contentTitle: 'Websites and marketing to help restaurants make more money',
       description:
         'Websites and marketing to help restaurants make more money. Former restaurant owner with 21 years of operating experience and 20+ years building for the web.',
-      body: `<h2>Services</h2><ul>${serviceLinks}</ul><h2>About Andrew</h2><p>Former restaurant owner, operator, marketer, and developer serving Naples, Fort Myers, Bonita Springs, and the Wisconsin Northwoods.</p><h2>Restaurant experience</h2><p>21 years running a multi-brand restaurant group. Our own online ordering system drove 40% of sales.</p><h2>Selected case studies</h2><ul><li>BAPI Headless WordPress Migration: moved a legacy e-commerce experience to a modern headless architecture.</li><li>Restaurant Direct Online Ordering: our own system drove 40% of sales.</li></ul>`,
+      body: `<h2>Services</h2><ul>${serviceLinks}</ul><h2>About Andrew</h2><p>Former restaurant owner, operator, marketer, and developer serving Naples, Fort Myers, Bonita Springs, and the Wisconsin Northwoods.</p><h2>Restaurant experience</h2><p>21 years running a multi-brand restaurant group. Implemented Heartland POS online ordering that grew to 40% of sales.</p><h2>Selected case studies</h2><ul><li>BAPI Headless WordPress Migration: moved a legacy e-commerce experience to a modern headless architecture.</li><li>Restaurant Direct Online Ordering: implemented Heartland POS online ordering; direct orders grew to 40% of sales.</li></ul>`,
     },
     {
       path: 'services',
@@ -331,7 +331,7 @@ function blogIndexHeadTags() {
       contentTitle: 'Stop paying 15–30% to DoorDash on your regulars.',
       description:
         'Explore direct online ordering and estimate marketplace commissions with a free delivery margin audit from a former restaurant owner.',
-      body: `<h2>Stop paying 15–30% to DoorDash on your regulars.</h2><p>Estimate annual commissions from monthly delivery sales and your selected commission rate.</p><p>21 years running a multi-brand restaurant group. Our own online ordering system drove 40% of sales.</p><h2>Get a free Delivery Margin Audit</h2><p>Share your restaurant name, city, and approximate monthly delivery sales.</p><h2>Frequently asked questions</h2><h3>Do I have to leave DoorDash?</h3><p>No. Direct ordering can complement the delivery channels your guests already use.</p><h3>What about POS?</h3><p>Compatibility depends on your POS and ordering systems and is confirmed before implementation.</p>`,
+      body: `<h2>Stop paying 15–30% to DoorDash on your regulars.</h2><p>Estimate annual commissions from monthly delivery sales and your selected commission rate.</p><p>21 years running a multi-brand restaurant group. Implemented Heartland POS online ordering that grew to 40% of sales.</p><h2>Get a free Delivery Margin Audit</h2><p>Share your restaurant name, city, and approximate monthly delivery sales.</p><h2>Frequently asked questions</h2><h3>Do I have to leave DoorDash?</h3><p>No. Direct ordering can complement the delivery channels your guests already use.</p><h3>What about POS?</h3><p>Compatibility depends on your POS and ordering systems and is confirmed before implementation.</p>`,
     },
     {
       path: 'labs',
@@ -341,13 +341,13 @@ function blogIndexHeadTags() {
         'Experimental front-end, full-stack, and developer-tool projects by Andrew Teece.',
       body: '<h2>Experiments and learning projects</h2><p>Independent builds and technical experiments from Andrew Teece.</p>',
     },
-    ...serviceSummaries.map(([label, href]) => {
+    ...serviceSummaries.map(([label, href, price]) => {
       const pathName = href.replace(/^\//, '');
       return {
         path: pathName,
         title: `${label} | Andrew Teece`,
-        description: `${label} for restaurant owners, hospitality teams, and agencies. Pricing: confirm before launch.`,
-        body: `<h2>${label}</h2><p>Practical support shaped by restaurant operating experience and 20+ years building for the web.</p><p>Starting at: [confirm price]</p><p><a href="/restaurants#audit-request">Request a free Delivery Margin Audit</a></p>`,
+        description: `${label} for restaurant owners, hospitality teams, and agencies. ${price}.`,
+        body: `<h2>${label}</h2><p>Practical support shaped by restaurant operating experience and 20+ years building for the web.</p><p>${price}</p><p><a href="/restaurants#audit-request">Request a free Delivery Margin Audit</a></p>`,
       };
     }),
   ];

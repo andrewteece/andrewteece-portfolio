@@ -122,7 +122,8 @@ export default function Hero() {
 
         <p className='text-base md:text-lg max-w-xl text-[rgb(var(--text-rgb)/0.80)]'>
           21 years running a multi-brand restaurant group. 20+ years building
-          for the web. Our own online ordering system drove 40% of sales.
+          for the web. Implemented Heartland POS online ordering that grew to
+          40% of sales.
         </p>
 
         <div className='flex flex-wrap justify-center gap-4'>
