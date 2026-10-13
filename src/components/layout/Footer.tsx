@@ -174,6 +174,16 @@ export default function Footer() {
               </a>
             </li>
             <li>
+              <a
+                className='hover:text-[var(--color-brand)]'
+                href='https://andrewteecephotography.com'
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                Restaurant Photography
+              </a>
+            </li>
+            <li>
               <a className='hover:text-[var(--color-brand)]' href='/#projects'>
                 Case Studies
               </a>

@@ -61,5 +61,5 @@ export const services: ServiceOffer[] = [
   },
 ];
 
-export const bookingHref =
-  'mailto:andrew@andrewteece.com?subject=Book%20a%2020-minute%20call';
+export const bookingHref = 'https://calendar.app.google/yutEwKP28gypqc9G6';
+export const auditFormEndpoint = 'https://formspree.io/f/xqpeydjk';

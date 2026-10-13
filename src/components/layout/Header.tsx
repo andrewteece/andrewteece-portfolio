@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useTheme } from '../../context/ThemeProvider';
 import NavLinks from './NavLinks';
 import ThemeToggle from './ThemeToggle';
+import { bookingHref } from '../../content/services';
 
 export default function Header() {
   const { isDark, toggleTheme } = useTheme();
@@ -43,7 +44,9 @@ export default function Header() {
           <nav className='hidden lg:flex items-center gap-3 text-sm'>
             <NavLinks onClick={() => setMenuOpen(false)} />
             <a
-              href='mailto:andrew@andrewteece.com?subject=Book%20a%2020-minute%20call'
+              href={bookingHref}
+              target='_blank'
+              rel='noopener noreferrer'
               className='whitespace-nowrap rounded-md bg-[var(--color-brand)] px-3 py-2 text-sm font-semibold text-white hover:opacity-90'
             >
               Book a 20-minute call
@@ -104,7 +107,9 @@ export default function Header() {
                 <NavLinks onClick={() => setMenuOpen(false)} />
               </motion.div>
               <a
-                href='mailto:andrew@andrewteece.com?subject=Book%20a%2020-minute%20call'
+                href={bookingHref}
+                target='_blank'
+                rel='noopener noreferrer'
                 className='rounded-md bg-[var(--color-brand)] px-4 py-2 font-semibold text-white'
               >
                 Book a 20-minute call

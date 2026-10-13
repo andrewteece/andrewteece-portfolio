@@ -38,10 +38,10 @@ export default function About() {
           </P>
           <P>
             I combine 20+ years of web experience with hands-on ownership,
-            operations, and marketing. Based in Naples, I work with restaurants
-            and businesses in Southwest Florida—including Fort Myers and Bonita
-            Springs—and the Wisconsin Northwoods. I also subcontract senior
-            Next.js and headless WordPress development for agencies.
+            operations, and marketing. I serve restaurants and businesses in
+            Naples and Southwest Florida—including Fort Myers and Bonita
+            Springs—as well as the Wisconsin Northwoods. I also subcontract
+            senior Next.js and headless WordPress development for agencies.
           </P>
         </Stack>
       </Section>
