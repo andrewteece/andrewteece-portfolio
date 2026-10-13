@@ -48,7 +48,7 @@ export const projects: Project[] = [
     title: 'Restaurant Direct Online Ordering',
     tech: 'Restaurant operations, digital marketing, online ordering',
     description:
-      'Problem: Restaurant operators need to build direct relationships with guests while managing third-party delivery channels. Approach: Selected and implemented Heartland POS online ordering, integrated it with the website, and promoted it to regular guests. Result: Direct online orders grew to 40% of sales.',
+      'Problem: Restaurant operators need to build direct relationships with guests while managing third-party delivery channels. Approach: Used the restaurant’s existing POS online ordering tools, integrated them with the website, and promoted them to regular guests. Result: Direct online orders grew to 40% of sales.',
     category: 'fullstack',
     featured: true,
     audience: 'client',

@@ -137,9 +137,9 @@ export default function Restaurants() {
               Built with an operator&apos;s perspective
             </h2>
             <p className='mt-4 leading-relaxed'>
-              I spent 21 years running a multi-brand restaurant group. We
-              implemented Heartland POS online ordering, and direct orders
-              grew to 40% of sales. I now bring that operator experience
+              I spent 21 years running a multi-brand restaurant group. Our
+              direct online ordering grew to 40% of sales, and I can set it up
+              on the POS you already use. I now bring that operator experience
               together with 20+ years building for the web.
             </p>
           </section>
@@ -185,9 +185,9 @@ export default function Restaurants() {
             <div>
               <h3 className='font-bold'>What about my POS?</h3>
               <p className='mt-1 text-muted'>
-                The audit starts with your current POS and ordering setup.
-                Compatibility and integration options depend on your specific
-                systems and are confirmed before any implementation.
+                Keep it. You don&apos;t need to switch systems. I work with
+                Toast, Square, Clover, SpotOn, and Heartland. Compatibility is
+                confirmed based on your setup before implementation.
               </p>
             </div>
           </div>
