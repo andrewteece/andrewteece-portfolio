@@ -6,6 +6,11 @@ import fs from 'fs';
 import path from 'path';
 import fg from 'fast-glob';
 import matter from 'gray-matter';
+import { evaluate } from '@mdx-js/mdx';
+import * as jsxRuntime from 'react/jsx-runtime';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import remarkGfm from 'remark-gfm';
 
 const ROOT = process.cwd();
 const DIST = path.join(ROOT, 'dist');
@@ -14,7 +19,7 @@ const TEMPLATE_FILE = path.join(DIST, 'index.html');
 // --- Site constants (keep in sync with SEO.tsx) ---
 const SITE_URL = 'https://www.andrewteece.com';
 const SITE_NAME = 'Andrew Teece';
-const TWITTER_HANDLE = '@AndrewTeec43111';
+const TWITTER_HANDLE = '@andrewteece';
 const DEFAULT_IMAGE = `${SITE_URL}/images/social-preview.jpg`;
 const OG_WIDTH = 1280;
 const OG_HEIGHT = 720;
@@ -35,6 +40,60 @@ function writeFile(outFile, html) {
 
 function injectHead(baseHtml, headHtml) {
   return baseHtml.replace('</head>', `\n${headHtml}\n</head>`);
+}
+
+function escapeHtml(s = '') {
+  return String(s)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+function withStaticBody(html, body) {
+  return html.replace(
+    '<div id="root"></div>',
+    `<div id="root">${body}</div>`
+  );
+}
+
+function withPageMetadata(html, title, description, canonical) {
+  const safeTitle = escapeAttr(title);
+  const safeDescription = escapeAttr(description);
+  const safeCanonical = escapeAttr(canonical);
+  return html
+    .replace(/<title>[\s\S]*?<\/title>/, `<title>${safeTitle}</title>`)
+    .replace(
+      /<meta\s+name="description"[\s\S]*?\/>/,
+      `<meta name="description" content="${safeDescription}">`
+    )
+    .replace(
+      '</head>',
+      `\n<link rel="canonical" href="${safeCanonical}">\n</head>`
+    );
+}
+
+function staticMarketingBody(title, description, extra = '') {
+  return `
+    <main>
+      <header>
+        <a href="/">Andrew Teece</a>
+        <nav aria-label="Main navigation">
+          <a href="/services">Services</a>
+          <a href="/restaurants">Restaurants</a>
+          <a href="/blog">Blog</a>
+        </nav>
+      </header>
+      <article>
+        <h1>${escapeHtml(title)}</h1>
+        <p>${escapeHtml(description)}</p>
+        ${extra}
+        <p><a href="/restaurants#audit-request">Get a free Delivery Margin Audit</a></p>
+        <p><a href="mailto:andrew@andrewteece.com?subject=Book%20a%2020-minute%20call">Book a 20-minute call</a></p>
+      </article>
+    </main>
+  `;
 }
 
 function escapeAttr(s = '') {
@@ -70,7 +129,7 @@ function blogHeadTags({
       sameAs: [
         'https://github.com/andrewteece',
         'https://www.linkedin.com/in/andrew-teece/',
-        'https://x.com/AndrewTeec43111',
+        'https://x.com/andrewteece',
       ],
     },
     mainEntityOfPage: {
@@ -90,8 +149,6 @@ function blogHeadTags({
 
   return `
     <!-- prerender:blog -->
-    <link rel="canonical" href="${safeCanonical}">
-    <meta name="description" content="${safeDesc}">
     <meta property="og:site_name" content="${SITE_NAME}">
     <meta property="og:type" content="article">
     <meta property="og:title" content="${safeTitle}">
@@ -118,11 +175,10 @@ function blogHeadTags({
 function blogIndexHeadTags() {
   const canonical = `${SITE_URL}/blog`;
   const title = 'Blog — Andrew Teece';
-  const description = 'Articles on React, Vite, Tailwind, and front-end craft.';
+  const description =
+    'Practical guidance for restaurant owners, hospitality teams, and web agencies on marketing, direct ordering, and digital growth.';
   return `
     <!-- prerender:blog-index -->
-    <link rel="canonical" href="${canonical}">
-    <meta name="description" content="${description}">
     <meta property="og:site_name" content="${SITE_NAME}">
     <meta property="og:type" content="website">
     <meta property="og:title" content="${title}">
@@ -154,12 +210,40 @@ function blogIndexHeadTags() {
     'content/blog/**/*.mdx',
   ];
   const files = await fg(POST_GLOBS, { cwd: ROOT, dot: false });
+  const posts = files.map((rel) => {
+    const raw = fs.readFileSync(path.join(ROOT, rel), 'utf8');
+    const { data } = matter(raw);
+    const slug =
+      (typeof data.slug === 'string' && data.slug.trim()) ||
+      path.basename(rel).replace(/\.mdx?$/i, '').toLowerCase();
+    return {
+      title: data.title || slug,
+      description:
+        data.excerpt ||
+        data.description ||
+        'An article from Andrew Teece about restaurant growth and web development.',
+      slug,
+    };
+  });
 
   // Prerender /blog index tags
   {
     const outFile = path.join(DIST, 'blog', 'index.html');
     const head = blogIndexHeadTags();
-    writeFile(outFile, injectHead(baseHtml, head));
+    const links = posts
+      .map(
+        (post) =>
+          `<li><a href="/blog/${escapeAttr(post.slug)}">${escapeHtml(post.title)}</a><p>${escapeHtml(post.description)}</p></li>`
+      )
+      .join('\n');
+    const body = `<main><h1>Restaurant Growth &amp; Web Development Blog</h1><p>Practical guidance for restaurant owners, hospitality teams, and web agencies.</p><ul>${links}</ul></main>`;
+    const html = withPageMetadata(
+      baseHtml,
+      'Restaurant Growth & Web Development Blog | Andrew Teece',
+      'Practical guidance for restaurant owners, hospitality teams, and web agencies on marketing, direct ordering, and digital growth.',
+      `${SITE_URL}/blog`
+    );
+    writeFile(outFile, withStaticBody(injectHead(html, head), body));
     console.log(`✅ wrote blog index: ${path.relative(ROOT, outFile)}`);
   }
 
@@ -167,7 +251,7 @@ function blogIndexHeadTags() {
   for (const rel of files) {
     const src = path.join(ROOT, rel);
     const raw = fs.readFileSync(src, 'utf8');
-    const { data } = matter(raw);
+    const { data, content } = matter(raw);
 
     const slug =
       (typeof data.slug === 'string' && data.slug.trim()) ||
@@ -201,8 +285,106 @@ function blogIndexHeadTags() {
     });
 
     const outFile = path.join(DIST, 'blog', slug, 'index.html');
-    writeFile(outFile, injectHead(baseHtml, head));
+    let articleContent = `<p>${escapeHtml(description)}</p>`;
+    if (data.prerender === true) {
+      const { default: Content } = await evaluate(content, {
+        ...jsxRuntime,
+        remarkPlugins: [remarkGfm],
+      });
+      articleContent = renderToStaticMarkup(createElement(Content));
+    }
+    const completeBody = `<main><article><h1>${escapeHtml(title)}</h1>${articleContent}<p><a href="/blog">Back to all articles</a></p></article></main>`;
+    const html = withPageMetadata(baseHtml, title, description, canonical);
+    writeFile(outFile, withStaticBody(injectHead(html, head), completeBody));
     console.log(`✅ wrote post: ${path.relative(ROOT, outFile)}`);
+  }
+
+  const serviceSummaries = [
+    ['Restaurant Direct Ordering & Growth', '/services/restaurant-direct-ordering'],
+    ['Fractional Marketing Director, Hospitality', '/services/fractional-marketing-director'],
+    ['Monthly Local Marketing', '/services/monthly-local-marketing'],
+    ['Website Audits & Builds', '/services/website-audits-and-builds'],
+  ];
+  const serviceLinks = serviceSummaries
+    .map(([label, href]) => `<li><a href="${href}">${label}</a></li>`)
+    .join('');
+  const routes = [
+    {
+      path: '',
+      title: 'Restaurant Websites, Online Ordering & Digital Marketing | Andrew Teece | Naples, FL',
+      contentTitle: 'Websites and marketing to help restaurants make more money',
+      description:
+        'Websites and marketing to help restaurants make more money. Former restaurant owner with 21 years of operating experience and 20+ years building for the web.',
+      body: `<h2>Services</h2><ul>${serviceLinks}</ul><h2>About Andrew</h2><p>Former restaurant owner, operator, marketer, and developer serving Naples, Fort Myers, Bonita Springs, and the Wisconsin Northwoods.</p><h2>Restaurant experience</h2><p>21 years running a multi-brand restaurant group. Our own online ordering system drove 40% of sales.</p><h2>Selected case studies</h2><ul><li>BAPI Headless WordPress Migration: moved a legacy e-commerce experience to a modern headless architecture.</li><li>Restaurant Direct Online Ordering: our own system drove 40% of sales.</li></ul>`,
+    },
+    {
+      path: 'services',
+      title: 'Restaurant Marketing & Website Services | Andrew Teece',
+      contentTitle: 'Services for restaurants, hospitality teams, and agencies',
+      description:
+        'Restaurant direct ordering, hospitality marketing leadership, local marketing, and website builds for businesses and agencies.',
+      body: `<h2>Services for restaurants, hospitality teams, and agencies</h2><ul>${serviceLinks}</ul>`,
+    },
+    {
+      path: 'restaurants',
+      title: 'Restaurant Online Ordering & Delivery Margin Audit | Andrew Teece',
+      contentTitle: 'Stop paying 15–30% to DoorDash on your regulars.',
+      description:
+        'Explore direct online ordering and estimate marketplace commissions with a free delivery margin audit from a former restaurant owner.',
+      body: `<h2>Stop paying 15–30% to DoorDash on your regulars.</h2><p>Estimate annual commissions from monthly delivery sales and your selected commission rate.</p><p>21 years running a multi-brand restaurant group. Our own online ordering system drove 40% of sales.</p><h2>Get a free Delivery Margin Audit</h2><p>Share your restaurant name, city, and approximate monthly delivery sales.</p><h2>Frequently asked questions</h2><h3>Do I have to leave DoorDash?</h3><p>No. Direct ordering can complement the delivery channels your guests already use.</p><h3>What about POS?</h3><p>Compatibility depends on your POS and ordering systems and is confirmed before implementation.</p>`,
+    },
+    {
+      path: 'labs',
+      title: 'Developer Labs | Andrew Teece',
+      contentTitle: 'Developer Labs',
+      description:
+        'Experimental front-end, full-stack, and developer-tool projects by Andrew Teece.',
+      body: '<h2>Experiments and learning projects</h2><p>Independent builds and technical experiments from Andrew Teece.</p>',
+    },
+    ...serviceSummaries.map(([label, href]) => {
+      const pathName = href.replace(/^\//, '');
+      return {
+        path: pathName,
+        title: `${label} | Andrew Teece`,
+        description: `${label} for restaurant owners, hospitality teams, and agencies. Pricing: confirm before launch.`,
+        body: `<h2>${label}</h2><p>Practical support shaped by restaurant operating experience and 20+ years building for the web.</p><p>Starting at: [confirm price]</p><p><a href="/restaurants#audit-request">Request a free Delivery Margin Audit</a></p>`,
+      };
+    }),
+  ];
+
+  for (const route of routes) {
+    const canonical = `${SITE_URL}/${route.path}`;
+    const title = escapeAttr(route.title);
+    const description = escapeAttr(route.description);
+    const head = `
+      <meta property="og:type" content="website">
+      <meta property="og:title" content="${title}">
+      <meta property="og:description" content="${description}">
+      <meta property="og:url" content="${canonical}">
+      <meta name="twitter:title" content="${title}">
+      <meta name="twitter:description" content="${description}">
+    `;
+    let html = withPageMetadata(
+      baseHtml,
+      route.title,
+      route.description,
+      canonical
+    );
+    html = injectHead(html, head);
+    html = withStaticBody(
+      html,
+      staticMarketingBody(
+        route.contentTitle || route.title,
+        route.description,
+        route.body
+      )
+    );
+    const outFile = path.join(
+      DIST,
+      route.path,
+      'index.html'
+    );
+    writeFile(outFile, html);
   }
 
   console.log('🎉 prerender complete (no browser required)');

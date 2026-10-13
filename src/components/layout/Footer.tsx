@@ -154,18 +154,28 @@ export default function Footer() {
               </a>
             </li>
             <li>
-              <a className='hover:text-[var(--color-brand)]' href='#projects'>
-                Projects
+              <a className='hover:text-[var(--color-brand)]' href='/restaurants'>
+                Restaurant Services
               </a>
             </li>
             <li>
-              <a className='hover:text-[var(--color-brand)]' href='#techstack'>
-                Tech Stack
+              <a className='hover:text-[var(--color-brand)]' href='/services'>
+                Services
               </a>
             </li>
             <li>
-              <a className='hover:text-[var(--color-brand)]' href='/about'>
+              <a className='hover:text-[var(--color-brand)]' href='/#about'>
                 About
+              </a>
+            </li>
+            <li>
+              <a className='hover:text-[var(--color-brand)]' href='/labs'>
+                Developer Labs
+              </a>
+            </li>
+            <li>
+              <a className='hover:text-[var(--color-brand)]' href='/#projects'>
+                Case Studies
               </a>
             </li>
           </ul>

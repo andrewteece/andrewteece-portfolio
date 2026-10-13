@@ -10,7 +10,8 @@ export type { NavLinksProps };
 
 const navItems = [
   { href: 'home', label: 'Home' },
-  { href: 'techstack', label: 'Tech Stack' },
+  { href: 'services', label: 'Services' },
+  { href: 'restaurants', label: 'Restaurants' },
   { href: 'about', label: 'About' },
   { href: 'projects', label: 'Projects' },
   { href: 'contact', label: 'Contact' },
@@ -34,7 +35,7 @@ function ItemLink({
       aria-current={active ? 'page' : undefined}
       className={cn(
         // darker base color + larger type (up from base/md:sm)
-        'group relative inline-block px-1 py-2 text-[var(--color-text)] text-[17px] md:text-[18px] transition-colors duration-200',
+        'group relative inline-block px-1 py-2 text-[var(--color-text)] text-sm transition-colors duration-200 lg:text-[15px]',
         'hover:text-[var(--color-brand)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand)]/40 rounded',
         active ? 'text-[var(--color-brand)] font-semibold' : ''
       )}
@@ -65,7 +66,7 @@ export default function NavLinks({ onClick }: NavLinksProps) {
   return (
     <motion.ul
       // remove inherited size; spacing a touch wider for larger text
-      className='flex flex-col items-center gap-4 md:flex-row md:gap-7 lg:gap-8'
+      className='flex flex-col items-center gap-4 md:flex-row md:gap-3 lg:gap-4'
       initial='hidden'
       animate='visible'
       exit='hidden'
@@ -100,9 +101,13 @@ export default function NavLinks({ onClick }: NavLinksProps) {
           }}
         >
           <ItemLink
-            to={`/?scrollTo=${href}`}
+            to={href === 'restaurants' ? '/restaurants' : `/?scrollTo=${href}`}
             label={label}
-            active={activeSection === href}
+            active={
+              href === 'restaurants'
+                ? location.pathname === '/restaurants'
+                : activeSection === href
+            }
             onClick={onClick}
           />
         </motion.li>

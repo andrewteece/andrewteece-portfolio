@@ -7,6 +7,7 @@ export type Project = {
   image?: string;
   category?: 'frontend' | 'fullstack' | 'tools' | 'api';
   featured?: boolean;
+  audience?: 'client' | 'lab';
   techStack?: string[];
   metrics?: {
     performance?: string;
@@ -20,12 +21,13 @@ export const projects: Project[] = [
     title: 'BAPI Headless WordPress Migration',
     tech: 'Next.js 16, WordPress/WooCommerce, WPGraphQL, TypeScript',
     description:
-      'Enterprise headless CMS migration transforming a 16-year-old WordPress/WooCommerce site into modern architecture. Serving 608 products across 11 languages and 12 regions with 95% performance improvement, full type safety, and comprehensive e-commerce integration. Launching April 10, 2026.',
+      'Problem: A 16-year-old WordPress/WooCommerce experience took 2–3 seconds to respond. Approach: Rebuilt the storefront as a typed, headless Next.js experience connected to WordPress and WooCommerce. Result: Key responses dropped to under 100ms, with 1,240 tests supporting the migration.',
     github: 'https://github.com/ateece-bapi/bapi-headless',
     demo: 'https://bapi-headless.vercel.app/en',
     image: 'images/blog/bapi-headless.png',
     category: 'fullstack',
     featured: true,
+    audience: 'client',
     techStack: [
       'Next.js 16',
       'WordPress 6.8',
@@ -43,6 +45,15 @@ export const projects: Project[] = [
     },
   },
   {
+    title: 'Restaurant Direct Online Ordering',
+    tech: 'Restaurant operations, digital marketing, online ordering',
+    description:
+      'Problem: Restaurant operators need to build direct relationships with guests while managing third-party delivery channels. Approach: Applied 21 years of multi-brand restaurant operating experience to an in-house online ordering system. Result: The system drove 40% of sales.',
+    category: 'fullstack',
+    featured: true,
+    audience: 'client',
+  },
+  {
     title: 'AI-Assisted Analytics Dashboard',
     tech: 'Next.js 15, TypeScript, Tailwind v4, Zustand',
     description:
@@ -52,6 +63,7 @@ export const projects: Project[] = [
     image: 'images/ai-dashboard.webp',
     category: 'fullstack',
     featured: true,
+    audience: 'lab',
     techStack: [
       'Next.js 15',
       'TypeScript',

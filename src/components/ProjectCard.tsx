@@ -10,6 +10,7 @@ type ProjectProps = {
   image?: string;
   category?: 'frontend' | 'fullstack' | 'tools' | 'api';
   featured?: boolean;
+  audience?: 'client' | 'lab';
   techStack?: string[];
   metrics?: {
     performance?: string;

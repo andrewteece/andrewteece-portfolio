@@ -10,7 +10,7 @@ export default function AuthorBlock() {
     >
       <img
         src='/images/andrew-avatar.webp'
-        alt='Portrait of Andrew Teece, Front-End Developer'
+        alt='Portrait of Andrew Teece, restaurant owner and web developer'
         className='h-12 w-12 rounded-full border border-[var(--color-border)]'
         itemProp='image'
         loading='lazy'
@@ -53,7 +53,7 @@ export default function AuthorBlock() {
             LinkedIn
           </a>
           <a
-            href='https://x.com/AndrewTeec43111'
+            href='https://x.com/andrewteece'
             target='_blank'
             rel='noopener noreferrer'
             className='inline-block text-[var(--color-brand)] underline-offset-4 hover:underline'

@@ -46,7 +46,7 @@ export default function SocialLinks({ className }: SocialLinksProps) {
         <FaLinkedin size={35} />
       </a>
       <a
-        href='https://x.com/AndrewTeec43111'
+        href='https://x.com/andrewteece'
         target='_blank'
         rel='noopener noreferrer'
         aria-label='Twitter / X'

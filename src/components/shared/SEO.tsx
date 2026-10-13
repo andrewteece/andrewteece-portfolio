@@ -22,20 +22,21 @@ export interface SEOProps {
 }
 
 const SITE_URL = 'https://www.andrewteece.com';
-const DEFAULT_TITLE = 'Andrew Teece | Front-End Developer';
+const DEFAULT_TITLE =
+  'Restaurant Websites, Online Ordering & Digital Marketing | Andrew Teece | Naples, FL';
 const DEFAULT_DESC =
-  'Experienced front-end developer delivering performant, accessible, and beautiful web apps.';
+  'Restaurant websites, direct online ordering, and digital marketing from Andrew Teece, a former restaurant owner with 21 years of operating experience. Serving Naples, Southwest Florida, and the Wisconsin Northwoods.';
 const DEFAULT_IMAGE = '/images/social-preview.jpg';
 const DEFAULT_LOCALE = 'en_US';
 
 // Twitter handle
-const TWITTER_HANDLE = '@AndrewTeec43111';
+const TWITTER_HANDLE = '@andrewteece';
 
 // sameAs links for structured data
 const SAME_AS = [
   'https://github.com/andrewteece',
   'https://www.linkedin.com/in/andrew-teece/',
-  'https://x.com/AndrewTeec43111',
+  'https://x.com/andrewteece',
 ];
 
 function toAbs(input?: string): string | undefined {

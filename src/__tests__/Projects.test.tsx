@@ -40,6 +40,7 @@ vi.mock('../content/projects', () => ({
       image: 'test-image-1.jpg',
       demoUrl: 'https://demo1.com',
       codeUrl: 'https://github.com/test/project1',
+      audience: 'client',
     },
     {
       title: 'Test Project 2',
@@ -48,6 +49,7 @@ vi.mock('../content/projects', () => ({
       image: 'test-image-2.jpg',
       demoUrl: 'https://demo2.com',
       codeUrl: 'https://github.com/test/project2',
+      audience: 'client',
     },
   ],
 }));
@@ -75,10 +77,10 @@ describe('Projects', () => {
   it('renders projects section with title and description', () => {
     renderWithContext(<Projects />);
 
-    expect(screen.getByText('Projects')).toBeInTheDocument();
+    expect(screen.getByText('Selected Case Studies')).toBeInTheDocument();
     expect(
       screen.getByText(
-        /A curated collection of projects showcasing modern web development/
+        /Business-focused results from restaurant operations and client development/
       )
     ).toBeInTheDocument();
   });
@@ -145,7 +147,9 @@ describe('Projects', () => {
   it('has correct section id and classes', () => {
     renderWithContext(<Projects />);
 
-    const section = screen.getByText('Projects').closest('#projects');
+    const section = screen
+      .getByText('Selected Case Studies')
+      .closest('#projects');
     expect(section).toHaveClass(
       'text-center',
       'section-pad',

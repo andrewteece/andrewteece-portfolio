@@ -16,6 +16,10 @@ import Hero from './components/sections/Hero';
 const Blog = lazy(() => import('./pages/Blog'));
 const BlogPost = lazy(() => import('./pages/BlogPost'));
 const StyleGuide = lazy(() => import('./pages/StyleGuide'));
+const Services = lazy(() => import('./pages/Services'));
+const ServiceDetail = lazy(() => import('./pages/ServiceDetail'));
+const Restaurants = lazy(() => import('./pages/Restaurants'));
+const Labs = lazy(() => import('./pages/Labs'));
 
 // Home sections that aren’t LCP — defer until idle
 const TechStack = lazy(() => import('./components/sections/TechStack'));
@@ -115,8 +119,8 @@ export default function App() {
       {/* Page-scoped SEO (posts handle SEO in PostLayout) */}
       {isHome && (
         <SEO
-          title='Andrew Teece | Front-End Developer'
-          description='Experienced front-end developer delivering performant, accessible, and beautiful web apps.'
+          title='Restaurant Websites, Online Ordering & Digital Marketing | Andrew Teece | Naples, FL'
+          description='Restaurant websites, direct online ordering, and digital marketing from Andrew Teece, a former restaurant owner with 21 years of operating experience. Serving Naples, Southwest Florida, and the Wisconsin Northwoods.'
           url='https://www.andrewteece.com/'
           canonical='https://www.andrewteece.com/'
           type='website'
@@ -126,7 +130,7 @@ export default function App() {
       {isBlogList && (
         <SEO
           title='Blog — Andrew Teece'
-          description='Articles on React, Vite, Tailwind, and front-end craft.'
+          description='Practical guidance for restaurant owners, hospitality teams, and web agencies on marketing, direct ordering, and digital growth.'
           url='https://www.andrewteece.com/blog'
           canonical='https://www.andrewteece.com/blog'
           type='website'
@@ -152,6 +156,9 @@ export default function App() {
                 {showSections && (
                   <>
                     <Suspense fallback={<Fallback />}>
+                      <Services />
+                    </Suspense>
+                    <Suspense fallback={<Fallback />}>
                       <TechStack />
                     </Suspense>
                     <Suspense fallback={<Fallback />}>
@@ -163,6 +170,42 @@ export default function App() {
                   </>
                 )}
               </main>
+            }
+          />
+
+          <Route
+            path='/services'
+            element={
+              <Suspense fallback={<main id='main'><Fallback /></main>}>
+                <Services standalone />
+              </Suspense>
+            }
+          />
+
+          <Route
+            path='/services/:slug'
+            element={
+              <Suspense fallback={<main id='main'><Fallback /></main>}>
+                <ServiceDetail />
+              </Suspense>
+            }
+          />
+
+          <Route
+            path='/restaurants'
+            element={
+              <Suspense fallback={<main id='main'><Fallback /></main>}>
+                <Restaurants />
+              </Suspense>
+            }
+          />
+
+          <Route
+            path='/labs'
+            element={
+              <Suspense fallback={<main id='main'><Fallback /></main>}>
+                <Labs />
+              </Suspense>
             }
           />
 

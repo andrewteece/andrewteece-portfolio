@@ -32,7 +32,7 @@ export default function Header() {
       <div className='h-16'>
         <div className='max-w-7xl mx-auto px-4 h-full flex justify-between items-center'>
           <motion.div
-            className='text-xl font-extrabold tracking-tight text-[var(--color-brand)] font-[Outfit,sans-serif]'
+            className='shrink-0 whitespace-nowrap text-xl font-extrabold tracking-tight text-[var(--color-brand)] font-[Outfit,sans-serif]'
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.35 }}
@@ -40,12 +40,18 @@ export default function Header() {
             Andrew <span className='opacity-80'>Teece</span>
           </motion.div>
 
-          <nav className='hidden md:flex items-center gap-6 text-sm'>
+          <nav className='hidden lg:flex items-center gap-3 text-sm'>
             <NavLinks onClick={() => setMenuOpen(false)} />
+            <a
+              href='mailto:andrew@andrewteece.com?subject=Book%20a%2020-minute%20call'
+              className='whitespace-nowrap rounded-md bg-[var(--color-brand)] px-3 py-2 text-sm font-semibold text-white hover:opacity-90'
+            >
+              Book a 20-minute call
+            </a>
             <ThemeToggle isDark={isDark} toggle={toggleTheme} />
           </nav>
 
-          <div className='md:hidden flex items-center gap-3'>
+          <div className='lg:hidden flex items-center gap-3'>
             <ThemeToggle isDark={isDark} toggle={toggleTheme} />
             <button
               onClick={() => setMenuOpen(!menuOpen)}
@@ -97,6 +103,12 @@ export default function Header() {
               >
                 <NavLinks onClick={() => setMenuOpen(false)} />
               </motion.div>
+              <a
+                href='mailto:andrew@andrewteece.com?subject=Book%20a%2020-minute%20call'
+                className='rounded-md bg-[var(--color-brand)] px-4 py-2 font-semibold text-white'
+              >
+                Book a 20-minute call
+              </a>
             </motion.aside>
           </>
         )}

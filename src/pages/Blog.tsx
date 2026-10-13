@@ -108,7 +108,7 @@ export default function Blog() {
     <main id='main' className='relative overflow-hidden'>
       <SEO
         title='Blog | Andrew Teece'
-        description='Articles and thoughts on frontend development, React, Vite, MDX, and modern web tools.'
+        description='Practical guidance for restaurant owners, hospitality teams, and web agencies on marketing, direct ordering, and digital growth.'
         url='https://andrewteece.com/blog'
       />
 

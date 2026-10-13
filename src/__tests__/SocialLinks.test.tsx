@@ -32,7 +32,7 @@ describe('SocialLinks', () => {
     );
     expect(twitterLink).toHaveAttribute(
       'href',
-      'https://x.com/AndrewTeec43111'
+      'https://x.com/andrewteece'
     );
   });
 

@@ -65,7 +65,7 @@ async function writeRSS(posts: Awaited<ReturnType<typeof readPosts>>) {
   const feed = new RSS({
     title: 'Andrew Teece — Blog',
     description:
-      'Articles on React, Vite, Tailwind, TypeScript, and front-end craft.',
+      'Practical guidance for restaurant owners, hospitality teams, and web agencies on marketing, direct ordering, and digital growth.',
     site_url: siteUrl,
     feed_url: `${siteUrl}/feed.xml`,
     language: 'en',
@@ -90,6 +90,33 @@ async function writeSitemap(posts: Awaited<ReturnType<typeof readPosts>>) {
   const urls: { loc: string; lastmod?: string; priority?: string }[] = [
     { loc: `${siteUrl}/`, lastmod: formatDateYYYYMMDD(), priority: '1.0' },
     { loc: `${siteUrl}/blog`, lastmod: formatDateYYYYMMDD(), priority: '0.8' },
+    { loc: `${siteUrl}/services`, lastmod: formatDateYYYYMMDD(), priority: '0.8' },
+    {
+      loc: `${siteUrl}/restaurants`,
+      lastmod: formatDateYYYYMMDD(),
+      priority: '0.9',
+    },
+    { loc: `${siteUrl}/labs`, lastmod: formatDateYYYYMMDD(), priority: '0.4' },
+    {
+      loc: `${siteUrl}/services/restaurant-direct-ordering`,
+      lastmod: formatDateYYYYMMDD(),
+      priority: '0.8',
+    },
+    {
+      loc: `${siteUrl}/services/fractional-marketing-director`,
+      lastmod: formatDateYYYYMMDD(),
+      priority: '0.7',
+    },
+    {
+      loc: `${siteUrl}/services/monthly-local-marketing`,
+      lastmod: formatDateYYYYMMDD(),
+      priority: '0.7',
+    },
+    {
+      loc: `${siteUrl}/services/website-audits-and-builds`,
+      lastmod: formatDateYYYYMMDD(),
+      priority: '0.7',
+    },
   ];
 
   posts.forEach((p) => {

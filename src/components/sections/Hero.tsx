@@ -117,22 +117,26 @@ export default function Hero() {
         </h1>
 
         <h2 className='text-xl md:text-2xl font-medium text-[var(--color-text)]'>
-          Front-End Web Developer focused on clean code and user-centric design.
+          Websites and marketing to help restaurants make more money.
         </h2>
 
         <p className='text-base md:text-lg max-w-xl text-[rgb(var(--text-rgb)/0.80)]'>
-          Delivering responsive, performant, and accessible digital experiences
-          using modern tools like <strong>React</strong>,{' '}
-          <strong>Next.js</strong>, <strong>TypeScript</strong>, and{' '}
-          <strong>Tailwind CSS</strong>.
+          21 years running a multi-brand restaurant group. 20+ years building
+          for the web. Our own online ordering system drove 40% of sales.
         </p>
 
         <div className='flex flex-wrap justify-center gap-4'>
-          <a href='#projects' className='btn-primary'>
-            View Work
+          <a href='/restaurants' className='btn-primary'>
+            Get a Free Audit
           </a>
-          <a href='#contact' className='btn-outline'>
-            Contact
+          <a href='/?scrollTo=services' className='btn-outline'>
+            See Services
+          </a>
+          <a
+            href='mailto:andrew@andrewteece.com?subject=Book%20a%2020-minute%20call'
+            className='btn-outline'
+          >
+            Book a 20-minute call
           </a>
         </div>
       </div>
@@ -141,9 +145,9 @@ export default function Hero() {
       {showUi && (
         <>
           <a
-            href='#techstack'
+            href='#services'
             className='absolute bottom-6 text-[var(--color-brand)] dark:text-[var(--color-accent)]'
-            aria-label='Scroll to tech stack'
+            aria-label='Scroll to services'
           >
             <IconChevronDown width={28} height={28} aria-hidden />
           </a>

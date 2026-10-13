@@ -13,6 +13,15 @@ export interface VitalMetric {
   navigationType?: string;
 }
 
+export function trackMarketingEvent(
+  eventName: string,
+  parameters: Record<string, string | number | boolean>
+) {
+  if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+    window.gtag('event', eventName, parameters);
+  }
+}
+
 function round(name: VitalName, v: number) {
   return name === 'CLS' ? Math.round(v * 1000) / 1000 : Math.round(v);
 }

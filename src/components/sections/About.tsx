@@ -26,19 +26,22 @@ export default function About() {
       transition={{ duration: 0.8 }}
       viewport={{ once: true }}
     >
-      <Section id='about' title='About Me' align='center'>
+      <Section id='about' title='Owner, Operator, Marketer & Developer' align='center'>
         {/* Bump paragraph sizing for all <P> children here */}
         <Stack className='[&>p]:text-lg [&>p]:md:text-xl [&>p]:leading-relaxed'>
           <P>
-            I&apos;m a seasoned Front-End Web Developer and IT Professional with
-            20+ years of hands-on experience delivering responsive, performant,
-            and accessible digital experiences.
+            I&apos;m a former restaurant owner who spent 21 years running a
+            multi-brand restaurant group before bringing that operator&apos;s
+            perspective to websites and digital marketing. I understand the
+            pressure of margins, staffing, repeat business, and making every
+            marketing dollar work.
           </P>
           <P>
-            I specialize in building scalable user interfaces using modern
-            frameworks like React, Next.js, TypeScript, and Tailwind CSS. My
-            focus is on clean code, design systems, and collaboration to deliver
-            real business impact.
+            I combine 20+ years of web experience with hands-on ownership,
+            operations, and marketing. Based in Naples, I work with restaurants
+            and businesses in Southwest Florida—including Fort Myers and Bonita
+            Springs—and the Wisconsin Northwoods. I also subcontract senior
+            Next.js and headless WordPress development for agencies.
           </P>
         </Stack>
       </Section>

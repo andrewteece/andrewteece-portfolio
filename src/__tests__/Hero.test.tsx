@@ -15,6 +15,7 @@ test('renders Hero section with intro', () => {
     screen.getByRole('heading', { level: 1, name: /andrew teece/i })
   ).toBeInTheDocument();
 
-  // Slightly more flexible match for "Front-End" vs "Frontend"
-  expect(screen.getByText(/front[- ]?end web developer/i)).toBeInTheDocument();
+  expect(
+    screen.getByText(/websites and marketing to help restaurants/i)
+  ).toBeInTheDocument();
 });
