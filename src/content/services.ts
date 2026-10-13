@@ -12,7 +12,7 @@ export const services: ServiceOffer[] = [
     title: 'Restaurant Direct Ordering & Growth',
     summary:
       'A practical direct-ordering and growth plan designed around your restaurant, guests, and existing operations.',
-    startingAt: 'Starting at: [confirm price]',
+    startingAt: 'Starting at $3,500 setup + $400/month',
     includes: [
       'Delivery margin and ordering-channel review',
       'Direct-ordering website strategy',
@@ -25,7 +25,7 @@ export const services: ServiceOffer[] = [
     title: 'Fractional Marketing Director, Hospitality',
     summary:
       'Experienced marketing leadership for hospitality businesses that need a clear plan and consistent execution.',
-    startingAt: 'Starting at: [confirm price]',
+    startingAt: 'Starting at $2,000/month',
     includes: [
       'Marketing priorities and a measurable plan',
       'Campaign planning tied to business goals',
@@ -38,7 +38,7 @@ export const services: ServiceOffer[] = [
     title: 'Monthly Local Marketing',
     summary:
       'Ongoing support for the local channels that help guests discover, trust, and return to your business.',
-    startingAt: 'Starting at: [confirm price]',
+    startingAt: 'Starting at $600/month',
     includes: [
       'Social content planning',
       'Google Business Profile updates',
@@ -51,7 +51,7 @@ export const services: ServiceOffer[] = [
     title: 'Website Audits & Builds',
     summary:
       'Clear recommendations and fast, accessible websites built around your customers and business goals.',
-    startingAt: 'Starting at: [confirm price]',
+    startingAt: 'Audits from $750 · Builds from $5,000',
     includes: [
       'Website, accessibility, and performance audit',
       'Conversion-focused design and implementation',

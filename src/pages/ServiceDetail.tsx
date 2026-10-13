@@ -62,10 +62,6 @@ export default function ServiceDetail() {
             Book a 20-minute call
           </a>
         </div>
-        <p className='mt-6 text-center text-sm text-muted'>
-          Pricing shown here is a launch placeholder and must be confirmed
-          before publishing.
-        </p>
       </Section>
     </main>
   );

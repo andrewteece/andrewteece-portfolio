@@ -119,14 +119,10 @@ export default function Restaurants() {
               Built with an operator&apos;s perspective
             </h2>
             <p className='mt-4 leading-relaxed'>
-              I spent 21 years running a multi-brand restaurant group. Our own
-              online ordering system drove 40% of sales. I now bring that
-              operator experience together with 20+ years building for the web.
-            </p>
-            <p className='mt-4 text-sm text-muted'>
-              More detailed order volume, average ticket, and commission-saved
-              figures are not included until they can be verified and approved
-              for sharing.
+              I spent 21 years running a multi-brand restaurant group. We
+              implemented Heartland POS online ordering, and direct orders
+              grew to 40% of sales. I now bring that operator experience
+              together with 20+ years building for the web.
             </p>
           </section>
         </div>
@@ -149,10 +145,11 @@ export default function Restaurants() {
             ))}
           </div>
           <p className='mt-6 text-center font-semibold'>
-            Setup: [confirm price] · Monthly: [confirm price]
+            Setup from $3,500 · Monthly plans from $400
           </p>
           <p className='mt-2 text-center text-sm text-muted'>
-            Pricing placeholders must be confirmed before publishing.
+            Final pricing depends on your POS, menu size, and locations. The
+            audit is free.
           </p>
         </section>
 
