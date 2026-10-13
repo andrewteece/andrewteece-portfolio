@@ -62,7 +62,7 @@ describe('Restaurants page', () => {
     ).toBeInTheDocument();
     expect(
       screen.getByText(
-        /Keep it\. You don't need to switch systems\. I work with Toast, Square, Clover, SpotOn, and Heartland/
+        /Keep it\. You don't need to switch systems\. I work with Toast, Square, Clover, SpotOn, Heartland, and most other systems/
       )
     ).toBeInTheDocument();
   });

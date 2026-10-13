@@ -186,8 +186,9 @@ export default function Restaurants() {
               <h3 className='font-bold'>What about my POS?</h3>
               <p className='mt-1 text-muted'>
                 Keep it. You don&apos;t need to switch systems. I work with
-                Toast, Square, Clover, SpotOn, and Heartland. Compatibility is
-                confirmed based on your setup before implementation.
+                Toast, Square, Clover, SpotOn, Heartland, and most other
+                systems. Compatibility is confirmed based on your setup before
+                implementation.
               </p>
             </div>
           </div>
