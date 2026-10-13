@@ -2,6 +2,7 @@ import { useMemo, useState, type FormEvent } from 'react';
 import SEO from '../components/shared/SEO';
 import { Section } from '../components/shared/Section';
 import { trackMarketingEvent } from '../lib/analytics';
+import { auditFormEndpoint } from '../content/services';
 
 const currency = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -12,6 +13,8 @@ const currency = new Intl.NumberFormat('en-US', {
 export default function Restaurants() {
   const [monthlySales, setMonthlySales] = useState('10000');
   const [commissionRate, setCommissionRate] = useState('25');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submissionMessage, setSubmissionMessage] = useState('');
   const annualCommissions = useMemo(
     () =>
       Math.max(0, Number(monthlySales) || 0) *
@@ -20,25 +23,40 @@ export default function Restaurants() {
     [commissionRate, monthlySales]
   );
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const fieldValue = (name: string) => {
-      const value = formData.get(name);
-      return typeof value === 'string' ? value.trim() : '';
-    };
-    const restaurant = fieldValue('restaurant');
-    const city = fieldValue('city');
-    const sales = fieldValue('monthly-sales');
-    const subject = encodeURIComponent('Free Delivery Margin Audit request');
-    const body = encodeURIComponent(
-      `Restaurant: ${restaurant}\nCity: ${city}\nApproximate monthly delivery sales: ${sales}`
-    );
+    const form = event.currentTarget;
+    setIsSubmitting(true);
+    setSubmissionMessage('');
 
-    trackMarketingEvent('generate_lead', {
-      lead_type: 'delivery_margin_audit',
-    });
-    window.location.href = `mailto:andrew@andrewteece.com?subject=${subject}&body=${body}`;
+    try {
+      const response = await fetch(auditFormEndpoint, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' },
+      });
+
+      if (!response.ok) {
+        setSubmissionMessage(
+          'We could not send your request right now. Please try again or email andrew@andrewteece.com.'
+        );
+        return;
+      }
+
+      trackMarketingEvent('generate_lead', {
+        lead_type: 'delivery_margin_audit',
+      });
+      form.reset();
+      setSubmissionMessage(
+        'Thanks — your Delivery Margin Audit request has been sent.'
+      );
+    } catch {
+      setSubmissionMessage(
+        'We could not send your request right now. Check your connection and try again, or email andrew@andrewteece.com.'
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -183,10 +201,15 @@ export default function Restaurants() {
             Get a free Delivery Margin Audit
           </h2>
           <p className='mt-2 text-center text-muted'>
-            Share a few details to start an email request. Your email app will
-            open with the information filled in for you to review and send.
+            Share a few details and I&apos;ll follow up about your restaurant&apos;s
+            delivery margins.
           </p>
-          <form onSubmit={handleSubmit} className='mt-6 grid gap-4'>
+          <form
+            action={auditFormEndpoint}
+            method='POST'
+            onSubmit={(event) => void handleSubmit(event)}
+            className='mt-6 grid gap-4'
+          >
             <label className='grid gap-2 font-medium'>
               Restaurant name
               <input
@@ -215,14 +238,20 @@ export default function Restaurants() {
                 required
               />
             </label>
-            <button type='submit' className='btn-primary justify-self-center'>
-              Request my free audit
+            <button
+              type='submit'
+              className='btn-primary justify-self-center'
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Sending request…' : 'Request my free audit'}
             </button>
+            <p role='status' aria-live='polite' className='text-center text-sm'>
+              {submissionMessage}
+            </p>
           </form>
           <p className='mt-3 text-center text-xs text-muted'>
-            This form opens your email app; no details are sent until you press
-            Send. The GA4 lead event records the request action, not an
-            independently verified email delivery.
+            Your details are sent securely through Formspree. A GA4 lead event
+            is recorded only after Formspree accepts the request.
           </p>
         </section>
       </Section>

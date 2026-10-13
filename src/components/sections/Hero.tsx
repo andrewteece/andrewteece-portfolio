@@ -2,6 +2,7 @@ import type { Transition } from 'framer-motion';
 import { motion, useReducedMotion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { IconArrowUp, IconChevronDown } from '../icons';
+import { bookingHref } from '../../content/services';
 
 export default function Hero() {
   const [showUi, setShowUi] = useState(false);
@@ -134,7 +135,9 @@ export default function Hero() {
             See Services
           </a>
           <a
-            href='mailto:andrew@andrewteece.com?subject=Book%20a%2020-minute%20call'
+            href={bookingHref}
+            target='_blank'
+            rel='noopener noreferrer'
             className='btn-outline'
           >
             Book a 20-minute call
